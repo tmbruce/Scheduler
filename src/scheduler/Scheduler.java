@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -19,9 +20,10 @@ public class Scheduler extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/SignInScreen.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);                              //ADD IMG BASED EXIT ICON?
         stage.show();
     }
 
