@@ -39,7 +39,7 @@ and open the template in the editor.
     -fx-font-size: 13px;
 }
 .register {
-    -fx-background-color: dark-primary-color;
+    -fx-background-color: transparent;
     -fx-border-width: 2px;
     -fx-font-size: 20px;
     -fx-text-fill: text-primary-color;
@@ -65,4 +65,8 @@ and open the template in the editor.
     -fx-text-fill: text-primary-color;
     -fx-font-size: 14px;
     -fx-font-family: Roboto;
+}
+.registerOrSignIn {
+    -fx-text-fill: dark-primary-color;
+    -fx-font-size: 14px;
 }

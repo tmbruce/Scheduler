@@ -7,15 +7,19 @@ package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-    import javafx.scene.control.Label;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 /**
  *
@@ -24,6 +28,8 @@ import javafx.scene.text.TextAlignment;
 public class SignInController implements Initializable {
     
     private Boolean loginRegisterClicked;
+    @FXML
+    private Label registeredOrSignIn;
     @FXML
     private Label userRegisterLabel;
     @FXML
@@ -42,6 +48,18 @@ public class SignInController implements Initializable {
     private ImageView loginPasswordIcon;
     @FXML
     private PasswordField loginPasswordField;
+    @FXML
+    private AnchorPane signInPane;
+    @FXML
+    private AnchorPane backgroundAnchor;
+    
+    
+    private void slide(Node object, int value){
+        TranslateTransition transition = new TranslateTransition(Duration.millis(700), object);
+        transition.setToX(backgroundAnchor.getLayoutX() + value);
+        transition.play();
+        
+    }
     
     private void handleButtonAction(ActionEvent event) {
     }
@@ -50,23 +68,22 @@ public class SignInController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
-        userRegisterLabel.setText("First time user?");
-        leftRegisterButton.setText("Register");
         loginRegisterClicked = false;
+        
         
     }    
 
     @FXML
-    private void registerHandler(ActionEvent event) {
+    private void registerHandler(MouseEvent event) {
         if (loginRegisterClicked == false) {
             loginUserIcon.setVisible(false);
             loginPasswordIcon.setVisible(false);
             loginUserNameField.setVisible(false);
             loginPasswordField.setVisible(false);
             signInButton.setVisible(false);
-            userRegisterLabel.setText("Already registered?");
-            leftRegisterButton.setText("Sign in");
-            loginRegisterClicked = true;
+            registeredOrSignIn.setVisible(false);
+            loginRegisterClicked = true;            
+            slide(signInPane, 420);
         }
         else {
             loginUserIcon.setVisible(true);
@@ -74,9 +91,8 @@ public class SignInController implements Initializable {
             loginUserNameField.setVisible(true);
             loginPasswordField.setVisible(true);
             signInButton.setVisible(true);
-            userRegisterLabel.setText("First time user?");
-            leftRegisterButton.setText("Register");
             loginRegisterClicked = false;
+            slide(signInPane, -420);
         }
         
         

@@ -10,29 +10,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignInController">
+<AnchorPane fx:id="backgroundAnchor" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignInController">
    <children>
-      <AnchorPane layoutX="30.0" layoutY="30.0" prefHeight="440.0" prefWidth="325.0" styleClass="signInSignUp" stylesheets="@../CSS/CSS.css">
+      <AnchorPane fx:id="signInPane" layoutX="30.0" prefHeight="500.0" prefWidth="325.0" styleClass="signInSignUp" stylesheets="@../CSS/stylesheet.css">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="88.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="89.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/calendar.png" />
                </image>
             </ImageView>
-            <Label contentDisplay="CENTER" layoutX="77.0" layoutY="198.0" styleClass="calendarOne" stylesheets="@../CSS/CSS.css" text="CalendarOne" />
-            <Label layoutX="102.0" layoutY="234.0" styleClass="eot" stylesheets="@../CSS/CSS.css" text="Everywhere. On time." />
-            <Label fx:id="userRegisterLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="324.0" prefWidth="200.0" styleClass="labels" stylesheets="@../CSS/CSS.css" textAlignment="CENTER" textFill="WHITE">
+            <Label contentDisplay="CENTER" layoutX="77.0" layoutY="297.0" styleClass="calendarOne" stylesheets="@../CSS/stylesheet.css" text="CalendarOne" />
+            <Label layoutX="102.0" layoutY="333.0" styleClass="eot" stylesheets="@../CSS/stylesheet.css" text="Everywhere. On time." />
+            <Label fx:id="userRegisterLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="324.0" prefWidth="200.0" styleClass="labels" stylesheets="@../CSS/stylesheet.css" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="leftRegisterButton" layoutX="64.0" layoutY="353.0" mnemonicParsing="false" onAction="#registerHandler" styleClass="register" text="Register" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="388.0" layoutY="30.0" prefHeight="440.0" prefWidth="385.0" stylesheets="@../CSS/CSS.css">
+      <AnchorPane layoutX="388.0" layoutY="30.0" prefHeight="440.0" prefWidth="385.0" stylesheets="@../CSS/stylesheet.css">
          <children>
-            <Button fx:id="signInButton" layoutX="109.0" layoutY="283.0" mnemonicParsing="false" onAction="#signInHandler" styleClass="signInButton" stylesheets="@../CSS/CSS.css" text="Sign in" />
-            <HBox layoutX="86.0" layoutY="122.0" spacing="15.0">
+            <Button fx:id="signInButton" layoutX="109.0" layoutY="283.0" mnemonicParsing="false" onAction="#signInHandler" styleClass="signInButton" stylesheets="@../CSS/stylesheet.css" text="Sign in" />
+            <HBox layoutX="86.0" layoutY="111.0" spacing="15.0">
                <children>
                   <ImageView fx:id="loginUserIcon" fitHeight="31.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -60,8 +59,9 @@
                   </PasswordField>
                </children>
             </HBox>
-            <Label fx:id="loginUserErrorLabel" layoutX="304.0" layoutY="105.0" text="Label" />
+            <Label fx:id="loginUserErrorLabel" layoutX="304.0" layoutY="94.0" text="Label" />
             <Label fx:id="loginPasswordErrorLabel" layoutX="304.0" layoutY="178.0" text="Label" />
+            <Label fx:id="registeredOrSignIn" layoutX="115.0" layoutY="343.0" onMouseClicked="#registerHandler" styleClass="registerOrSignIn" text="First time user? - Register here" underline="true" />
          </children>
       </AnchorPane>
    </children>
