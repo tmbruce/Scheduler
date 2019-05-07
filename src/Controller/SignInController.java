@@ -7,7 +7,9 @@ package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,24 +43,36 @@ public class SignInController implements Initializable {
     @FXML
     private Button signInButton;
     @FXML
-    private ImageView loginUserIcon;
-    @FXML
     private TextField loginUserNameField;
-    @FXML
-    private ImageView loginPasswordIcon;
     @FXML
     private PasswordField loginPasswordField;
     @FXML
     private AnchorPane signInPane;
     @FXML
     private AnchorPane backgroundAnchor;
+    @FXML
+    private AnchorPane rightAnchor;
+    @FXML
+    private AnchorPane leftAnchor;
     
     
     private void slide(Node object, int value){
         TranslateTransition transition = new TranslateTransition(Duration.millis(700), object);
         transition.setToX(backgroundAnchor.getLayoutX() + value);
-        transition.play();
-        
+        transition.play();        
+    }
+    private void fadeOut(Node object, int millis){
+        FadeTransition fade = new FadeTransition(Duration.millis(millis), object);
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.play();
+    }
+    private void fadeIn(Node object){
+        FadeTransition fade = new FadeTransition(Duration.millis(300), object);
+        fade.setFromValue(0);
+        fade.setToValue(10);
+        fade.setDelay(Duration.millis(500));
+        fade.play();
     }
     
     private void handleButtonAction(ActionEvent event) {
@@ -66,42 +80,42 @@ public class SignInController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fadeOut(leftAnchor, 1);
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
+        //leftAnchor.setVisible(false);
         loginRegisterClicked = false;
-        
-        
     }    
 
     @FXML
     private void registerHandler(MouseEvent event) {
         if (loginRegisterClicked == false) {
-            loginUserIcon.setVisible(false);
-            loginPasswordIcon.setVisible(false);
-            loginUserNameField.setVisible(false);
-            loginPasswordField.setVisible(false);
-            signInButton.setVisible(false);
-            registeredOrSignIn.setVisible(false);
+            fadeOut(rightAnchor, 300);
+            //leftAnchor.setVisible(true);
+            fadeIn(leftAnchor);
             loginRegisterClicked = true;            
             slide(signInPane, 420);
         }
         else {
-            loginUserIcon.setVisible(true);
-            loginPasswordIcon.setVisible(true);
-            loginUserNameField.setVisible(true);
-            loginPasswordField.setVisible(true);
-            signInButton.setVisible(true);
+            fadeOut(leftAnchor, 300);
+            fadeIn(rightAnchor);
             loginRegisterClicked = false;
-            slide(signInPane, -420);
+            slide(signInPane, 0);
         }
-        
-        
-        
+    }
+    @FXML
+    private void registerButtonHandler(ActionEvent event) {
         
     }
-
+        
     @FXML
     private void signInHandler(ActionEvent event) {
+        
     }
+    @FXML
+    private void exitButtonHandler(ActionEvent event) {
+        Platform.exit();
+    }
+
     
 }

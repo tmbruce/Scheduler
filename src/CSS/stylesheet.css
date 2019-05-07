@@ -52,6 +52,11 @@ and open the template in the editor.
    -fx-background-insets:  0, 0 0 1 0;
    -fx-background-radius: 0;
 }
+.exitButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: dark-primary-color;
+    -fx-border-color: transparent;
+}
 .signInButton {
     -fx-background-color: transparent;
     -fx-border-width: 2px;
@@ -69,4 +74,9 @@ and open the template in the editor.
 .registerOrSignIn {
     -fx-text-fill: dark-primary-color;
     -fx-font-size: 14px;
+    -fx-font-family: Roboto;
+}
+.forgot {
+    -fx-text-fill: dark-primary-color;
+    -fx-font-size: 12px;
 }
