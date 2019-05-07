@@ -80,10 +80,9 @@ public class SignInController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fadeOut(leftAnchor, 1);
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
-        //leftAnchor.setVisible(false);
+        leftAnchor.setVisible(false);
         loginRegisterClicked = false;
     }    
 
@@ -91,12 +90,16 @@ public class SignInController implements Initializable {
     private void registerHandler(MouseEvent event) {
         if (loginRegisterClicked == false) {
             fadeOut(rightAnchor, 300);
-            //leftAnchor.setVisible(true);
+            leftAnchor.setVisible(true);
+            fadeOut(leftAnchor, 1);
             fadeIn(leftAnchor);
             loginRegisterClicked = true;            
             slide(signInPane, 420);
+            rightAnchor.setVisible(false);
         }
         else {
+            rightAnchor.setVisible(true);
+            fadeOut(rightAnchor, 1);
             fadeOut(leftAnchor, 300);
             fadeIn(rightAnchor);
             loginRegisterClicked = false;
