@@ -6,6 +6,7 @@
 package Controller;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -39,6 +40,10 @@ public class SignInController implements Initializable {
     @FXML
     private Label loginUserErrorLabel;
     @FXML
+    private Label forgotUserNameLabel;
+    @FXML
+    private Label forgotPasswordLabel;
+    @FXML
     private Label loginPasswordErrorLabel;
     @FXML
     private Button signInButton;
@@ -55,6 +60,8 @@ public class SignInController implements Initializable {
     @FXML
     private AnchorPane leftAnchor;
     
+    //Public setter methods to handle locale based language changes
+  
     
     private void slide(Node object, int value){
         TranslateTransition transition = new TranslateTransition(Duration.millis(700), object);
@@ -80,6 +87,8 @@ public class SignInController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Locale locale = Locale.getDefault();
+        System.out.println(locale.getLanguage());
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
@@ -118,6 +127,14 @@ public class SignInController implements Initializable {
     @FXML
     private void exitButtonHandler(ActionEvent event) {
         Platform.exit();
+    }
+    
+    //This method translates on screen text to spanish
+    public void translateSpanish(){
+        loginUserNameField.setPromptText("nombre de usuario");
+        loginPasswordField.setPromptText("contraseña");
+        forgotPasswordLabel.setText("¿Olvidaste tu nombre de usuario?");
+        
     }
 
     
