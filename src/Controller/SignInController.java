@@ -95,11 +95,12 @@ public class SignInController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Locale locale = Locale.getDefault();
         String language = locale.getLanguage();
+        System.out.println(language);
         switch(language){
             case "fr":
                 translateFrench();
                 break;
-            case "sp":
+            case "es":
                 translateSpanish();
                 break;
         }
