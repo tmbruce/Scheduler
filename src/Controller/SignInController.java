@@ -94,7 +94,15 @@ public class SignInController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Locale locale = Locale.getDefault();
-        System.out.println(locale.getLanguage());
+        String language = locale.getLanguage();
+        switch(language){
+            case "fr":
+                translateFrench();
+                break;
+            case "sp":
+                translateSpanish();
+                break;
+        }
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
