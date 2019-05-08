@@ -32,7 +32,7 @@ public class SignInController implements Initializable {
     
     private Boolean loginRegisterClicked;
     @FXML
-    private Label registeredOrSignIn;
+    private Label registeredOrSignIn, alreadyRegistered;
     @FXML
     private Label userRegisterLabel;
     @FXML
@@ -46,9 +46,15 @@ public class SignInController implements Initializable {
     @FXML
     private Label loginPasswordErrorLabel;
     @FXML
-    private Button signInButton;
+    private Label logoLabel, logoLabel2;
+    @FXML
+    private Button signInButton, registerButton;
     @FXML
     private TextField loginUserNameField;
+    @FXML
+    private TextField registerUserName, registerEmail;
+    @FXML
+    private PasswordField registerPassword1Field, registerPassword2Field;
     @FXML
     private PasswordField loginPasswordField;
     @FXML
@@ -93,6 +99,7 @@ public class SignInController implements Initializable {
         loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
         loginRegisterClicked = false;
+
     }    
 
     @FXML
@@ -131,11 +138,47 @@ public class SignInController implements Initializable {
     
     //This method translates on screen text to spanish
     public void translateSpanish(){
-        loginUserNameField.setPromptText("nombre de usuario");
-        loginPasswordField.setPromptText("contraseña");
-        forgotPasswordLabel.setText("¿Olvidaste tu nombre de usuario?");
-        
+        //Sign in
+        loginUserNameField.setPromptText("nombre de usuario");                  //username
+        loginPasswordField.setPromptText("contraseña");                         //password
+        forgotPasswordLabel.setText("¿Olvidaste tu nombre de usuario?");        //Forgot Username?
+        forgotUserNameLabel.setText("Se te olvidó tu contraseña");              //Forgot password?
+        registeredOrSignIn.setText("¿usuario primerizo? - Registrar aquí.");    //First time user? - Register here
+        signInButton.setText("registrarse");                                    //register
+        //Logo
+        logoLabel.setText("CalendarioUno");                                     //CalendarOne
+        logoLabel2.setText("En todos lados. A tiempo.");                        //Everywhere. On time.
+        //Register
+        registerUserName.setPromptText("nombre de usuario");                    //username
+        registerEmail.setPromptText("correo electrónico");                      //email
+        registerPassword1Field.setPromptText("contraseña");                     //password
+        registerPassword2Field.setPromptText("Escriba la contraseña otra vez"); //re-enter password
+        registerButton.setText("registro");                                     //register
+        alreadyRegistered.setText("¿Ya registrado? - Firme aquí");              //Already registered? - Sign in here.
     }
+    
+    //This method translates on screen text to french
+    public void translateFrench(){
+        //Sign in
+        loginUserNameField.setPromptText("Nom d'utilisateur");                  //username
+        loginPasswordField.setPromptText("mot de passe");                       //password
+        forgotPasswordLabel.setText("identifiant oublié?");                     //Forgot Username?
+        forgotUserNameLabel.setText("mot de passe oublié?");                    //Forgot password?
+        registeredOrSignIn.setText("Nouvel utilisateur? - Inscrivez-vous ici.");//First time user? - Register here
+        signInButton.setText("registre");                                       //register
+        //Logo
+        logoLabel.setText("PremierCalendrier");                                 //CalendarOne
+        logoLabel2.setText("Partout. À temps.");                                //Everywhere. On time.
+        //Register
+        registerUserName.setPromptText("nom d'utilisateur");                    //username
+        registerEmail.setPromptText("email");                                   //email
+        registerPassword1Field.setPromptText("mot de passe");                   //password
+        registerPassword2Field.setPromptText("retaper le mot de passe");        //re-enter password
+        registerButton.setText("registre");                                     //register
+        alreadyRegistered.setText("Déjà enregistré? - Se connecter ici.");      //Already registered? - Sign in here.
+    }
+    
+    
 
     
 }
