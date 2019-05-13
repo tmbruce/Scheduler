@@ -26,10 +26,10 @@
       </AnchorPane>
       <AnchorPane fx:id="rightAnchor" layoutX="388.0" layoutY="30.0" prefHeight="440.0" prefWidth="385.0" stylesheets="@../CSS/stylesheet.css">
          <children>
-            <VBox alignment="CENTER" layoutX="109.0" layoutY="283.0" spacing="8.0">
+            <VBox alignment="CENTER" layoutX="79.0" layoutY="285.0" spacing="8.0">
                <children>
                   <Button fx:id="signInButton" mnemonicParsing="false" onAction="#signInHandler" styleClass="signInButton" stylesheets="@../CSS/stylesheet.css" text="Sign in" />
-                  <Label fx:id="registeredOrSignIn" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#registerHandler" prefHeight="20.0" prefWidth="200.0" styleClass="registerOrSignIn" text="First time user? - Register here" underline="true" />
+                  <Label fx:id="registeredOrSignIn" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#registerHandler" prefHeight="20.0" prefWidth="300.0" styleClass="registerOrSignIn" text="First time user? - Register here" underline="true" />
                </children>
             </VBox>
             <HBox layoutX="86.0" layoutY="111.0" spacing="15.0">
@@ -124,7 +124,7 @@
                               <Image url="@../Images/locked.png" />
                            </image>
                         </ImageView>
-                        <PasswordField fx:id="registerPassword2Field" prefWidth="200.0" promptText="Re-enter password" styleClass="text-field" stylesheets="@../CSS/stylesheet.css">
+                        <PasswordField fx:id="registerPassword2Field" onKeyPressed="#passwordChecker" prefWidth="200.0" promptText="Re-enter password" styleClass="text-field" stylesheets="@../CSS/stylesheet.css">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -133,8 +133,8 @@
                   </HBox>
                </children>
             </VBox>
-            <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="337.0" mnemonicParsing="false" onAction="#registerButtonHandler" styleClass="signInButton" stylesheets="@../CSS/stylesheet.css" text="Register" textAlignment="CENTER" />
-            <Label fx:id="alreadyRegistered" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="394.0" onMouseClicked="#registerHandler" prefHeight="17.0" prefWidth="385.0" styleClass="registerOrSignIn" stylesheets="@../CSS/stylesheet.css" text="Already registered? Sign in here" textAlignment="CENTER" underline="true" />
+            <Button fx:id="registerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="93.0" layoutY="336.0" mnemonicParsing="false" onAction="#registerButtonHandler" styleClass="signInButton" stylesheets="@../CSS/stylesheet.css" text="Register" textAlignment="CENTER" />
+            <Label fx:id="alreadyRegistered" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="395.0" onMouseClicked="#registerHandler" prefHeight="17.0" prefWidth="385.0" styleClass="registerOrSignIn" stylesheets="@../CSS/stylesheet.css" text="Already registered? Sign in here" textAlignment="CENTER" underline="true" />
          </children>
       </AnchorPane>
       <Button fx:id="exitButton" layoutX="773.0" layoutY="-2.0" mnemonicParsing="false" onAction="#exitButtonHandler" prefHeight="17.0" prefWidth="29.0" styleClass="exitButton" stylesheets="@../CSS/stylesheet.css" text="x">

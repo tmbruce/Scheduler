@@ -5,7 +5,12 @@
  */
 package Controller;
 
+import Model.DataSource;
+import Model.user;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -19,7 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -66,9 +71,8 @@ public class SignInController implements Initializable {
     @FXML
     private AnchorPane leftAnchor;
     
-    //Public setter methods to handle locale based language changes
   
-    
+    //Methods to handle animation
     private void slide(Node object, int value){
         TranslateTransition transition = new TranslateTransition(Duration.millis(700), object);
         transition.setToX(backgroundAnchor.getLayoutX() + value);
@@ -95,7 +99,6 @@ public class SignInController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Locale locale = Locale.getDefault();
         String language = locale.getLanguage();
-        System.out.println(language);
         switch(language){
             case "fr":
                 translateFrench();
@@ -131,8 +134,45 @@ public class SignInController implements Initializable {
             slide(signInPane, 0);
         }
     }
+    
+    
+    
+    @FXML
+    private void passwordChecker(KeyEvent Event){
+        String password = registerPassword1Field.getText();
+        String password2 = registerPassword2Field.getText();
+        boolean passCheck = user.validatePassword(password, password2);
+        if (passCheck == false){
+            registerPassword1Field.setStyle("-fx-text-fill: red;");
+            registerPassword2Field.setStyle("-fx-text-fill: red;");
+        }
+        else {
+            registerPassword1Field.setStyle("-fx-text-fill: #00FF00;");
+            registerPassword2Field.setStyle("-fx-text-fill: #00FF00;");
+        }
+    }
     @FXML
     private void registerButtonHandler(ActionEvent event) {
+        boolean nameCheck;
+        String password = registerPassword1Field.getText();
+        String password2 = registerPassword2Field.getText();
+        String userName = registerUserName.getText();
+        String userEmail = registerEmail.getText();
+        boolean passCheck = user.validatePassword(password, password2);
+        boolean userCheck = user.validateUserName(userName);
+        boolean emailCheck = user.validateEmailAddress(userEmail);
+        DataSource datasource = new DataSource();
+        datasource.open();
+        nameCheck = datasource.verifyExistingUser(userName, userEmail);
+        System.out.println(nameCheck);                                          //DELETE BEFORE SUBMISSION
+        datasource.close();
+        if(nameCheck == false){
+            DataSource insert = new DataSource();
+            insert.open();
+            insert.insertRegistration(userName, userEmail, password);
+            insert.close();
+            
+        }
         
     }
         
@@ -184,7 +224,7 @@ public class SignInController implements Initializable {
         registerPassword1Field.setPromptText("mot de passe");                   //password
         registerPassword2Field.setPromptText("retaper le mot de passe");        //re-enter password
         registerButton.setText("registre");                                     //register
-        alreadyRegistered.setText("Déjà enregistré? - Se connecter ici.");      //Already registered? - Sign in here.
+        alreadyRegistered.setText("Déjà enregistré? - Se connecter ici");      //Already registered? - Sign in here.
     }
     
     
