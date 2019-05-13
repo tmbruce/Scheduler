@@ -11,8 +11,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class DataSource {
     //Connection Details
@@ -24,10 +27,12 @@ public class DataSource {
     //Shared columns
     private static final String COLUMN_CREATE_DATE = "createDate";
     private static final String COLUMN_LAST_UPDATE = "lastUpdate";
-    private static final String COLUMN_LAST_UPDATE_BY = "lastUpdateBy";
+    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdatedBy";
     private static final String COLUMN_CUSTOMER_ID = "customerId";
     private static final String COLUMN_COUNTRY_ID = "countryId";
     private static final String COLUMN_ADDRESS_ID = "addressID";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_CREATE_BY = "createBy";
     
     //Address table
     private static final String TABLE_ADDRESS = "address";
@@ -62,7 +67,7 @@ public class DataSource {
     private static final String TABLE_CUSTOMER  = "customer";
     private static final String COLUMN_CUSTOMER_NAME = "customerName";
     private static final String COLUMN_ACTIVE = "active";
-    private static final String COLUMN_EMAIL = "email";
+    
     
     //User table
     private static final String TABLE_USER = "user";
@@ -75,7 +80,6 @@ public class DataSource {
     public boolean open(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(CONNECTION_STRING, CONNECTION_USERNAME, CONNECTION_PASSWORD);
             return true;
         }
@@ -124,22 +128,30 @@ public class DataSource {
         }
         return exists;
     }
+    public String getTimeStamp(){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String timeStamp = df.format(new Date());
+        return timeStamp;
+    }
     
     public void insertRegistration(String userName, String email, String password){
         PreparedStatement statement;
         try{
-            
             statement = conn.prepareStatement("INSERT INTO " + TABLE_USER + " (" + COLUMN_USER_NAME + ", " + 
-                                              COLUMN_EMAIL + ", " + COLUMN_PASSWORD + ") VALUES (?, ?, ?)");
+                                              COLUMN_PASSWORD + ", " + COLUMN_ACTIVE + ", " + COLUMN_CREATE_BY +
+                                              ", " + COLUMN_CREATE_DATE + ", " + COLUMN_LAST_UPDATE + ", " +
+                                              COLUMN_LAST_UPDATED_BY + ", " + COLUMN_EMAIL + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, userName);
-            statement.setString(2, email);
-            statement.setString(3, password);
-            System.out.println(statement.toString());
+            statement.setString(2, password);
+            statement.setInt(3, 1);
+            statement.setString(4, userName);
+            statement.setString(5, getTimeStamp());
+            statement.setString(6, getTimeStamp());
+            statement.setString(7, userName);
+            statement.setString(8, email);
             statement.executeUpdate();
-            System.out.println("INSERT STATEMENT CALLED");
-            //conn.commit();
             statement.close();
-           
             }
         catch(SQLException e){
             e.printStackTrace();

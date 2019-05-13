@@ -51,6 +51,8 @@ public class SignInController implements Initializable {
     @FXML
     private Label loginPasswordErrorLabel;
     @FXML
+    private Label registerErrorLabel;
+    @FXML
     private Label logoLabel, logoLabel2;
     @FXML
     private Button signInButton, registerButton;
@@ -84,6 +86,13 @@ public class SignInController implements Initializable {
         fade.setToValue(0);
         fade.play();
     }
+    private void fadeOutDelay(Node object, int fadeOutSpeed, int delayTime){
+        FadeTransition fade = new FadeTransition(Duration.millis(fadeOutSpeed), object);
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.setDelay(Duration.millis(delayTime));
+        fade.play();
+    }
     private void fadeIn(Node object){
         FadeTransition fade = new FadeTransition(Duration.millis(300), object);
         fade.setFromValue(0);
@@ -107,6 +116,7 @@ public class SignInController implements Initializable {
                 translateSpanish();
                 break;
         }
+        registerErrorLabel.setVisible(false);
         loginUserErrorLabel.setVisible(false);
         loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
@@ -134,9 +144,7 @@ public class SignInController implements Initializable {
             slide(signInPane, 0);
         }
     }
-    
-    
-    
+
     @FXML
     private void passwordChecker(KeyEvent Event){
         String password = registerPassword1Field.getText();
@@ -153,6 +161,7 @@ public class SignInController implements Initializable {
     }
     @FXML
     private void registerButtonHandler(ActionEvent event) {
+        registerErrorLabel.setVisible(false);
         boolean nameCheck;
         String password = registerPassword1Field.getText();
         String password2 = registerPassword2Field.getText();
@@ -163,14 +172,23 @@ public class SignInController implements Initializable {
         boolean emailCheck = user.validateEmailAddress(userEmail);
         DataSource datasource = new DataSource();
         datasource.open();
-        nameCheck = datasource.verifyExistingUser(userName, userEmail);
-        System.out.println(nameCheck);                                          //DELETE BEFORE SUBMISSION
+        nameCheck = datasource.verifyExistingUser(userName, userEmail);                                      //DELETE BEFORE SUBMISSION
         datasource.close();
-        if(nameCheck == false){
+        if((nameCheck == false) && (userCheck == true) && (emailCheck == true)){
             DataSource insert = new DataSource();
             insert.open();
             insert.insertRegistration(userName, userEmail, password);
             insert.close();
+            registerPassword1Field.setText("");
+            registerPassword2Field.setText("");
+            registerUserName.setText("");
+            registerEmail.setText("");
+        }
+        else{
+            registerErrorLabel.setText("User name or email already registered");
+            registerErrorLabel.setStyle("-fx-text-fill: red;");
+            registerErrorLabel.setVisible(true);
+            fadeOutDelay(registerErrorLabel, 500, 1800);
             
         }
         
