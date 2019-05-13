@@ -55,7 +55,7 @@ public class user {
     
     //validate matching password entries
     public static boolean validatePassword(String password, String password2){
-        return (password == null ? password2 == null : password.equals(password2));
+        return (password == null ? password2 == null : password.equals(password2) && (password.length() >= 4));
     }
     //simple validation - username greater than or equal to 4 characters
     

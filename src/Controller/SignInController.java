@@ -174,7 +174,8 @@ public class SignInController implements Initializable {
         datasource.open();
         nameCheck = datasource.verifyExistingUser(userName, userEmail);                                      //DELETE BEFORE SUBMISSION
         datasource.close();
-        if((nameCheck == false) && (userCheck == true) && (emailCheck == true)){
+        if ((passCheck == true) && (emailCheck == true)){
+            if(nameCheck == false){
             DataSource insert = new DataSource();
             insert.open();
             insert.insertRegistration(userName, userEmail, password);
@@ -189,8 +190,15 @@ public class SignInController implements Initializable {
             registerErrorLabel.setStyle("-fx-text-fill: red;");
             registerErrorLabel.setVisible(true);
             fadeOutDelay(registerErrorLabel, 500, 1800);
-            
+            }
         }
+        else {
+            registerErrorLabel.setText("Error in password or email address");
+            registerErrorLabel.setStyle("-fx-text-fill: red;");
+            registerErrorLabel.setVisible(true);
+            fadeOutDelay(registerErrorLabel, 500, 2500);
+        }
+        
         
     }
         

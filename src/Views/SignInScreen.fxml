@@ -44,7 +44,7 @@
                         <Image url="@../Images/user.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="loginUserNameField" prefHeight="25.0" prefWidth="200.0" promptText="Username" styleClass="text-field">
+                  <TextField fx:id="loginUserNameField" prefHeight="25.0" prefWidth="200.0" promptText="Username / email" styleClass="text-field">
                      <font>
                         <Font size="14.0" />
                      </font>
