@@ -6,11 +6,9 @@
 package Controller;
 
 import Model.DataSource;
+import Model.PassEncrypt;
 import Model.user;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.time.Instant;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -73,6 +71,11 @@ public class SignInController implements Initializable {
     @FXML
     private AnchorPane leftAnchor;
     
+    //NOTE TO EVALUATOR - TO CHANGE LANGUAGE TO FRENCH OR SPANISH, COMMENT OUT line "public String language = Locale.detDefault()
+    //and uncomment either "es" or "fr". This will change the display language as well as error messages.
+    public String language = Locale.getDefault().getLanguage();
+    //public String language = "es";
+    //public String language = "fr";    
   
     //Methods to handle animation
     private void slide(Node object, int value){
@@ -106,8 +109,6 @@ public class SignInController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Locale locale = Locale.getDefault();
-        String language = locale.getLanguage();
         switch(language){
             case "fr":
                 translateFrench();
@@ -121,7 +122,6 @@ public class SignInController implements Initializable {
         loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
         loginRegisterClicked = false;
-
     }    
 
     @FXML
@@ -134,6 +134,7 @@ public class SignInController implements Initializable {
             loginRegisterClicked = true;            
             slide(signInPane, 420);
             rightAnchor.setVisible(false);
+            
         }
         else {
             rightAnchor.setVisible(true);
@@ -163,22 +164,29 @@ public class SignInController implements Initializable {
     private void registerButtonHandler(ActionEvent event) {
         registerErrorLabel.setVisible(false);
         boolean nameCheck;
+        //Grab user entered text
         String password = registerPassword1Field.getText();
         String password2 = registerPassword2Field.getText();
         String userName = registerUserName.getText();
         String userEmail = registerEmail.getText();
+        //Simple validation for user entered fields
         boolean passCheck = user.validatePassword(password, password2);
         boolean userCheck = user.validateUserName(userName);
         boolean emailCheck = user.validateEmailAddress(userEmail);
+        //Encrypts password
+        String hashedPassword = PassEncrypt.encryptPassword(password);
+        //Initiate database connection
         DataSource datasource = new DataSource();
         datasource.open();
-        nameCheck = datasource.verifyExistingUser(userName, userEmail);                                      //DELETE BEFORE SUBMISSION
+        //Check to see if user or email exists in the database
+        nameCheck = datasource.verifyExistingUser(userName, userEmail);
         datasource.close();
         if ((passCheck == true) && (emailCheck == true)){
             if(nameCheck == false){
+            //Insert user into database and clear entry fields.
             DataSource insert = new DataSource();
             insert.open();
-            insert.insertRegistration(userName, userEmail, password);
+            insert.insertRegistration(userName, userEmail, hashedPassword);
             insert.close();
             registerPassword1Field.setText("");
             registerPassword2Field.setText("");
@@ -186,20 +194,37 @@ public class SignInController implements Initializable {
             registerEmail.setText("");
         }
         else{
-            registerErrorLabel.setText("User name or email already registered");
+            switch(language){
+                case "fr":
+                    registerErrorLabel.setText("Nom d'utilisateur ou courriel déjà enregistré");
+                    break;
+                case "es":
+                    registerErrorLabel.setText("Nombre de usuario o correo electrónico ya registrado");
+                    break;
+                default:
+                    registerErrorLabel.setText("User name or email already registered");
+                    break;
+            }
             registerErrorLabel.setStyle("-fx-text-fill: red;");
             registerErrorLabel.setVisible(true);
             fadeOutDelay(registerErrorLabel, 500, 1800);
             }
         }
         else {
-            registerErrorLabel.setText("Error in password or email address");
+            switch(language){
+                case "fr":
+                    registerErrorLabel.setText("Erreur dans le mot de passe ou l'adresse email");
+                    break;
+                case "es":
+                    registerErrorLabel.setText("Error en la contraseña o dirección de correo electrónico");
+                    break;
+                default:
+                    registerErrorLabel.setText("Error in password or email address");
+            }
             registerErrorLabel.setStyle("-fx-text-fill: red;");
             registerErrorLabel.setVisible(true);
             fadeOutDelay(registerErrorLabel, 500, 2500);
         }
-        
-        
     }
         
     @FXML
