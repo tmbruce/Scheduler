@@ -129,7 +129,7 @@
                               <Image url="@../Images/locked.png" />
                            </image>
                         </ImageView>
-                        <PasswordField fx:id="registerPassword2Field" onKeyPressed="#passwordChecker" prefWidth="200.0" promptText="Re-enter password" styleClass="text-field" stylesheets="@../CSS/stylesheet.css">
+                        <PasswordField fx:id="registerPassword2Field" onKeyReleased="#passwordChecker" prefWidth="200.0" promptText="Re-enter password" styleClass="text-field" stylesheets="@../CSS/stylesheet.css">
                            <font>
                               <Font size="14.0" />
                            </font>

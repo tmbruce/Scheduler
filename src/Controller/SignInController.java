@@ -8,6 +8,7 @@ package Controller;
 import Model.DataSource;
 import Model.PassEncrypt;
 import Model.user;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -16,8 +17,11 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -25,6 +29,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -71,9 +77,9 @@ public class SignInController implements Initializable {
     @FXML
     private AnchorPane leftAnchor;
     
-    //NOTE TO EVALUATOR - TO CHANGE LANGUAGE TO FRENCH OR SPANISH, COMMENT OUT line "public String language = Locale.detDefault()
+    //NOTE TO EVALUATOR - TO CHANGE LANGUAGE TO FRENCH OR SPANISH, COMMENT OUT line language = getLanguage in the initialize method
     //and uncomment either "es" or "fr". This will change the display language as well as error messages.
-    public String language = Locale.getDefault().getLanguage();
+    public String language;
     //public String language = "es";
     //public String language = "fr";    
   
@@ -106,9 +112,14 @@ public class SignInController implements Initializable {
     
     private void handleButtonAction(ActionEvent event) {
     }
+    //Make language publiclly available
+    public static String getLanguage(){
+        return Locale.getDefault().getLanguage();
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        language = getLanguage();
         switch(language){
             case "fr":
                 translateFrench();
@@ -156,8 +167,8 @@ public class SignInController implements Initializable {
             registerPassword2Field.setStyle("-fx-text-fill: red;");
         }
         else {
-            registerPassword1Field.setStyle("-fx-text-fill: #00FF00;");
-            registerPassword2Field.setStyle("-fx-text-fill: #00FF00;");
+            registerPassword1Field.setStyle("-fx-text-fill: #4CBB17;");
+            registerPassword2Field.setStyle("-fx-text-fill: #4CBB17;");
         }
     }
     @FXML
@@ -192,6 +203,15 @@ public class SignInController implements Initializable {
             registerPassword2Field.setText("");
             registerUserName.setText("");
             registerEmail.setText("");
+            launchSignInSplash();
+            
+            rightAnchor.setVisible(true);
+            fadeOut(rightAnchor, 1);
+            fadeOut(leftAnchor, 300);
+            fadeIn(rightAnchor);
+            loginRegisterClicked = false;
+            slide(signInPane, 0);
+            
         }
         else{
             switch(language){
@@ -235,6 +255,20 @@ public class SignInController implements Initializable {
     private void exitButtonHandler(ActionEvent event) {
         Platform.exit();
     }
+    
+    private void launchSignInSplash(){
+        Parent root;
+        try{
+            root = FXMLLoader.load(getClass().getClassLoader().getResource("/Views/SignInSplash.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 525, 300));
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
+        }
+        catch(IOException e){
+        }
+    }
+     
     
     //This method translates on screen text to spanish
     public void translateSpanish(){
