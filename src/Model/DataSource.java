@@ -129,6 +129,72 @@ public class DataSource {
         return timeStamp;
     }
     
+    public boolean loginWithEmail(String email, String password){
+        boolean exists = false;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try{
+            statement = conn.prepareStatement("SELECT " + COLUMN_PASSWORD + " FROM " + TABLE_USER + " WHERE " + COLUMN_EMAIL +
+                                              " = ?");
+            statement.setString(1, email);
+            result = statement.executeQuery();
+            ArrayList<String> arrayList = new ArrayList<>();
+            while(result.next()){
+                arrayList.add(result.getString(1));
+
+            }
+            if((arrayList.size() == 1) && (arrayList.contains(password))){
+                exists = true;
+            }
+        }
+        catch(SQLException e){
+            }
+        finally{
+            try{
+                if(statement != null){
+                    statement.close();
+                }
+            }
+            catch(SQLException e){
+            }
+        }                  
+        return exists;
+    }
+    
+        public boolean loginWithUserName(String userName, String password){
+        boolean exists = false;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try{
+            statement = conn.prepareStatement("SELECT " + COLUMN_PASSWORD + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_NAME +
+                                              " = ?");
+            statement.setString(1, userName);
+            System.out.println(statement.toString());
+            result = statement.executeQuery();
+            ArrayList<String> arrayList = new ArrayList<>();
+            while(result.next()){
+                
+                arrayList.add(result.getString(1));
+            }
+            if((arrayList.size() == 1) && (arrayList.contains(password))){
+                exists = true;
+
+            }
+        }
+        catch(SQLException e){
+            }
+        finally{
+            try{
+                if(statement != null){
+                    statement.close();
+                }
+            }
+            catch(SQLException e){
+            }
+        }                  
+        return exists;
+    }
+    
     public void insertRegistration(String userName, String email, String password){
         PreparedStatement statement;
         try{

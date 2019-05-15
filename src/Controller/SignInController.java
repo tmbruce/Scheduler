@@ -8,7 +8,6 @@ package Controller;
 import Model.DataSource;
 import Model.PassEncrypt;
 import Model.user;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -17,11 +16,8 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -29,8 +25,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -47,17 +41,15 @@ public class SignInController implements Initializable {
     @FXML
     private Button leftRegisterButton;
     @FXML
-    private Label loginUserErrorLabel;
-    @FXML
     private Label forgotUserNameLabel;
     @FXML
     private Label forgotPasswordLabel;
     @FXML
-    private Label loginPasswordErrorLabel;
-    @FXML
     private Label registerErrorLabel;
     @FXML
     private Label logoLabel, logoLabel2;
+    @FXML
+    private Label registerMessage, registerMessage2;
     @FXML
     private Button signInButton, registerButton;
     @FXML
@@ -76,6 +68,8 @@ public class SignInController implements Initializable {
     private AnchorPane rightAnchor;
     @FXML
     private AnchorPane leftAnchor;
+    private boolean inserted;
+    private boolean signInClicked;
     
     //NOTE TO EVALUATOR - TO CHANGE LANGUAGE TO FRENCH OR SPANISH, COMMENT OUT line language = getLanguage in the initialize method
     //and uncomment either "es" or "fr". This will change the display language as well as error messages.
@@ -128,12 +122,20 @@ public class SignInController implements Initializable {
                 translateSpanish();
                 break;
         }
+        inserted = false;
         registerErrorLabel.setVisible(false);
-        loginUserErrorLabel.setVisible(false);
-        loginPasswordErrorLabel.setVisible(false);
         leftAnchor.setVisible(false);
         loginRegisterClicked = false;
-    }    
+        signInClicked = false;
+        registerMessage.setVisible(false);
+        registerMessage2.setVisible(false);
+    }
+
+    @FXML
+    private void hideRegisterLabels(KeyEvent event){
+        registerMessage.setVisible(false);
+        registerMessage2.setVisible(false);
+    }
 
     @FXML
     private void registerHandler(MouseEvent event) {
@@ -173,105 +175,139 @@ public class SignInController implements Initializable {
     }
     @FXML
     private void registerButtonHandler(ActionEvent event) {
-        registerErrorLabel.setVisible(false);
-        boolean nameCheck;
-        //Grab user entered text
-        String password = registerPassword1Field.getText();
-        String password2 = registerPassword2Field.getText();
-        String userName = registerUserName.getText();
-        String userEmail = registerEmail.getText();
-        //Simple validation for user entered fields
-        boolean passCheck = user.validatePassword(password, password2);
-        boolean userCheck = user.validateUserName(userName);
-        boolean emailCheck = user.validateEmailAddress(userEmail);
-        //Encrypts password
-        String hashedPassword = PassEncrypt.encryptPassword(password);
-        //Initiate database connection
-        DataSource datasource = new DataSource();
-        datasource.open();
-        //Check to see if user or email exists in the database
-        nameCheck = datasource.verifyExistingUser(userName, userEmail);
-        System.out.println(nameCheck);                                          /////////////////////////
-        datasource.close();
-        if ((passCheck == true) && (emailCheck == true)){
-            if(nameCheck == false){
-            //Insert user into database and clear entry fields.
-            
-            DataSource insert = new DataSource();
-            insert.open();
-            insert.insertRegistration(userName, userEmail, hashedPassword);
-            insert.close();
-            registerPassword1Field.setText("");
-            registerPassword2Field.setText("");
-            registerUserName.setText("");
-            registerEmail.setText("");
-            //launchSignInSplash();
-            
-            rightAnchor.setVisible(true);
-            fadeOut(rightAnchor, 1);
-            fadeOut(leftAnchor, 300);
-            fadeIn(rightAnchor);
-            loginRegisterClicked = false;
-            slide(signInPane, 0);
-            
-        }
-        else{
-            switch(language){
-                case "fr":
-                    registerErrorLabel.setText("Nom d'utilisateur ou courriel déjà enregistré");
-                    break;
-                case "es":
-                    registerErrorLabel.setText("Nombre de usuario o correo electrónico ya registrado");
-                    break;
-                default:
-                    registerErrorLabel.setText("User name or email already registered");
-                    break;
+        if (inserted == false){
+            registerErrorLabel.setVisible(false);
+            boolean nameCheck;
+            //Grab user entered text
+            String password = registerPassword1Field.getText();
+            String password2 = registerPassword2Field.getText();
+            String userName = registerUserName.getText();
+            String userEmail = registerEmail.getText();
+            //Simple validation for user entered fields
+            boolean passCheck = user.validatePassword(password, password2);
+            boolean userCheck = user.validateUserName(userName);
+            boolean emailCheck = user.validateEmailAddress(userEmail);
+            //Encrypts password
+            String hashedPassword = PassEncrypt.encryptPassword(password);
+            //Initiate database connection
+            DataSource datasource = new DataSource();
+            datasource.open();
+            //Check to see if user or email exists in the database
+            nameCheck = datasource.verifyExistingUser(userName, userEmail);
+            datasource.close();
+            if ((passCheck == true) && (emailCheck == true)){
+                if(nameCheck == false){
+                //Insert user into database and clear entry fields.
+
+                DataSource insert = new DataSource();
+                insert.open();
+                insert.insertRegistration(userName, userEmail, hashedPassword);
+                insert.close();
+                inserted = true;
+                registerPassword1Field.setText("");
+                registerPassword2Field.setText("");
+                registerUserName.setText("");
+                registerEmail.setText("");
+                rightAnchor.setVisible(true);
+                fadeOut(rightAnchor, 1);
+                fadeOut(leftAnchor, 300);
+                fadeIn(rightAnchor);
+                registerMessage.setVisible(true);
+                registerMessage2.setVisible(true);
+                fadeOut(registerMessage, 1);
+                fadeOut(registerMessage2, 1);
+                fadeIn(registerMessage);
+                fadeIn(registerMessage2);
+                loginRegisterClicked = false;
+                slide(signInPane, 0);
             }
-            registerErrorLabel.setStyle("-fx-text-fill: red;");
-            registerErrorLabel.setVisible(true);
-            fadeOutDelay(registerErrorLabel, 500, 1800);
+
+                else{
+                    switch(language){
+                        case "fr":
+                            registerErrorLabel.setText("Nom d'utilisateur ou courriel déjà enregistré");
+                            break;
+                        case "es":
+                            registerErrorLabel.setText("Nombre de usuario o correo electrónico ya registrado");
+                            break;
+                        default:
+                            registerErrorLabel.setText("User name or email already registered");
+                            break;
+                    }
+                registerErrorLabel.setStyle("-fx-text-fill: red;");
+                registerErrorLabel.setVisible(true);
+                fadeOutDelay(registerErrorLabel, 500, 1800);
+                }
             }
-        }
-        else {
-            switch(language){
-                case "fr":
-                    registerErrorLabel.setText("Erreur dans le mot de passe ou l'adresse email");
-                    break;
-                case "es":
-                    registerErrorLabel.setText("Error en la contraseña o dirección de correo electrónico");
-                    break;
-                default:
-                    registerErrorLabel.setText("Error in password or email address");
+            else {
+                switch(language){
+                    case "fr":
+                        registerErrorLabel.setText("Erreur dans le mot de passe ou l'adresse email");
+                        break;
+                    case "es":
+                        registerErrorLabel.setText("Error en la contraseña o dirección de correo electrónico");
+                        break;
+                    default:
+                        registerErrorLabel.setText("Error in password or email address");
+                }
+                registerErrorLabel.setStyle("-fx-text-fill: red;");
+                registerErrorLabel.setVisible(true);
+                fadeOutDelay(registerErrorLabel, 500, 2500);
             }
-            registerErrorLabel.setStyle("-fx-text-fill: red;");
-            registerErrorLabel.setVisible(true);
-            fadeOutDelay(registerErrorLabel, 500, 2500);
         }
     }
         
+        
     @FXML
     private void signInHandler(ActionEvent event) {
+        if(signInClicked == false){
+            String userName = loginUserNameField.getText();
+            String password = loginPasswordField.getText();
+            String encryptedPass = PassEncrypt.encryptPassword(password);
+            if(userName.contains("@")){
+                boolean success = false;
+                DataSource loginWithEmail = new DataSource();
+                loginWithEmail.open();
+                success = loginWithEmail.loginWithEmail(userName, encryptedPass);
+                System.out.println(success);
+                loginWithEmail.close();
+                if(success == true){
+                    System.out.println("=========  SUCCESFULLY LOGGED IN WITH EMAIL =============");
+                }
+                else{
+                    registerMessage2.setVisible(true);
+                    fadeOut(registerMessage, 1);
+                    registerMessage2.setText("Username or password does not match our records");
+                    registerMessage2.setStyle("-fx-text-fill: red;");
+                    fadeIn(registerMessage2);
+                }
+            }
+            else{
+                boolean success = false;
+                DataSource loginWithUserName = new DataSource();
+                loginWithUserName.open();
+                success = loginWithUserName.loginWithUserName(userName, encryptedPass);
+                loginWithUserName.close();
+                if(success == true){
+                    System.out.println("=========  SUCCESFULLY LOGGED IN WITH USER NAME =============");
+                }
+                else{
+                    registerMessage2.setVisible(true);
+                    fadeOut(registerMessage, 1);
+                    registerMessage2.setText("Username or password does not match our records");
+                    registerMessage2.setStyle("-fx-text-fill: red;");
+                    fadeIn(registerMessage2);
+                }
+            }
+            
+        }
         
     }
     @FXML
     private void exitButtonHandler(ActionEvent event) {
         Platform.exit();
     }
-    
-//    private void launchSignInSplash(){
-//        Parent root;
-//        try{
-//            root = FXMLLoader.load(getClass().getClassLoader().getResource("/Views/SignInSplash.fxml"));
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root, 525, 300));
-//            stage.initStyle(StageStyle.UNDECORATED);
-//            stage.show();
-//        }
-//        catch(IOException e){
-//        }
-//    }
-     
-    
+       
     //This method translates on screen text to spanish
     public void translateSpanish(){
         //Sign in

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -16,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundAnchor" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignInController">
+<AnchorPane fx:id="backgroundAnchor" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SignInController">
    <children>
       <AnchorPane fx:id="signInPane" layoutX="30.0" prefHeight="500.0" prefWidth="325.0" styleClass="signInSignUp" stylesheets="@../CSS/stylesheet.css">
          <children>
@@ -31,7 +26,7 @@
       </AnchorPane>
       <AnchorPane fx:id="rightAnchor" layoutX="388.0" layoutY="30.0" prefHeight="440.0" prefWidth="385.0" stylesheets="@../CSS/stylesheet.css">
          <children>
-            <VBox alignment="CENTER" layoutX="79.0" layoutY="285.0" spacing="8.0">
+            <VBox alignment="CENTER" layoutX="46.0" layoutY="292.0" spacing="8.0">
                <children>
                   <Button fx:id="signInButton" mnemonicParsing="false" onAction="#signInHandler" styleClass="signInButton" stylesheets="@../CSS/stylesheet.css" text="Sign in" />
                   <Label fx:id="registeredOrSignIn" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#registerHandler" prefHeight="20.0" prefWidth="300.0" styleClass="registerOrSignIn" text="First time user? - Register here" underline="true" />
@@ -44,7 +39,7 @@
                         <Image url="@../Images/user.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="loginUserNameField" prefHeight="25.0" prefWidth="200.0" promptText="Username / email" styleClass="text-field">
+                  <TextField fx:id="loginUserNameField" onKeyPressed="#hideRegisterLabels" prefHeight="25.0" prefWidth="200.0" promptText="Username / email" styleClass="text-field">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -65,10 +60,10 @@
                   </PasswordField>
                </children>
             </HBox>
-            <Label fx:id="loginUserErrorLabel" layoutX="304.0" layoutY="94.0" text="Label" />
-            <Label fx:id="loginPasswordErrorLabel" layoutX="304.0" layoutY="178.0" text="Label" />
             <Label fx:id="forgotUserNameLabel" layoutX="133.0" layoutY="142.0" styleClass="forgot" text="Forgot username?" underline="true" />
             <Label fx:id="forgotPasswordLabel" layoutX="133.0" layoutY="226.0" styleClass="forgot" text="Forgot password?" underline="true" />
+            <Label fx:id="registerMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="3.0" layoutY="28.0" prefWidth="385.0" styleClass="registerOrSignIn" stylesheets="@../CSS/stylesheet.css" text="Registration succesful!" textAlignment="CENTER" />
+            <Label fx:id="registerMessage2" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="45.0" prefWidth="385.0" styleClass="registerOrSignIn" stylesheets="@../CSS/stylesheet.css" text="Enter your username and password to log in" textAlignment="CENTER" />
          </children>
       </AnchorPane>
       <Label fx:id="userRegisterLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" styleClass="labels" stylesheets="@../CSS/stylesheet.css" textAlignment="CENTER" textFill="WHITE">
