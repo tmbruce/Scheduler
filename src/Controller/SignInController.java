@@ -191,10 +191,12 @@ public class SignInController implements Initializable {
         datasource.open();
         //Check to see if user or email exists in the database
         nameCheck = datasource.verifyExistingUser(userName, userEmail);
+        System.out.println(nameCheck);                                          /////////////////////////
         datasource.close();
         if ((passCheck == true) && (emailCheck == true)){
             if(nameCheck == false){
             //Insert user into database and clear entry fields.
+            
             DataSource insert = new DataSource();
             insert.open();
             insert.insertRegistration(userName, userEmail, hashedPassword);
@@ -203,7 +205,7 @@ public class SignInController implements Initializable {
             registerPassword2Field.setText("");
             registerUserName.setText("");
             registerEmail.setText("");
-            launchSignInSplash();
+            //launchSignInSplash();
             
             rightAnchor.setVisible(true);
             fadeOut(rightAnchor, 1);
@@ -256,18 +258,18 @@ public class SignInController implements Initializable {
         Platform.exit();
     }
     
-    private void launchSignInSplash(){
-        Parent root;
-        try{
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("/Views/SignInSplash.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root, 525, 300));
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.show();
-        }
-        catch(IOException e){
-        }
-    }
+//    private void launchSignInSplash(){
+//        Parent root;
+//        try{
+//            root = FXMLLoader.load(getClass().getClassLoader().getResource("/Views/SignInSplash.fxml"));
+//            Stage stage = new Stage();
+//            stage.setScene(new Scene(root, 525, 300));
+//            stage.initStyle(StageStyle.UNDECORATED);
+//            stage.show();
+//        }
+//        catch(IOException e){
+//        }
+//    }
      
     
     //This method translates on screen text to spanish
