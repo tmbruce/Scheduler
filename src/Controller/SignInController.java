@@ -277,7 +277,17 @@ public class SignInController implements Initializable {
                 else{
                     registerMessage2.setVisible(true);
                     fadeOut(registerMessage, 1);
-                    registerMessage2.setText("Username or password does not match our records");
+                    language = getLanguage();
+                    switch(language){
+                        case "fr":
+                            registerMessage2.setText("Le nom d'utilisateur ou le mot de passe ne correspond pas à nos enregistrements");
+                            break;
+                        case "es":
+                            registerMessage2.setText("Nombre de usuario o contraseña no coincide con nuestros registros");
+                            break;
+                        default:
+                            registerMessage2.setText("Username or password does not match our records");
+                    }
                     registerMessage2.setStyle("-fx-text-fill: red;");
                     fadeIn(registerMessage2);
                 }
@@ -294,7 +304,17 @@ public class SignInController implements Initializable {
                 else{
                     registerMessage2.setVisible(true);
                     fadeOut(registerMessage, 1);
-                    registerMessage2.setText("Username or password does not match our records");
+                    language = getLanguage();
+                    switch(language){
+                        case "fr":
+                            registerMessage2.setText("Le nom d'utilisateur ou le mot de passe ne correspond pas à nos enregistrements");
+                            break;
+                        case "es":
+                            registerMessage2.setText("Nombre de usuario o contraseña no coincide con nuestros registros");
+                            break;
+                        default:
+                            registerMessage2.setText("Username or password does not match our records");
+                    }
                     registerMessage2.setStyle("-fx-text-fill: red;");
                     fadeIn(registerMessage2);
                 }

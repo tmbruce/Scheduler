@@ -169,7 +169,6 @@ public class DataSource {
             statement = conn.prepareStatement("SELECT " + COLUMN_PASSWORD + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_NAME +
                                               " = ?");
             statement.setString(1, userName);
-            System.out.println(statement.toString());
             result = statement.executeQuery();
             ArrayList<String> arrayList = new ArrayList<>();
             while(result.next()){
