@@ -17,9 +17,9 @@ import java.util.TimeZone;
  * @author travi
  */
 public class CalendarTools {
-    public static String getMonth(){
+    public static String getMonth(int monthOffset){
         String calendarMonth = null;
-        Calendar month = getCalendar();
+        Calendar month = getCalendar(monthOffset);
         int monthNum = month.get(java.util.Calendar.MONTH);
         switch (monthNum){
         case 0:
@@ -62,14 +62,14 @@ public class CalendarTools {
      return calendarMonth;
     }
     
-    public static String getFirstDayOfMonth(){
+    public static String getFirstDayOfMonth(int monthOffset){
         String day = null;
-        Calendar calendar = getCalendar();
+        Calendar calendar = getCalendar(monthOffset);
         YearMonth firstDay = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
         return day = firstDay.atDay(1).getDayOfWeek().name();
     }
     
-    private static Calendar getCalendar(){
+    private static Calendar getCalendar(int monthOffset){
        int offset = TimeZone.getDefault().getRawOffset();
        String localZone = TimeZone.getDefault().getID();
        SimpleTimeZone local = new SimpleTimeZone(offset, localZone);
@@ -78,6 +78,8 @@ public class CalendarTools {
        java.util.Calendar calendar = new GregorianCalendar(local);
        Date date = new Date();
        calendar.setTime(date);
+       calendar.add(Calendar.MONTH, monthOffset);
+       
        return calendar;
        
     }

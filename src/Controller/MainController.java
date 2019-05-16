@@ -25,12 +25,12 @@ public class MainController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        monthLabel.setText(CalendarTools.getMonth());
-        
+        monthLabel.setText(CalendarTools.getMonth(0));
+        System.out.println(CalendarTools.getFirstDayOfMonth(0));
     }
     
     public void setCalendarDays(){
-        String firstDay = CalendarTools.getFirstDayOfMonth();
+        String firstDay = CalendarTools.getFirstDayOfMonth(0);
     }
 
     
