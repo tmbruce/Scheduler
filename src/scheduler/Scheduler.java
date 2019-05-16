@@ -23,7 +23,6 @@ public class Scheduler extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/Views/SignInScreen.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 

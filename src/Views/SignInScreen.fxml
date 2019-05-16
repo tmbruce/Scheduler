@@ -142,10 +142,5 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button fx:id="exitButton" layoutX="773.0" layoutY="-2.0" mnemonicParsing="false" onAction="#exitButtonHandler" prefHeight="17.0" prefWidth="29.0" styleClass="exitButton" stylesheets="@../CSS/stylesheet.css" text="x">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>

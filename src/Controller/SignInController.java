@@ -8,6 +8,7 @@ package Controller;
 import Model.DataSource;
 import Model.PassEncrypt;
 import Model.user;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -16,8 +17,11 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -25,6 +29,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -259,7 +266,7 @@ public class SignInController implements Initializable {
         
         
     @FXML
-    private void signInHandler(ActionEvent event) {
+    private void signInHandler(ActionEvent event) throws IOException {
         if(signInClicked == false){
             String userName = loginUserNameField.getText();
             String password = loginPasswordField.getText();
@@ -272,7 +279,11 @@ public class SignInController implements Initializable {
                 System.out.println(success);
                 loginWithEmail.close();
                 if(success == true){
-                    System.out.println("=========  SUCCESFULLY LOGGED IN WITH EMAIL =============");
+                    Parent parent = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
+                    Scene mainScene = new Scene(parent);
+                    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    window.setScene(mainScene);
+                    window.show();
                 }
                 else{
                     registerMessage2.setVisible(true);
@@ -299,7 +310,11 @@ public class SignInController implements Initializable {
                 success = loginWithUserName.loginWithUserName(userName, encryptedPass);
                 loginWithUserName.close();
                 if(success == true){
-                    System.out.println("=========  SUCCESFULLY LOGGED IN WITH USER NAME =============");
+                    Parent parent = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
+                    Scene mainScene = new Scene(parent);
+                    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    window.setScene(mainScene);
+                    window.show();
                 }
                 else{
                     registerMessage2.setVisible(true);
@@ -322,10 +337,6 @@ public class SignInController implements Initializable {
             
         }
         
-    }
-    @FXML
-    private void exitButtonHandler(ActionEvent event) {
-        Platform.exit();
     }
        
     //This method translates on screen text to spanish

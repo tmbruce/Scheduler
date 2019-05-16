@@ -49,3 +49,8 @@ and open the template in the editor.
     -fx-background-color: #0288D1;
     
 }
+.exitButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: dark-primary-color;
+    -fx-border-color: transparent;
+}
