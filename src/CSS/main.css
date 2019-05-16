@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : May 15, 2019, 11:37:05 AM
+    Author     : travi
+*/
+
+* {
+    dark-primary-color: #0288D1;
+    default-primary-color: #03A9F4;
+    light-primary-color: #B3E5FC;
+    text-primary-color: #FFFFFF;
+    accent-color: #9E9E9E;
+    primary-text-color: #212121;
+    secondary-text-color: #757575;
+    divider-color: #BDBDBD; 
+}
+
+.navPane{
+    -fx-background-color: #03A9F4
+}
+
+.calendarOne {
+    -fx-text-fill: text-primary-color;
+    -fx-font-size: 30px;
+}
+.eot {
+    -fx-text-fill: text-primary-color;
+    -fx-font-size: 13px;
+}
+.navButton{
+    -fx-background-color: #03A9F4;
+    -fx-border-width: 0px;
+    -fx-background-radius: 0px;
+    -fx-text-fill: text-primary-color;
+    -fx-font-size: 20px;
+}
+.navButton:hover{
+    -fx-background-color: #0288D1;
+    -fx-border-width: 0px;
+    -fx-background-radius: 0px;
+}
+.navButton:focused{
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-border-color:  text-primary-color;
+    -fx-background-color: #0288D1;
+    
+}
