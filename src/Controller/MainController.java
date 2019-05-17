@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.geometry.Insets;
+import javafx.scene.layout.AnchorPane;
 
 
 
@@ -83,17 +84,11 @@ public class MainController implements Initializable {
             dayLabel.setText(""+firstCalendarDay);
             dayLabel.getStyleClass().add("calendarDay");
             VBox dayBox = new VBox();
-            Insets inset = new Insets(3, 3, 3, 3);
-            dayBox.setPadding(inset);
-//            System.out.println(calendarGrid.getPrefWidth());
-//            dayBox.setPrefWidth(calendarGrid.getPrefWidth() / 7);
-//            dayBox.setPrefHeight(calendarGrid.getPrefWidth() / 7);
-            calendarGrid.setVgrow(dayBox, Priority.ALWAYS);
-            calendarGrid.setHgrow(dayBox, Priority.ALWAYS);
-            System.out.println(dayBox.getWidth());
-            dayBox.fillWidthProperty();
             dayBox.getChildren().add(dayLabel);
-            calendarGrid.add(dayLabel, i, 1);
+            AnchorPane anchor = new AnchorPane();
+            anchor.setTopAnchor(dayBox, 0.0);
+            anchor.getChildren().add(dayBox);
+            calendarGrid.add(anchor, i, 1);
             firstCalendarDay++;
         }
         
@@ -103,28 +98,36 @@ public class MainController implements Initializable {
         for(int i = (CalendarTools.getFirstDayNumber(monthOffset) - 1); i < daysInWeek; i++){
             Label dayLabel = new Label();
             dayLabel.setText(""+firstDayOfMonth);
+            dayLabel.getStyleClass().add("calendarDay");
             VBox dayBox = new VBox();
             dayBox.getChildren().add(dayLabel);
-            calendarGrid.add(dayLabel, i, 1);
-            
+            AnchorPane anchor = new AnchorPane();
+            anchor.setTopAnchor(dayBox, 0.0);
+            anchor.getChildren().add(dayBox);                        
+            calendarGrid.add(anchor, i, 1);
             
             firstDayOfMonth++;
             firstDaySecondWeek = firstDayOfMonth;
         }
         //firstDaySecondWeek += 1;
         
-        do {
+        while(firstDaySecondWeek < numberDaysCurrent) {
             for(int j = 2; j < weekRows; j++){
                 for(int i = 0; i < daysInWeek; i++){
                     Label dayLabel = new Label();
                     dayLabel.setText(""+firstDaySecondWeek);
                     VBox dayBox = new VBox();
                     dayBox.getChildren().add(dayLabel);
-                    calendarGrid.add(dayLabel, i, j);
+                    dayLabel.getStyleClass().add("calendarDay");
+                    AnchorPane anchor = new AnchorPane();
+                    anchor.setTopAnchor(dayBox, 0.0);
+                    anchor.getChildren().add(dayBox);
+                    calendarGrid.add(anchor, i, j);
                     firstDaySecondWeek++;
+                    System.out.println(firstDaySecondWeek + " < " + (numberDaysCurrent));
                 }
             }
-        } while (firstDaySecondWeek < (numberDaysCurrent - 2));
+        }
         
     }
     

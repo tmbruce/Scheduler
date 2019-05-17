@@ -57,7 +57,5 @@ and open the template in the editor.
 }
 .calendarDay{
     -fx-font-size: 16px;
-    -fx-alignment: CENTER_RIGHT;
-    -fx-border-color: black;
-    
+    -fx-alignment: CENTER_RIGHT;    
 }
