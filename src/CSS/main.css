@@ -55,3 +55,9 @@ and open the template in the editor.
     -fx-border-width: .5;
     -fx-border-color: #0288D1;
 }
+.calendarDay{
+    -fx-font-size: 16px;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-border-color: black;
+    
+}
