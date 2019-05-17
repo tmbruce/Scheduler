@@ -17,6 +17,7 @@ import java.util.TimeZone;
  * @author travi
  */
 public class CalendarTools {
+    
     public static String getMonth(int monthOffset){
         String calendarMonth = null;
         Calendar month = getCalendar(monthOffset);
@@ -62,6 +63,36 @@ public class CalendarTools {
      return calendarMonth;
     }
     
+    public static int getFirstDayNumber(int monthOffset){
+        int startWeek = 0;
+        String day = getFirstDayOfMonth(monthOffset);
+        switch(day){
+            case "SUNDAY":
+                startWeek = 1;
+                break;
+            case "MONDAY":
+                startWeek = 2;
+                break;
+            case "TUESDAY":
+                startWeek = 3;
+                break;
+            case "WEDNESDAY":
+                startWeek = 4;
+                break;
+            case "THURSDAY":
+                startWeek = 5;
+                break;
+            case "FRIDAY":
+                startWeek = 6;
+                break;
+            case "SATURDAY":
+                startWeek = 7;
+                break;
+        }
+        return startWeek;
+    }
+
+    
     public static String getFirstDayOfMonth(int monthOffset){
         String day = null;
         Calendar calendar = getCalendar(monthOffset);
@@ -79,8 +110,14 @@ public class CalendarTools {
        Date date = new Date();
        calendar.setTime(date);
        calendar.add(Calendar.MONTH, monthOffset);
-       
        return calendar;
-       
     }
+    
+    public static int getDaysInMonth(int monthOffset){
+        Calendar calendar = getCalendar(monthOffset);
+        YearMonth daysInMonth = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+        int days = daysInMonth.lengthOfMonth();
+        return days;
+    }
+    
 }
