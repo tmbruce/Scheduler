@@ -115,7 +115,7 @@ public class CalendarTools {
     
     public static int getDaysInMonth(int monthOffset){
         Calendar calendar = getCalendar(monthOffset);
-        YearMonth daysInMonth = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+        YearMonth daysInMonth = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
         int days = daysInMonth.lengthOfMonth();
         return days;
     }
