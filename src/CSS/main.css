@@ -55,7 +55,24 @@ and open the template in the editor.
     -fx-border-width: .5;
     -fx-border-color: #0288D1;
 }
-.calendarDay{
+.activeDay{
     -fx-font-size: 16px;
-    -fx-alignment: CENTER_RIGHT;    
+    -fx-alignment: CENTER_RIGHT;
+    -fx-text-fill: #0288D1
+}
+.activeDayPane{
+    -fx-background-color: #FFFFFF;
+    -fx-border-width: 1px;
+    -fx-border-color:#212121;
+    
+}
+.inactiveDay{
+    -fx-font-size: 16px;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-text-fill: #595959;
+}
+.inactiveDayPane{
+    -fx-background-color: #9E9E9E;
+    -fx-border-width: 1px;
+    -fx-border-color:#212121;
 }
