@@ -130,7 +130,11 @@ public class MainController implements Initializable {
                 AnchorPane anchor = new AnchorPane();
                 anchor.setTopAnchor(dayBox, 0.0);
                 anchor.getChildren().add(dayBox);
-                if(dayList.get(dayIndex).get(1).equals(0)){
+                if(dayList.get(dayIndex).get(0).equals(CalendarTools.getDate()) &&
+                   monthOffset == 0){
+                    anchor.getStyleClass().add("today");
+                }
+                else if (dayList.get(dayIndex).get(1).equals(0)){
                     anchor.getStyleClass().add("inactiveDayPane");
                 }
                 else{

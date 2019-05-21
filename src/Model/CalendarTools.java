@@ -100,6 +100,11 @@ public class CalendarTools {
         return day = firstDay.atDay(1).getDayOfWeek().name();
     }
     
+    public static int getDate(){
+        Calendar calendar = getCalendar(0);
+        return calendar.get(Calendar.DATE);
+    }
+    
     private static Calendar getCalendar(int monthOffset){
        int offset = TimeZone.getDefault().getRawOffset();
        String localZone = TimeZone.getDefault().getID();
