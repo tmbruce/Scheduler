@@ -10,20 +10,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.RowConstraints;
-import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
 
 
@@ -122,10 +117,8 @@ public class MainController implements Initializable {
             
         }
         
-        System.out.println(dayTest);
         int dayIndex = 0;
         int dayTestIndex = 0;
-        //System.out.println(dayTest.get(dayTestIndex).get(0) + ": AT DAYTEST ARRAY LIST 0, 0 - SHOULD BE 28");
         for (int i = 1; i < daysInWeek; i++){
             for(int j = 0; j < weekRows; j++){
                 Label dayLabel = new Label();
@@ -136,7 +129,7 @@ public class MainController implements Initializable {
                 else{
                     dayLabel.getStyleClass().add("activeDay");
                 }
-                //dayLabel.setText(dayList.get(dayIndex).toString());
+
                 VBox dayBox = new VBox();
                 dayBox.getChildren().add(dayLabel);
                 AnchorPane anchor = new AnchorPane();

@@ -7,6 +7,7 @@ package Controller;
 
 import Model.DataSource;
 import Model.PassEncrypt;
+import Model.SceneChanger;
 import Model.user;
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +15,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,9 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -276,14 +274,10 @@ public class SignInController implements Initializable {
                 DataSource loginWithEmail = new DataSource();
                 loginWithEmail.open();
                 success = loginWithEmail.loginWithEmail(userName, encryptedPass);
-                System.out.println(success);
                 loginWithEmail.close();
                 if(success == true){
-                    Parent parent = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
-                    Scene mainScene = new Scene(parent);
-                    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    window.setScene(mainScene);
-                    window.show();
+                    SceneChanger sc = new SceneChanger();
+                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne");
                 }
                 else{
                     registerMessage2.setVisible(true);
@@ -310,11 +304,8 @@ public class SignInController implements Initializable {
                 success = loginWithUserName.loginWithUserName(userName, encryptedPass);
                 loginWithUserName.close();
                 if(success == true){
-                    Parent parent = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
-                    Scene mainScene = new Scene(parent);
-                    Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    window.setScene(mainScene);
-                    window.show();
+                    SceneChanger sc = new SceneChanger();
+                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne");
                 }
                 else{
                     registerMessage2.setVisible(true);
@@ -334,9 +325,7 @@ public class SignInController implements Initializable {
                     fadeIn(registerMessage2);
                 }
             }
-            
         }
-        
     }
        
     //This method translates on screen text to spanish
