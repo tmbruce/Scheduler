@@ -88,42 +88,37 @@ public class MainController implements Initializable {
         int numberDaysPrevious = CalendarTools.getDaysInMonth(monthOffset + (-1));
         int numberDaysCurrent = CalendarTools.getDaysInMonth(monthOffset);
         int firstCalendarDay = numberDaysPrevious - (monthStartDay - 2);
-        ArrayList<Integer> dayList = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> dayTest = new ArrayList<ArrayList<Integer>>();
-        dayTest.add(new ArrayList<Integer>());
-        
+        ArrayList<ArrayList<Integer>> dayList = new ArrayList<>();
+        dayList.add(new ArrayList<>());
         int arrayIndex = 0;
-        
-        
+
         for(int i = firstCalendarDay; i < (firstCalendarDay + (monthStartDay - 1)); i++){
-            dayList.add(i);
-            dayTest.add(arrayIndex, new ArrayList<Integer>(Arrays.asList(i, 0)));
+            dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 0)));
             arrayIndex++;
-            
             
         }
         for (int i = 1; i <= numberDaysCurrent; i++){
-            dayList.add(i);
-            dayTest.add(arrayIndex, new ArrayList<Integer>(Arrays.asList(i, 1)));
+            dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 1)));
             arrayIndex++;
-            
             
         }
         int arraySize = dayList.size();
-        for (int i = 1; i <= (totalCalendarDays - arraySize); i++){
-            dayList.add(i);
-            dayTest.add(arrayIndex, new ArrayList<Integer>(Arrays.asList(i, 0)));
+        for (int i = 1; i <= (totalCalendarDays - arraySize + 1); i++){
+            dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 0)));
             arrayIndex++;
             
         }
-        
+        for(int i = 0; i < dayList.size(); i++){
+            System.out.println(dayList.get(i));
+        }
+
         int dayIndex = 0;
-        int dayTestIndex = 0;
         for (int i = 1; i < daysInWeek; i++){
             for(int j = 0; j < weekRows; j++){
                 Label dayLabel = new Label();
-                dayLabel.setText(dayTest.get(dayTestIndex).get(0).toString());
-                if(dayTest.get(dayTestIndex).get(1).equals(0)){
+                System.out.println(dayList.get(dayIndex).get(0));
+                dayLabel.setText(dayList.get(dayIndex).get(0).toString());
+                if(dayList.get(dayIndex).get(1).equals(0)){
                     dayLabel.getStyleClass().add("inactiveDay");
                 }
                 else{
@@ -135,7 +130,7 @@ public class MainController implements Initializable {
                 AnchorPane anchor = new AnchorPane();
                 anchor.setTopAnchor(dayBox, 0.0);
                 anchor.getChildren().add(dayBox);
-                if(dayTest.get(dayTestIndex).get(1).equals(0)){
+                if(dayList.get(dayIndex).get(1).equals(0)){
                     anchor.getStyleClass().add("inactiveDayPane");
                 }
                 else{
@@ -144,7 +139,6 @@ public class MainController implements Initializable {
                 
                 calendarGrid.add(anchor, j, i);
                 dayIndex++;
-                dayTestIndex++;
             }
         }  
     }
