@@ -6,6 +6,8 @@
 package Controller;
 
 import Model.CalendarTools;
+import Model.SceneChanger;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,23 +23,24 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 
-
-
 public class MainController implements Initializable {
-
     
     @FXML
-    private Button calendarButton;
+    private Button calendarButton, customersButton;
     @FXML
     private Label monthLabel;
     @FXML
     private GridPane calendarGrid;
-    int daysInWeek = 7;
-    int weekRows = 7;
-    int totalCalendarDays = 42;
-    int monthOffset;
-    
-    
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Button reportsButton;
+    @FXML
+    private AnchorPane calendarAnchor;
+    private final int daysInWeek = 7;
+    private final int weekRows = 7;
+    private final int totalCalendarDays = 42;
+    private int monthOffset;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -46,14 +49,22 @@ public class MainController implements Initializable {
         setCalendar(monthOffset);
     }
     
+    @FXML
+    public void customersButtonHandler(ActionEvent event) throws IOException {
+        SceneChanger sc = new SceneChanger();
+        CustomerController controller = new CustomerController();
+        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Manage Customers");
+        //customersButton.requestFocus();
+        
+    }
+    
     //This function moves the calendar ahead one month from the current month
     @FXML
     public void nextMonth(ActionEvent event){
         monthOffset++;
         clearCalendar();
         setCalendar(monthOffset);
-        calendarButton.requestFocus();
-          
+        calendarButton.requestFocus();   
     }
     
     //This function moves the calendar back one month from the current month
@@ -63,6 +74,11 @@ public class MainController implements Initializable {
         clearCalendar();
         setCalendar(monthOffset);
         calendarButton.requestFocus();
+    }
+    
+    //Allows for other controllers to access the current offset month of the calendar.
+    public int getCurrentOffset(){
+        return monthOffset;
     }
     
     /*
@@ -92,31 +108,31 @@ public class MainController implements Initializable {
         dayList.add(new ArrayList<>());
         int arrayIndex = 0;
 
+        //Get the days of the preceeding month calendar
         for(int i = firstCalendarDay; i < (firstCalendarDay + (monthStartDay - 1)); i++){
             dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 0)));
-            arrayIndex++;
-            
+            arrayIndex++;   
         }
+        
+        //Get the days of the current month
         for (int i = 1; i <= numberDaysCurrent; i++){
             dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 1)));
-            arrayIndex++;
-            
+            arrayIndex++;  
         }
+        
+        //Get the days of the next month to fill out the remaining days on the calendar
         int arraySize = dayList.size();
         for (int i = 1; i <= (totalCalendarDays - arraySize + 1); i++){
             dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 0)));
             arrayIndex++;
-            
         }
-        for(int i = 0; i < dayList.size(); i++){
-            System.out.println(dayList.get(i));
-        }
-
+        
+        //Set all days on the calendar along with styling to indicate if the day is
+        //a day in the current month, a day in a previous or upcoming month, or the current day
         int dayIndex = 0;
         for (int i = 1; i < daysInWeek; i++){
             for(int j = 0; j < weekRows; j++){
                 Label dayLabel = new Label();
-                System.out.println(dayList.get(dayIndex).get(0));
                 dayLabel.setText(dayList.get(dayIndex).get(0).toString());
                 if(dayList.get(dayIndex).get(1).equals(0)){
                     dayLabel.getStyleClass().add("inactiveDay");
@@ -146,101 +162,6 @@ public class MainController implements Initializable {
             }
         }  
     }
-    
-//    public void setCalendar(int monthOffset){
-//        monthLabel.setText(CalendarTools.getMonth(monthOffset));
-//        int monthStartDay = CalendarTools.getFirstDayNumber(monthOffset);
-//        int numberDaysPrevious = CalendarTools.getDaysInMonth(monthOffset + (-1));
-//        int numberDaysCurrent = CalendarTools.getDaysInMonth(monthOffset);
-//        int firstCalendarDay = numberDaysPrevious - (monthStartDay - 2);
-//        
-//        //Adds the final days of the previous month to the calendar
-//        for(int i = 0; i < (monthStartDay - 1); i++){
-//            
-//            Label dayLabel = new Label();
-//            dayLabel.setText(""+firstCalendarDay);
-//            dayLabel.getStyleClass().add("calendarDay");
-//            VBox dayBox = new VBox();
-//            dayBox.getChildren().add(dayLabel);
-//            AnchorPane anchor = new AnchorPane();
-//            anchor.setTopAnchor(dayBox, 0.0);
-//            anchor.getChildren().add(dayBox);
-//            calendarGrid.add(anchor, i, 1);
-//            firstCalendarDay++;
-//        }
-//        
-//        //Adds the remainder of the first week of the present month to the calendar
-//        int firstDayOfMonth = 1;
-//        int firstDaySecondWeek = 0;
-//        for(int i = (CalendarTools.getFirstDayNumber(monthOffset) - 1); i < daysInWeek; i++){
-//            Label dayLabel = new Label();
-//            dayLabel.setText(""+firstDayOfMonth);
-//            dayLabel.getStyleClass().add("calendarDay");
-//            VBox dayBox = new VBox();
-//            dayBox.getChildren().add(dayLabel);
-//            AnchorPane anchor = new AnchorPane();
-//            anchor.setTopAnchor(dayBox, 0.0);
-//            anchor.getChildren().add(dayBox);                        
-//            calendarGrid.add(anchor, i, 1);
-//            
-//            firstDayOfMonth++;
-//            firstDaySecondWeek = firstDayOfMonth;
-//        }
-//        //firstDaySecondWeek += 1;
-//        
-//        while(firstDaySecondWeek < numberDaysCurrent) {
-//            for(int j = 2; j < weekRows; j++){
-//                for(int i = 0; i < daysInWeek; i++){
-//                    Label dayLabel = new Label();
-//                    dayLabel.setText(""+firstDaySecondWeek);
-//                    VBox dayBox = new VBox();
-//                    dayBox.getChildren().add(dayLabel);
-//                    dayLabel.getStyleClass().add("calendarDay");
-//                    AnchorPane anchor = new AnchorPane();
-//                    anchor.setTopAnchor(dayBox, 0.0);
-//                    anchor.getChildren().add(dayBox);
-//                    calendarGrid.add(anchor, i, j);
-//                    firstDaySecondWeek++;
-//                    if(firstDaySecondWeek > numberDaysCurrent){
-//                        break;
-//                    }
-//                }
-//                if(firstDaySecondWeek > numberDaysCurrent){
-//                        break;
-//                }
-//            }
-//        }
-//        int nextFirstDay = 1;
-//        int firstDayNextMonth = (totalCalendarDays - numberDaysCurrent - monthStartDay - 1);
-//        int totalDaysOnCalendar = (numberDaysCurrent + (monthStartDay - 1));
-//        int columnIndex = totalDaysOnCalendar;
-//        columnIndex = (columnIndex - (daysInWeek *(Math.floorDiv(columnIndex, daysInWeek))));
-//        int rowIndex = 0;
-//        rowIndex = ((int)Math.floorDiv(totalDaysOnCalendar, daysInWeek)) + 1;
-//        if (totalDaysOnCalendar < 29){ rowIndex = 4; }
-//        if ((totalDaysOnCalendar > 28) && (totalDaysOnCalendar <= 34)){ rowIndex = 5; }
-//        if (totalDaysOnCalendar > 35){ rowIndex = 6; }
-//        for(int i = columnIndex; i < daysInWeek; i++){
-//            //System.out.println(i);
-//            Label dayLabel = new Label();
-//            dayLabel.setText(""+nextFirstDay);
-//            dayLabel.getStyleClass().add("calendarDay");
-//            VBox dayBox = new VBox();
-//            dayBox.getChildren().add(dayLabel);
-//            AnchorPane anchor = new AnchorPane();
-//            anchor.setTopAnchor(dayBox, 0.0);
-//            anchor.getChildren().add(dayBox);
-//            calendarGrid.add(anchor, i, rowIndex);
-//            nextFirstDay++;
-//        }
-//    }
-    
-
-        
-        
-    
-    
-    
 }
             
         

@@ -11,6 +11,10 @@ import javafx.stage.Stage;
 
 public class SceneChanger {
     
+    /*
+    * This method changes scenes by accepting the file path of the .fxml file as a string,
+    * and the title of the scene as a string. 
+    */
     public void changeScenes(ActionEvent event, String viewName, String title) throws IOException{
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(viewName));

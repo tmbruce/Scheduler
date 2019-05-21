@@ -8,7 +8,7 @@ package Controller;
 import Model.DataSource;
 import Model.PassEncrypt;
 import Model.SceneChanger;
-import Model.user;
+import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
@@ -17,11 +17,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -29,7 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -168,7 +164,7 @@ public class SignInController implements Initializable {
     private void passwordChecker(KeyEvent Event){
         String password = registerPassword1Field.getText();
         String password2 = registerPassword2Field.getText();
-        boolean passCheck = user.validatePassword(password, password2);
+        boolean passCheck = User.validatePassword(password, password2);
         if (passCheck == false){
             registerPassword1Field.setStyle("-fx-text-fill: red;");
             registerPassword2Field.setStyle("-fx-text-fill: red;");
@@ -189,9 +185,9 @@ public class SignInController implements Initializable {
             String userName = registerUserName.getText();
             String userEmail = registerEmail.getText();
             //Simple validation for user entered fields
-            boolean passCheck = user.validatePassword(password, password2);
-            boolean userCheck = user.validateUserName(userName);
-            boolean emailCheck = user.validateEmailAddress(userEmail);
+            boolean passCheck = User.validatePassword(password, password2);
+            boolean userCheck = User.validateUserName(userName);
+            boolean emailCheck = User.validateEmailAddress(userEmail);
             //Encrypts password
             String hashedPassword = PassEncrypt.encryptPassword(password);
             //Initiate database connection
