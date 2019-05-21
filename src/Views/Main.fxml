@@ -23,7 +23,7 @@
             </ImageView>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="203.0" styleClass="calendarOne" stylesheets="@../CSS/main.css" text="CalendarOne." textAlignment="CENTER" />
             <Label layoutX="94.0" layoutY="242.0" styleClass="eot" text="Everywhere. On time." />
-            <VBox layoutY="302.0">
+            <VBox layoutY="350.0">
                <children>
                   <Button fx:id="calendarButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="300.0" styleClass="navButton" stylesheets="@../CSS/main.css" text="Calendar">
                      <graphic>

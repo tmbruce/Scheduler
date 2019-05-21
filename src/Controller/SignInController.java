@@ -8,7 +8,7 @@ package Controller;
 import Model.DataSource;
 import Model.PassEncrypt;
 import Model.SceneChanger;
-import Model.User;
+//import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
@@ -164,7 +164,7 @@ public class SignInController implements Initializable {
     private void passwordChecker(KeyEvent Event){
         String password = registerPassword1Field.getText();
         String password2 = registerPassword2Field.getText();
-        boolean passCheck = User.validatePassword(password, password2);
+        boolean passCheck = Model.User.validatePassword(password, password2);
         if (passCheck == false){
             registerPassword1Field.setStyle("-fx-text-fill: red;");
             registerPassword2Field.setStyle("-fx-text-fill: red;");
@@ -185,9 +185,9 @@ public class SignInController implements Initializable {
             String userName = registerUserName.getText();
             String userEmail = registerEmail.getText();
             //Simple validation for user entered fields
-            boolean passCheck = User.validatePassword(password, password2);
-            boolean userCheck = User.validateUserName(userName);
-            boolean emailCheck = User.validateEmailAddress(userEmail);
+            boolean passCheck = Model.User.validatePassword(password, password2);
+            boolean userCheck = Model.User.validateUserName(userName);
+            boolean emailCheck = Model.User.validateEmailAddress(userEmail);
             //Encrypts password
             String hashedPassword = PassEncrypt.encryptPassword(password);
             //Initiate database connection
@@ -272,8 +272,10 @@ public class SignInController implements Initializable {
                 success = loginWithEmail.loginWithEmail(userName, encryptedPass);
                 loginWithEmail.close();
                 if(success == true){
+                    Model.User user = new Model.User(userName);
                     SceneChanger sc = new SceneChanger();
-                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne");
+                    MainController mainController  = new MainController();
+                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mainController);
                 }
                 else{
                     registerMessage2.setVisible(true);
@@ -300,8 +302,10 @@ public class SignInController implements Initializable {
                 success = loginWithUserName.loginWithUserName(userName, encryptedPass);
                 loginWithUserName.close();
                 if(success == true){
+                    Model.User user = new Model.User(userName);
                     SceneChanger sc = new SceneChanger();
-                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne");
+                    MainController mainController  = new MainController();
+                    sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mainController);
                 }
                 else{
                     registerMessage2.setVisible(true);

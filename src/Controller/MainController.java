@@ -7,6 +7,7 @@ package Controller;
 
 import Model.CalendarTools;
 import Model.SceneChanger;
+import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable, ControllerInterface {
     
     @FXML
     private Button calendarButton, customersButton;
@@ -41,6 +42,7 @@ public class MainController implements Initializable {
     private final int weekRows = 7;
     private final int totalCalendarDays = 42;
     private int monthOffset;
+    private User user;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -161,6 +163,11 @@ public class MainController implements Initializable {
                 dayIndex++;
             }
         }  
+    }
+
+    @Override
+    public void preloadData(User user) {
+        this.user = user;
     }
 }
             

@@ -216,5 +216,15 @@ public class DataSource {
             e.printStackTrace();
         }
     }
+    
+    public void insertCustomer(String customerName, short addressID, short active){
+        PreparedStatement statement;
+        try{
+            statement = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + )
+        }
+        catch(){
+            
+        }
+    }
 }
 
