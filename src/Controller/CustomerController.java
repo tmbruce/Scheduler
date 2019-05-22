@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Model.Customer;
 import Model.SceneChanger;
 import Model.User;
 import java.io.IOException;
@@ -14,11 +15,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
 public class CustomerController implements Initializable, ControllerInterface{
     
-    @FXML private Button calendarButton;
+    @FXML 
+    private TableView<Customer> customerTable;
+    @FXML
+    private TableColumn<Customer, Integer> customerIDcolumn;
+    @FXML
+    private TableColumn<Customer, String> customerNameColumn;
+    @FXML
+    private TableColumn<Customer, String> customerAddressColumn;
+    @FXML
+    private TableColumn<Customer, String> customerAddress2Column;
+    @FXML
+    private TableColumn<Customer, String> customerCountryColumn;
+    @FXML
+    private TableColumn<Customer, Integer> customerActiveColumn;
+    @FXML 
+    private Button calendarButton;
     @FXML
     private Button settingsButton;
     @FXML

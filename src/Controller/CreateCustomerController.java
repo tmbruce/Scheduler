@@ -6,12 +6,13 @@
 package Controller;
 
 import Model.DataSource;
+import Model.SceneChanger;
 import Model.User;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +34,8 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     private TextField customerAddressField;
     @FXML
     private TextField customerPostCodeField;
+    @FXML
+    private TextField customerEmailField;
     @FXML
     private ComboBox<String> customerCityStateCombo;
     @FXML
@@ -57,6 +60,7 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     @FXML
     public void comboBoxCountrySelected(){
         customerCityStateCombo.setEditable(true);
+        customerCityStateCombo.getItems().clear();
         DataSource datasource = new DataSource();
         datasource.open();
         cityList = datasource.selectCities(customerCountryCombo.getValue());
@@ -64,14 +68,28 @@ public class CreateCustomerController implements Initializable, ControllerInterf
         customerCityStateCombo.getItems().addAll(cityList);
     }
     
-
-    
-    
-    
-    
-    
     @FXML
-    private void saveButtonHandler(ActionEvent event) {
+    public void saveButtonHandler(ActionEvent event) throws SQLException, IOException{
+        String customerName = customerNameField.getText();
+        String customerEmail = customerEmailField.getText();
+        String customerPhone = customerPhoneField.getText();
+        String customerAddress = customerAddressField.getText();
+        String customerPostCode = customerPostCodeField.getText();
+        String customerCity = customerCityStateCombo.getValue();
+        String customerCountry = customerCountryCombo.getValue();
+        
+        System.out.println(customerName);
+        System.out.println(customerEmail);
+        System.out.println(customerAddress);
+        System.out.println(customerCity);
+        System.out.println(customerCountry);
+        DataSource datasource = new DataSource();
+        datasource.open();
+        datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);
+        datasource.close();
+        CreateCustomerController ccc = new CreateCustomerController();
+        SceneChanger sc = new SceneChanger();
+        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Manage Customers", user, ccc);
     }
 
     @FXML

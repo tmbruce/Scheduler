@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class DataSource {
     //Connection Details
@@ -24,7 +22,7 @@ public class DataSource {
     //Shared columns
     private static final String COLUMN_CREATE_DATE = "createDate";
     private static final String COLUMN_LAST_UPDATE = "lastUpdate";
-    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdatedBy";
+    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdateBy";
     private static final String COLUMN_CUSTOMER_ID = "customerId";
     private static final String COLUMN_COUNTRY_ID = "countryId";
     private static final String COLUMN_ADDRESS_ID = "addressID";
@@ -248,6 +246,49 @@ public class DataSource {
        return newUserName; 
     }
     
+    public void insertCustomer(String customerName, String email, String customerPhone, String streetAddress, String postCode, String city, String country, User user) throws SQLException{
+        //Using transaction state
+        System.out.println("INSERT CUSTOMER CALLED");
+        conn.setAutoCommit(false);
+        PreparedStatement statement = null;
+        PreparedStatement statement2 = null;
+        try{
+            statement = conn.prepareStatement("INSERT INTO " + TABLE_ADDRESS + " (" + COLUMN_ADDRESS + ", " + COLUMN_ADDRESS2 + ", " + 
+                                              COLUMN_CITY_ID + ", " + COLUMN_POST_CODE + ", " + COLUMN_PHONE + ", " + COLUMN_CREATE_DATE + ", " +
+                                              COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY +
+                                              ") VALUES (?, ?, (SELECT cityId FROM city WHERE city = ?), ?, ?, ?, ?, ?, ?)");
+            statement.setString(1, streetAddress);
+            statement.setString(2, city);
+            statement.setString(3, city);
+            statement.setString(4, postCode);
+            statement.setString(5, customerPhone);
+            statement.setString(6, getTimeStamp());
+            statement.setString(7, user.getUserName());
+            statement.setString(8, getTimeStamp());
+            statement.setString(9, user.getUserName());
+            System.out.println(statement.toString());
+            statement.executeUpdate();
+            
+            statement2 = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_ADDRESS_ID + ", " +
+                               COLUMN_ACTIVE + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY + ", " +
+                               COLUMN_EMAIL + ") VALUES (?, (SELECT LAST_INSERT_ID()), ?, ?, ?, ?, ?, ?)");
+            statement2.setString(1, customerName);
+            statement2.setInt(2, 1);
+            statement2.setString(3, getTimeStamp());
+            statement2.setString(4, user.getUserName());
+            statement2.setString(5, getTimeStamp());
+            statement2.setString(6, user.getUserName());
+            statement2.setString(7, email);
+            System.out.println(statement2.toString());
+            statement2.executeUpdate();
+            
+            conn.commit();
+            conn.setAutoCommit(true);
+        }
+        catch(SQLException e){
+        }
+    }
+    
     public ArrayList selectCountries(){
         PreparedStatement statement = null;
         ResultSet result = null;
@@ -267,19 +308,30 @@ public class DataSource {
         public ArrayList<String> selectCities(String countryName){
         PreparedStatement statement = null;
         ResultSet result = null;
-        ArrayList<String> countryList = null;
+        ArrayList<String> cityList = new ArrayList<>();
         try {
-            statement = conn.prepareStatement("SELECT " + COLUMN_CITY + " FROM " + TABLE_CITY + " WHERE " + COLUMN_COUNTRY + 
-                                              " = ?");
+            statement = conn.prepareStatement("SELECT " + COLUMN_CITY + " FROM " + TABLE_CITY + " WHERE " + COLUMN_COUNTRY_ID + 
+                                              " = (SELECT " + COLUMN_COUNTRY_ID + " FROM " + TABLE_COUNTRY + " WHERE " + COLUMN_COUNTRY + 
+                                              " = ?)");
             statement.setString(1, countryName);
             result = statement.executeQuery();
             while(result.next()){
-                countryList.add(result.getString(1));
+                cityList.add(result.getString(1));
             }
             
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) {
+            }
+        finally{
+            try{
+                if(statement != null){
+                    statement.close();
+                }
+            }
+            catch(SQLException e){
+            }
         }
-        return countryList;
+        return cityList;
 
     }
 }

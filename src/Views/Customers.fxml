@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CustomerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CustomerController">
    <children>
       <AnchorPane prefHeight="900.0" prefWidth="300.0" styleClass="navPane" stylesheets="@../CSS/main.css">
          <children>
@@ -70,14 +70,14 @@
       </AnchorPane>
       <AnchorPane layoutX="338.0" layoutY="38.0" prefHeight="830.0" prefWidth="925.0">
          <children>
-            <TableView layoutY="121.0" prefHeight="312.0" prefWidth="925.0">
+            <TableView fx:id="customerTable" layoutY="121.0" prefHeight="312.0" prefWidth="925.0">
               <columns>
-                <TableColumn prefWidth="113.0" text="Customer ID" />
-                <TableColumn prefWidth="122.0" text="Customer Name" />
-                  <TableColumn prefWidth="189.0" text="Address" />
-                  <TableColumn prefWidth="176.0" text="City / State" />
-                  <TableColumn prefWidth="251.0" text="Country" />
-                  <TableColumn prefWidth="73.0" text="Active" />
+                <TableColumn fx:id="customerIDcolumn" prefWidth="113.0" text="Customer ID" />
+                <TableColumn fx:id="customerNameColumn" prefWidth="122.0" text="Customer Name" />
+                  <TableColumn fx:id="customerAddressColumn" prefWidth="189.0" text="Address" />
+                  <TableColumn fx:id="customerAddress2Column" prefWidth="176.0" text="City / State" />
+                  <TableColumn fx:id="customerCountryColumn" prefWidth="251.0" text="Country" />
+                  <TableColumn fx:id="customerActiveColumn" prefWidth="73.0" text="Active" />
               </columns>
             </TableView>
             <Label layoutY="76.0" text="Customers">
