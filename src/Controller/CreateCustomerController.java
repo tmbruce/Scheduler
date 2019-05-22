@@ -8,6 +8,7 @@ package Controller;
 import Model.DataSource;
 import Model.User;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,8 +37,8 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     private ComboBox<String> customerCityStateCombo;
     @FXML
     private ComboBox<String> customerCountryCombo;
-    private ObservableList<String> countryList = FXCollections.observableArrayList();
-    private ObservableList<String> cityList = FXCollections.observableArrayList();
+    private ArrayList<String> countryList;
+    private ArrayList<String> cityList;
     private User user;
     
 
@@ -48,16 +49,17 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     public void initialize(URL url, ResourceBundle rb) {
         DataSource datasource = new DataSource(); 
         datasource.open();
-        countryList = (ObservableList<String>) datasource.selectCountries();
+        countryList = datasource.selectCountries();
         datasource.close();
         customerCountryCombo.getItems().addAll(countryList);
     } 
     
     @FXML
     public void comboBoxCountrySelected(){
+        customerCityStateCombo.setEditable(true);
         DataSource datasource = new DataSource();
         datasource.open();
-        cityList = (ObservableList<String>) datasource.selectCities(customerCountryCombo.getValue().toString());
+        cityList = datasource.selectCities(customerCountryCombo.getValue());
         datasource.close();
         customerCityStateCombo.getItems().addAll(cityList);
     }

@@ -264,10 +264,10 @@ public class DataSource {
         return countryList;
 
     }
-        public ObservableList<String> selectCities(String countryName){
+        public ArrayList<String> selectCities(String countryName){
         PreparedStatement statement = null;
         ResultSet result = null;
-        ObservableList<String> countryList = FXCollections.observableArrayList();
+        ArrayList<String> countryList = null;
         try {
             statement = conn.prepareStatement("SELECT " + COLUMN_CITY + " FROM " + TABLE_CITY + " WHERE " + COLUMN_COUNTRY + 
                                               " = ?");
