@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class DataSource {
     //Connection Details
@@ -52,6 +54,7 @@ public class DataSource {
     //City table
     private static final String TABLE_CITY = "city";
     private static final String COLUMN_CITY_ID = "cityId";
+    private static final String COLUMN_CITY = "city";
     
     
     //Country table
@@ -216,15 +219,68 @@ public class DataSource {
             e.printStackTrace();
         }
     }
-    
-    public void insertCustomer(String customerName, short addressID, short active){
-        PreparedStatement statement;
+    public String getUserNameFromEmail(String email){
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        String newUserName = null;
         try{
-            statement = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + )
+            statement = conn.prepareStatement("SELECT " + COLUMN_USER_NAME + " FROM " + TABLE_USER +
+                                              " WHERE " + COLUMN_EMAIL + " = ?");
+            statement.setString(1, email);
+            result = statement.executeQuery();
+            ArrayList<String> userName = new ArrayList<>();
+            while(result.next()){
+                userName.add(result.getString(1));
+            }
+            newUserName = userName.get(0);
         }
-        catch(){
+        catch(SQLException e){
+            }
+        finally{
+            try{
+                if(statement != null){
+                    statement.close();
+                }
+            }
+            catch(SQLException e){
+            }
+        }
+       return newUserName; 
+    }
+    
+    public ArrayList selectCountries(){
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        ArrayList<String> countryList = new ArrayList<>(); 
+        try {
+            statement = conn.prepareStatement("SELECT " + COLUMN_COUNTRY + " FROM " + TABLE_COUNTRY);
+            result = statement.executeQuery();
+            while(result.next()){
+                countryList.add(result.getString(1));
+            }
             
+        } catch (SQLException ex) {
         }
+        return countryList;
+
+    }
+        public ObservableList<String> selectCities(String countryName){
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        ObservableList<String> countryList = FXCollections.observableArrayList();
+        try {
+            statement = conn.prepareStatement("SELECT " + COLUMN_CITY + " FROM " + TABLE_CITY + " WHERE " + COLUMN_COUNTRY + 
+                                              " = ?");
+            statement.setString(1, countryName);
+            result = statement.executeQuery();
+            while(result.next()){
+                countryList.add(result.getString(1));
+            }
+            
+        } catch (SQLException ex) {
+        }
+        return countryList;
+
     }
 }
 

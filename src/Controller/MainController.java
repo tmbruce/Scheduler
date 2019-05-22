@@ -6,13 +6,16 @@
 package Controller;
 
 import Model.CalendarTools;
+import Model.DataSource;
 import Model.SceneChanger;
 import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +46,7 @@ public class MainController implements Initializable, ControllerInterface {
     private final int totalCalendarDays = 42;
     private int monthOffset;
     private User user;
+    private String currentUserName;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,9 +58,8 @@ public class MainController implements Initializable, ControllerInterface {
     @FXML
     public void customersButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
-        CustomerController controller = new CustomerController();
-        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Manage Customers");
-        //customersButton.requestFocus();
+        CustomerController customerController = new CustomerController();
+        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);
         
     }
     
@@ -168,6 +171,14 @@ public class MainController implements Initializable, ControllerInterface {
     @Override
     public void preloadData(User user) {
         this.user = user;
+        currentUserName = user.getUserName();
+        if(currentUserName.contains("@")){
+            DataSource datasource = new DataSource();
+            datasource.open();
+            String newUserName = datasource.getUserNameFromEmail(currentUserName);
+            datasource.close();
+            user.setUserName(newUserName);
+        }
     }
 }
             
