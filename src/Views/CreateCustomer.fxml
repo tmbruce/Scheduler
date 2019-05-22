@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Create New Customer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox layoutX="256.0" layoutY="334.0" prefWidth="150.0" promptText="Select City" />
+      <ComboBox layoutX="256.0" layoutY="359.0" prefWidth="150.0" promptText="Select Country" />
+      <TextField layoutX="257.0" layoutY="309.0" promptText="Postal Code" />
+      <TextField layoutX="257.0" layoutY="284.0" promptText="Street Address" />
+      <TextField layoutX="257.0" layoutY="259.0" promptText="Customer Name" />
+      <TextField layoutX="257.0" layoutY="237.0" promptText="Phone" />
+   </children>
+</AnchorPane>
