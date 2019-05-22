@@ -29,6 +29,7 @@ public class SceneChanger {
     
     /*
     * This method will change scenes, passing the user object to the next scene.
+    
     */
     public void changeScenes(ActionEvent event, String viewName, String title, User user, ControllerInterface controller) throws IOException{
         FXMLLoader loader = new FXMLLoader();
