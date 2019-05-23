@@ -72,11 +72,11 @@
          <children>
             <TableView fx:id="customerTable" layoutY="121.0" prefHeight="312.0" prefWidth="925.0">
               <columns>
-                <TableColumn fx:id="customerIDcolumn" prefWidth="113.0" text="Customer ID" />
-                <TableColumn fx:id="customerNameColumn" prefWidth="122.0" text="Customer Name" />
-                  <TableColumn fx:id="customerAddressColumn" prefWidth="189.0" text="Address" />
-                  <TableColumn fx:id="customerAddress2Column" prefWidth="176.0" text="City / State" />
-                  <TableColumn fx:id="customerCountryColumn" prefWidth="251.0" text="Country" />
+                <TableColumn fx:id="customerIDcolumn" prefWidth="90.0" text="Customer ID" />
+                <TableColumn fx:id="customerNameColumn" prefWidth="174.0" text="Customer Name" />
+                  <TableColumn fx:id="customerAddressColumn" prefWidth="200.0" text="Address" />
+                  <TableColumn fx:id="customerAddress2Column" prefWidth="251.0" text="City / State" />
+                  <TableColumn fx:id="customerCountryColumn" prefWidth="136.0" text="Country" />
                   <TableColumn fx:id="customerActiveColumn" prefWidth="73.0" text="Active" />
               </columns>
             </TableView>
@@ -179,6 +179,7 @@
                   <Button mnemonicParsing="false" text="Delete" />
                </children>
             </HBox>
+            <Button layoutX="832.0" layoutY="77.0" mnemonicParsing="false" onAction="#refreshHandler" text="Refresh" />
          </children>
       </AnchorPane>
    </children>

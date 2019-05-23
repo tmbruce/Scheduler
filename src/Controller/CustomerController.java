@@ -87,9 +87,23 @@ public class CustomerController implements Initializable, ControllerInterface{
         private void createButtonHandler(ActionEvent event) throws IOException{
         SceneChanger sc = new SceneChanger();
         CreateCustomerController ccc = new CreateCustomerController();
-        sc.changeScenes(event, "/Views/CreateCustomer.fxml", "CalendarOne - Create Customer", user, ccc);
+        sc.changeScenesNewWindow(event, "/Views/CreateCustomer.fxml", "CalendarOne - Create Customer", user, ccc);
         
-    }
+        }
+        @FXML
+        public void refreshHandler(ActionEvent event){
+            try{
+                DataSource datasource = new DataSource();
+                datasource.open();
+                customerList = datasource.getCustomers();
+                System.out.println(customerList);
+                datasource.close();
+                customerTable.getItems().clear();
+                customerTable.getItems().addAll(customerList);
+            }
+        catch(SQLException e){
+            }
+        }
 
     @Override
     public void preloadData(User user) {

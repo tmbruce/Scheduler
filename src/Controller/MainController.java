@@ -53,6 +53,8 @@ public class MainController implements Initializable, ControllerInterface {
         
         monthOffset = 0;
         setCalendar(monthOffset);
+
+        
     }
     
     @FXML
@@ -102,8 +104,8 @@ public class MainController implements Initializable, ControllerInterface {
     index of the starting day of the current month and the number of days from 
     preceeding and following months and adds those to the array. A nested loop
     sets as follows: day number -> label -> VBox -> AnchorPane -> GridPane
-    */
-    public void setCalendar(int monthOffset){
+    */ 
+    public void setCalendar(int monthOffset){            
         monthLabel.setText(CalendarTools.getMonth(monthOffset));
         int monthStartDay = CalendarTools.getFirstDayNumber(monthOffset);
         int numberDaysPrevious = CalendarTools.getDaysInMonth(monthOffset + (-1));
@@ -166,7 +168,7 @@ public class MainController implements Initializable, ControllerInterface {
                 dayIndex++;
             }
         }  
-    }
+    }    
 
     @Override
     public void preloadData(User user) {
