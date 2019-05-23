@@ -3,23 +3,25 @@ package Model;
 
 public class Customer {
     private String customerName;
-    private short addressID;
-    private short active;
+    private int addressID;
+    private int active;
+    private int customerID;
     private String address;
     private String address2;
     private int postCode;
     private String city;
     private String country;
 
-    public Customer(String customerName, short addressID, short active, String address, String address2, int postCode, String city, String country) {
-        this.customerName = customerName;
-        this.addressID = addressID;
-        this.active = active;
-        this.address = address;
-        this.address2 = address2;
-        this.postCode = postCode;
-        this.city = city;
-        this.country = country;
+    public Customer(String customerName, int addressID, int active, int customerID, String address, String address2, int postCode, String city, String country) {
+        this.customerName = customerName; //customer table
+        this.addressID = addressID; //address table
+        this.active = active; // customer table
+        this.customerID = customerID; // customer table
+        this.address = address; //address table
+        this.address2 = address2; //address table
+        this.postCode = postCode; //address table
+        this.city = city; //city table
+        this.country = country; //country table
     }
 
     public String getCustomerName() {
@@ -30,20 +32,28 @@ public class Customer {
         this.customerName = customerName;
     }
 
-    public short getAddressID() {
+    public int getAddressID() {
         return addressID;
     }
 
-    public void setAddressID(short addressID) {
+    public void setAddressID(int addressID) {
         this.addressID = addressID;
     }
 
-    public short getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(short active) {
+    public void setActive(int active) {
         this.active = active;
+    }
+    
+    public int getCustomerID(){
+        return customerID;
+    }
+    
+    public void setCustomerID(int customerID){
+        this.customerID = customerID;
     }
 
     public String getAddress() {

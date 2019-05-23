@@ -77,12 +77,7 @@ public class CreateCustomerController implements Initializable, ControllerInterf
         String customerPostCode = customerPostCodeField.getText();
         String customerCity = customerCityStateCombo.getValue();
         String customerCountry = customerCountryCombo.getValue();
-        
-        System.out.println(customerName);
-        System.out.println(customerEmail);
-        System.out.println(customerAddress);
-        System.out.println(customerCity);
-        System.out.println(customerCountry);
+
         DataSource datasource = new DataSource();
         datasource.open();
         datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);

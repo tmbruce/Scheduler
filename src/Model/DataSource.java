@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class DataSource {
     //Connection Details
@@ -245,10 +247,43 @@ public class DataSource {
         }
        return newUserName; 
     }
+    public ObservableList getCustomers() throws SQLException{
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try{
+            statement = conn.prepareStatement("SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID + ", " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_NAME + ", " +
+                                              TABLE_ADDRESS + "." + COLUMN_ADDRESS + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS2 + ", " +
+                                              TABLE_ADDRESS + "." + COLUMN_POST_CODE + ", " + TABLE_CITY + "." + COLUMN_CITY + ", " + TABLE_COUNTRY + "." + COLUMN_COUNTRY + ", " +
+                                              TABLE_CUSTOMER + "." + COLUMN_ACTIVE + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID + " FROM (((" + TABLE_CUSTOMER +
+                                              " INNER JOIN " + TABLE_ADDRESS + " ON " + TABLE_CUSTOMER + "." + COLUMN_ADDRESS_ID + " = " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID
+                                              + ") INNER JOIN " + TABLE_CITY + " ON " + TABLE_ADDRESS + "." + COLUMN_CITY_ID + " = " + TABLE_CITY + "." + COLUMN_CITY_ID + ") " +
+                                              " INNER JOIN " + TABLE_COUNTRY + " ON " + TABLE_CITY + "." + COLUMN_COUNTRY_ID + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
+            System.out.println(statement.toString());
+            result = statement.executeQuery();
+            
+            while (result.next()){
+                Customer customer = new Customer(result.getString(COLUMN_CUSTOMER_NAME),
+                                                 result.getInt(COLUMN_ADDRESS_ID),
+                                                 result.getInt(COLUMN_ACTIVE),                         
+                                                 result.getInt(COLUMN_CUSTOMER_ID),
+                                                 result.getString(COLUMN_ADDRESS),
+                                                 result.getString(COLUMN_ADDRESS2),
+                                                 result.getInt(COLUMN_POST_CODE),
+                                                 result.getString(COLUMN_CITY),
+                                                 result.getString(COLUMN_COUNTRY));
+                customerList.add(customer);
+            }
+
+        }
+        catch(SQLException e){
+            
+        }
+        return customerList;
+    }
     
     public void insertCustomer(String customerName, String email, String customerPhone, String streetAddress, String postCode, String city, String country, User user) throws SQLException{
         //Using transaction state
-        System.out.println("INSERT CUSTOMER CALLED");
         conn.setAutoCommit(false);
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
@@ -266,7 +301,6 @@ public class DataSource {
             statement.setString(7, user.getUserName());
             statement.setString(8, getTimeStamp());
             statement.setString(9, user.getUserName());
-            System.out.println(statement.toString());
             statement.executeUpdate();
             
             statement2 = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_ADDRESS_ID + ", " +
@@ -279,7 +313,6 @@ public class DataSource {
             statement2.setString(5, getTimeStamp());
             statement2.setString(6, user.getUserName());
             statement2.setString(7, email);
-            System.out.println(statement2.toString());
             statement2.executeUpdate();
             
             conn.commit();

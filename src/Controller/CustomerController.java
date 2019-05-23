@@ -6,17 +6,22 @@
 package Controller;
 
 import Model.Customer;
+import Model.DataSource;
 import Model.SceneChanger;
 import Model.User;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 public class CustomerController implements Initializable, ControllerInterface{
@@ -46,9 +51,29 @@ public class CustomerController implements Initializable, ControllerInterface{
     @FXML
     private AnchorPane calendarAnchor;
     private User user;
+    private Customer customer;
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources){
+        customerIDcolumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        customerAddress2Column.setCellValueFactory(new PropertyValueFactory<>("address2"));
+        customerCountryColumn.setCellValueFactory (new PropertyValueFactory<>("country"));
+        customerActiveColumn.setCellValueFactory (new PropertyValueFactory<>("active"));
+        
+        try{
+            DataSource datasource = new DataSource();
+            datasource.open();
+            customerList = datasource.getCustomers();
+            System.out.println(customerList);
+            datasource.close();
+            customerTable.getItems().addAll(customerList);
+        }
+        catch(SQLException e){
+            
+        }
         
     }
     
