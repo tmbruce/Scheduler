@@ -175,7 +175,7 @@
             <HBox layoutX="695.0" layoutY="453.0" spacing="25.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#createButtonHandler" text="Create" />
-                  <Button mnemonicParsing="false" text="Edit" />
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#editButtonHandler" text="Edit" />
                   <Button mnemonicParsing="false" text="Delete" />
                </children>
             </HBox>

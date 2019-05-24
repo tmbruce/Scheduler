@@ -77,6 +77,7 @@ public class CustomerController implements Initializable, ControllerInterface{
         
     }
     
+    
         @FXML
         private void calendarButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
@@ -88,8 +89,16 @@ public class CustomerController implements Initializable, ControllerInterface{
         SceneChanger sc = new SceneChanger();
         CreateCustomerController ccc = new CreateCustomerController();
         sc.changeScenesNewWindow(event, "/Views/CreateCustomer.fxml", "CalendarOne - Create Customer", user, ccc);
-        
         }
+        
+        @FXML
+        private void editButtonHandler(ActionEvent event) throws IOException{
+            
+            SceneChanger sc = new SceneChanger();
+            EditCustomerController ecc = new EditCustomerController();
+            sc.changeScenesNewWindow(event, "/Views/EditCustomer.fxml", "CalendarOne - Create Customer", user, customer, ecc);
+        }
+        
         @FXML
         public void refreshHandler(ActionEvent event){
             try{
@@ -108,6 +117,5 @@ public class CustomerController implements Initializable, ControllerInterface{
     @Override
     public void preloadData(User user) {
         this.user = user;
-    }
-    
+    }    
 }

@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -49,6 +50,8 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     private ArrayList<String> countryList;
     private ArrayList<String> cityList;
     private User user;
+    @FXML
+    private CheckBox activeCheckBox;
     
 
     /**
@@ -88,6 +91,7 @@ public class CreateCustomerController implements Initializable, ControllerInterf
         datasource.open();
         datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);
         datasource.close();
+        CustomerController cc = new CustomerController();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
 //        CreateCustomerController ccc = new CreateCustomerController();
