@@ -93,10 +93,10 @@ public class CustomerController implements Initializable, ControllerInterface{
         
         @FXML
         private void editButtonHandler(ActionEvent event) throws IOException{
-            
             SceneChanger sc = new SceneChanger();
+            Customer customer = this.customerTable.getSelectionModel().getSelectedItem();
             EditCustomerController ecc = new EditCustomerController();
-            sc.changeScenesNewWindow(event, "/Views/EditCustomer.fxml", "CalendarOne - Create Customer", user, customer, ecc);
+            sc.changeScenesNewWindow(event, "/Views/EditCustomer.fxml", "CalendarOne - Edit Customer", user, customer, ecc);
         }
         
         @FXML

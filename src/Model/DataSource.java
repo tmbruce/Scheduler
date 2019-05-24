@@ -9,7 +9,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -255,7 +259,8 @@ public class DataSource {
             statement = conn.prepareStatement("SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID + ", " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_NAME + ", " +
                                               TABLE_ADDRESS + "." + COLUMN_ADDRESS + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS2 + ", " +
                                               TABLE_ADDRESS + "." + COLUMN_POST_CODE + ", " + TABLE_CITY + "." + COLUMN_CITY + ", " + TABLE_COUNTRY + "." + COLUMN_COUNTRY + ", " +
-                                              TABLE_CUSTOMER + "." + COLUMN_ACTIVE + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID + " FROM (((" + TABLE_CUSTOMER +
+                                              TABLE_CUSTOMER + "." + COLUMN_ACTIVE + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID + ", " +
+                                              TABLE_CUSTOMER + "." + COLUMN_EMAIL + ", " + TABLE_ADDRESS + "." + COLUMN_PHONE + " FROM (((" + TABLE_CUSTOMER +
                                               " INNER JOIN " + TABLE_ADDRESS + " ON " + TABLE_CUSTOMER + "." + COLUMN_ADDRESS_ID + " = " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID
                                               + ") INNER JOIN " + TABLE_CITY + " ON " + TABLE_ADDRESS + "." + COLUMN_CITY_ID + " = " + TABLE_CITY + "." + COLUMN_CITY_ID + ") " +
                                               " INNER JOIN " + TABLE_COUNTRY + " ON " + TABLE_CITY + "." + COLUMN_COUNTRY_ID + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
@@ -264,6 +269,8 @@ public class DataSource {
             
             while (result.next()){
                 Customer customer = new Customer(result.getString(COLUMN_CUSTOMER_NAME),
+                                                 result.getString(COLUMN_EMAIL),                         
+                                                 result.getString(COLUMN_PHONE),
                                                  result.getInt(COLUMN_ADDRESS_ID),
                                                  result.getInt(COLUMN_ACTIVE),                         
                                                  result.getInt(COLUMN_CUSTOMER_ID),
@@ -355,17 +362,37 @@ public class DataSource {
         } 
         catch (SQLException ex) {
             }
-        finally{
-            try{
-                if(statement != null){
-                    statement.close();
-                }
-            }
-            catch(SQLException e){
-            }
-        }
+//        finally{
+//            try{
+//                if(statement != null){
+//                    statement.close();
+//                }
+//            }
+//            catch(SQLException e){
+//            }
+//        }
         return cityList;
-
     }
+        
+        public ArrayList getLocations(){
+            PreparedStatement statement = null;
+            ResultSet result = null;
+            ArrayList<ArrayList<String>> countryList = new ArrayList<>();
+            try {
+                statement = conn.prepareStatement("SELECT " + TABLE_COUNTRY + "." + COLUMN_COUNTRY + ", " + TABLE_CITY + "." + COLUMN_CITY + " FROM (" +
+                                                  TABLE_CITY + " INNER JOIN " + TABLE_COUNTRY + " ON " + TABLE_CITY + "." + COLUMN_COUNTRY_ID + " = " + 
+                                                  TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
+                result = statement.executeQuery();
+                while(result.next()){
+                    //countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));
+                    Map<String, List<String>> map = new HashMap<String, List<String>>();
+                    
+                }
+
+            } catch (SQLException ex) {
+            }
+            return countryList;
+
+        }
 }
 

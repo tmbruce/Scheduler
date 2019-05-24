@@ -112,7 +112,7 @@ public class MainController implements Initializable, ControllerInterface {
         int numberDaysCurrent = CalendarTools.getDaysInMonth(monthOffset);
         int firstCalendarDay = numberDaysPrevious - (monthStartDay - 2);
         ArrayList<ArrayList<Integer>> dayList = new ArrayList<>();
-        dayList.add(new ArrayList<>());
+        //dayList.add(new ArrayList<>());
         int arrayIndex = 0;
 
         //Get the days of the preceeding month calendar

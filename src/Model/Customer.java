@@ -11,9 +11,15 @@ public class Customer {
     private int postCode;
     private String city;
     private String country;
+    private String email;
+    private String customerPhone;
 
-    public Customer(String customerName, int addressID, int active, int customerID, String address, String address2, int postCode, String city, String country) {
+
+
+    public Customer(String customerName, String email, String customerPhone, int addressID, int active, int customerID, String address, String address2, int postCode, String city, String country) {
         this.customerName = customerName; //customer table
+        this.email = email;
+        this.customerPhone = customerPhone;
         this.addressID = addressID; //address table
         this.active = active; // customer table
         this.customerID = customerID; // customer table
@@ -22,6 +28,14 @@ public class Customer {
         this.postCode = postCode; //address table
         this.city = city; //city table
         this.country = country; //country table
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
 
     public String getCustomerName() {
@@ -96,6 +110,13 @@ public class Customer {
         this.country = country;
     }
     
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
     
     
 }
