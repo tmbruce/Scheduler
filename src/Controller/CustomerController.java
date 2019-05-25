@@ -19,9 +19,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class CustomerController implements Initializable, ControllerInterface{
@@ -40,6 +43,17 @@ public class CustomerController implements Initializable, ControllerInterface{
     private TableColumn<Customer, String> customerCountryColumn;
     @FXML
     private TableColumn<Customer, Integer> customerActiveColumn;
+    @FXML
+    private Label customerNameLabel, customerEmailLabel;
+    @FXML
+    private Label customerPhoneLabel, customerAddressLabel;
+    @FXML
+    private Label customerPostCodeLabel, customerCityLabel;
+    @FXML
+    private Label customerCountryLabel;
+    @FXML
+    private CheckBox activeCustomerCheckBox;
+    
     @FXML 
     private Button calendarButton;
     @FXML
@@ -52,10 +66,12 @@ public class CustomerController implements Initializable, ControllerInterface{
     private AnchorPane calendarAnchor;
     private User user;
     private Customer customer;
+    private Customer detailCustomer;
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        activeCustomerCheckBox.setDisable(true);
         customerIDcolumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -73,11 +89,28 @@ public class CustomerController implements Initializable, ControllerInterface{
         }
         catch(SQLException e){
             
-        }
-        
+        }   
     }
-    
-    
+        
+        @FXML
+        public void rowClicked(MouseEvent event){
+             detailCustomer = customerTable.getSelectionModel().getSelectedItem();
+             customerNameLabel.setText(detailCustomer.getCustomerName());
+             customerEmailLabel.setText(detailCustomer.getEmail());
+             customerPhoneLabel.setText(detailCustomer.getCustomerPhone());
+             customerAddressLabel.setText(detailCustomer.getAddress());
+             customerPostCodeLabel.setText(Integer.toString(detailCustomer.getPostCode()));
+             customerCityLabel.setText(detailCustomer.getCity());
+             customerCountryLabel.setText(detailCustomer.getCountry());
+             if (detailCustomer.getActive() == 1){
+                 activeCustomerCheckBox.setSelected(true);
+             }
+             else {
+                 activeCustomerCheckBox.setSelected(false);
+             }
+             
+        } 
+        
         @FXML
         private void calendarButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();

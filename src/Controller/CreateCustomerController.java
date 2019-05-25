@@ -91,7 +91,7 @@ public class CreateCustomerController implements Initializable, ControllerInterf
         datasource.open();
         datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);
         datasource.close();
-        CustomerController cc = new CustomerController();
+//        CustomerController cc = new CustomerController();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
 //        CreateCustomerController ccc = new CreateCustomerController();

@@ -9,8 +9,10 @@ import Model.Customer;
 import Model.DataSource;
 import Model.User;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  *
@@ -45,46 +48,67 @@ public class EditCustomerController implements Initializable, ControllerInterfac
     @FXML
     private CheckBox activeCheckBox;
     private User user;
+    private Customer customer;
     private String customerName;
     private String customerEmail;
     private String customerPhone;
     private String address;
     private String address2;
-    private int postCode;
+    private String postCode;
     private String city;
     private String country;
     private int active;
-    private ArrayList<String> cities;
-    private ArrayList<String> countries;
+    private ArrayList<String> countryList = new ArrayList<>();
+    private ArrayList<String> cityList = new ArrayList<>();
 
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         DataSource datasource = new DataSource();
-        datasource.open();        
-        countries = datasource.getLocations();
+        datasource.open();
+        countryList = datasource.selectCountries();
         datasource.close();
-        System.out.println(countries.get(0).get(1));
-//        for(int i = 0; i < countries.size(); i++){
-//            System.out.println(countries.);
-//        }
-        
-        
-        
-        }
-    
-    @FXML
-    private void comboBoxCountrySelected(ActionEvent event) {
+        customerCityStateCombo.setEditable(false);
     }
 
     @FXML
-    private void saveButtonHandler(ActionEvent event) {
+    private void comboBoxCountrySelected(ActionEvent event) {
+        DataSource datasource = new DataSource();
+        datasource.open();
+        cityList = datasource.selectCities(customerCountryCombo.getValue());
+        datasource.close();
+        customerCityStateCombo.getItems().clear();
+        customerCityStateCombo.getItems().addAll(cityList);
+    }
+
+    @FXML
+    private void saveButtonHandler(ActionEvent event) throws SQLException {
+        //Get any changes to customer
+        saveButton.setDisable(true);
+        customerName = customerNameField.getText();
+        customerEmail = customerEmailField.getText();
+        customerPhone = customerPhoneField.getText();
+        address = customerAddressField.getText();
+        postCode = (customerPostCodeField.getText());
+        city = customerCityStateCombo.getValue();
+        country = customerCountryCombo.getValue();
+        if(activeCheckBox.isSelected()){
+            active = 1;
+        }
+        else{
+            active = 0;
+        }
+        DataSource datasource = new DataSource();
+        datasource.open();
+        datasource.updateCustomer(customerName, customerEmail, customerPhone, address, postCode, city, country, active, user, customer);
+        datasource.close();
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
     }
-
 
     @Override
     public void preloadData(User user, Customer customer) {
@@ -97,20 +121,18 @@ public class EditCustomerController implements Initializable, ControllerInterfac
         address = customer.getAddress();
         customerAddressField.setText(address);
         address2 = customer.getAddress2();
-        postCode = customer.getPostCode();
+        postCode = Integer.toString(customer.getPostCode());
         customerPostCodeField.setText(String.valueOf(postCode));
         city = customer.getCity();
+        customerCityStateCombo.getItems().add(city);
+        customerCityStateCombo.getSelectionModel().selectFirst();
         country = customer.getCountry();
-//        for (int i = 0; i < countries.size(); i++){
-//            System.out.println(countries.get(1));
-//            if(countries.get(1).equals(city)){
-//                customerCountryCombo.getItems().add(countries.get(0));
-//            }
-//        }
+        customerCountryCombo.getItems().addAll(countryList);
+        int countryIndex = cityList.indexOf(city);
+        customerCountryCombo.getSelectionModel().select(country);
         active = customer.getActive();
         if(active == 1) activeCheckBox.setSelected(true);
-        
-
-
+        this.user = user;
+        this.customer = customer;
     }
 }

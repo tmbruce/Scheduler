@@ -329,6 +329,49 @@ public class DataSource {
         }
     }
     
+        public void updateCustomer(String customerName, String email, String customerPhone, String streetAddress,
+                                   String postCode, String city, String country, int active, User user, Customer customer) throws SQLException{
+        //Using transaction state
+        conn.setAutoCommit(false);
+        PreparedStatement statement = null;
+        PreparedStatement statement2 = null;
+        try{
+            statement = conn.prepareStatement("UPDATE " + TABLE_ADDRESS + " SET " + COLUMN_ADDRESS + " = ?, " + COLUMN_ADDRESS2 + " = ?, " + COLUMN_CITY_ID 
+                                              + " = (SELECT cityId FROM city WHERE city = ?), " + COLUMN_POST_CODE + " = ?, " + COLUMN_PHONE + " = ?, " +
+                                              COLUMN_LAST_UPDATE + " = ?, " + COLUMN_LAST_UPDATED_BY + " = ? WHERE " + COLUMN_ADDRESS_ID + " = ?");
+
+            statement.setString(1, streetAddress);
+            statement.setString(2, city);
+            statement.setString(3, city);
+            statement.setString(4, postCode);
+            statement.setString(5, customerPhone);
+            statement.setString(6, getTimeStamp());
+            statement.setString(7, user.getUserName());
+            statement.setString(8, Integer.toString(customer.getAddressID()));
+            System.out.println(statement.toString());
+            statement.executeUpdate();
+            
+            statement2 = conn.prepareStatement("UPDATE " + TABLE_CUSTOMER + " SET " + COLUMN_CUSTOMER_NAME + " = ?, " +  COLUMN_ADDRESS_ID + " = (SELECT addressId FROM address WHERE address = ?), "
+                                               + COLUMN_ACTIVE + " = ?, " + COLUMN_LAST_UPDATE + " = ?, " + COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_EMAIL + " = ? WHERE " +
+                                               COLUMN_CUSTOMER_NAME + " = ?");
+            System.out.println(customer.getCustomerName());
+            statement2.setString(1, customerName);
+            statement2.setString(2, streetAddress);
+            statement2.setInt(3, active);
+            statement2.setString(4, getTimeStamp());
+            statement2.setString(5, user.getUserName());
+            statement2.setString(6, email);
+            statement2.setString(7, customer.getCustomerName());
+            System.out.println(statement2.toString());
+            statement2.executeUpdate();
+            
+            conn.commit();
+            conn.setAutoCommit(true);
+        }
+        catch(SQLException e){
+        }
+    }
+    
     public ArrayList selectCountries(){
         PreparedStatement statement = null;
         ResultSet result = null;
@@ -384,8 +427,8 @@ public class DataSource {
                                                   TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
                 result = statement.executeQuery();
                 while(result.next()){
-                    //countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));
-                    Map<String, List<String>> map = new HashMap<String, List<String>>();
+                    countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));
+                    
                     
                 }
 
