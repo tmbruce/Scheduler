@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import Controller.ControllerInterface;
 import Controller.ControllerInterfaceUser;
 import Controller.CustomerController;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.WindowEvent;

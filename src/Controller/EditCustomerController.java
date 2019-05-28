@@ -11,8 +11,6 @@ import Model.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,10 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- *
- * @author travi
- */
+
 public class EditCustomerController implements Initializable, ControllerInterfaceUser{
 
     @FXML
@@ -44,7 +39,7 @@ public class EditCustomerController implements Initializable, ControllerInterfac
     @FXML
     private ComboBox<String> customerCountryCombo;
     @FXML
-    private Button saveButton;
+    private Button saveButton, cancelButton;
     @FXML
     private CheckBox activeCheckBox;
     private User user;
@@ -104,10 +99,13 @@ public class EditCustomerController implements Initializable, ControllerInterfac
         datasource.close();
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
+        
     }
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     @Override

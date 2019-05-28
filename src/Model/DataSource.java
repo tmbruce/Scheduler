@@ -129,6 +129,7 @@ public class DataSource {
         }
         return exists;
     }
+    
     public String getTimeStamp(){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -328,8 +329,26 @@ public class DataSource {
         catch(SQLException e){
         }
     }
+    public void deleteCustomer(Customer customer, User user) throws SQLException{
+        conn.setAutoCommit(false);
+        PreparedStatement statement = null;
+        PreparedStatement statement2 = null;
+        
+        statement = conn.prepareStatement("DELETE FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_ID + " = ?");
+        statement.setString(1, Integer.toString(customer.getCustomerID()));
+        System.out.println(statement.toString());
+        statement.executeUpdate();
+        
+        statement2 = conn.prepareStatement("DELETE FROM " + TABLE_ADDRESS + " WHERE " + COLUMN_ADDRESS_ID + " = ?");
+        statement2.setString(1, Integer.toString(customer.getAddressID()));
+        System.out.println(statement2.toString());
+        statement2.executeUpdate();
+        
+        conn.commit();
+        conn.setAutoCommit(true);
+    }
     
-        public void updateCustomer(String customerName, String email, String customerPhone, String streetAddress,
+    public void updateCustomer(String customerName, String email, String customerPhone, String streetAddress,
                                    String postCode, String city, String country, int active, User user, Customer customer) throws SQLException{
         //Using transaction state
         conn.setAutoCommit(false);
@@ -381,9 +400,9 @@ public class DataSource {
             result = statement.executeQuery();
             while(result.next()){
                 countryList.add(result.getString(1));
-            }
-            
-        } catch (SQLException ex) {
+            }  
+        } 
+        catch (SQLException ex) {
         }
         return countryList;
 
@@ -401,19 +420,9 @@ public class DataSource {
             while(result.next()){
                 cityList.add(result.getString(1));
             }
-            
         } 
         catch (SQLException ex) {
             }
-//        finally{
-//            try{
-//                if(statement != null){
-//                    statement.close();
-//                }
-//            }
-//            catch(SQLException e){
-//            }
-//        }
         return cityList;
     }
         
@@ -427,15 +436,12 @@ public class DataSource {
                                                   TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
                 result = statement.executeQuery();
                 while(result.next()){
-                    countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));
-                    
-                    
+                    countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));                    
                 }
-
-            } catch (SQLException ex) {
+            } 
+            catch (SQLException ex) {
             }
             return countryList;
-
         }
 }
 

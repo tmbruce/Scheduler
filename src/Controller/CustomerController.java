@@ -68,6 +68,8 @@ public class CustomerController implements Initializable, ControllerInterface{
     private Customer customer;
     private Customer detailCustomer;
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    @FXML
+    public static Button refreshButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -122,6 +124,7 @@ public class CustomerController implements Initializable, ControllerInterface{
         SceneChanger sc = new SceneChanger();
         CreateCustomerController ccc = new CreateCustomerController();
         sc.changeScenesNewWindow(event, "/Views/CreateCustomer.fxml", "CalendarOne - Create Customer", user, ccc);
+        
         }
         
         @FXML
@@ -130,6 +133,14 @@ public class CustomerController implements Initializable, ControllerInterface{
             Customer customer = this.customerTable.getSelectionModel().getSelectedItem();
             EditCustomerController ecc = new EditCustomerController();
             sc.changeScenesNewWindow(event, "/Views/EditCustomer.fxml", "CalendarOne - Edit Customer", user, customer, ecc);
+        }
+        
+        @FXML
+        private void deleteButtonHandler(ActionEvent event) throws IOException{
+            Customer customer = this.customerTable.getSelectionModel().getSelectedItem();
+            SceneChanger sc = new SceneChanger();
+            PopUpController popUp = new PopUpController();
+            sc.changeScenesNewWindow(event, "/Views/PopUp.fxml", "CalendarOne - Alert", user, customer, popUp);
         }
         
         @FXML

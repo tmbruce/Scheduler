@@ -14,6 +14,7 @@ import java.util.Locale;
  * @author travi
  */
 public class User {
+    private int active;
     private String userName;
     private String password;
     private String email;
@@ -22,6 +23,22 @@ public class User {
     
     public User(String userName){
         this.userName = new String(userName);        
+    }
+    
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public Locale getUserCountry() {
+        return userCountry;
+    }
+
+    public void setUserCountry(Locale userCountry) {
+        this.userCountry = userCountry;
     }
     public Locale getLocale(){
         return Locale.getDefault();

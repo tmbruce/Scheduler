@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EditCustomerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EditCustomerController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Create New Customer">
          <font>
@@ -70,7 +70,7 @@
       <HBox layoutX="293.0" layoutY="410.0" spacing="20.0">
          <children>
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonHandler" text="Save" />
-            <Button mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
          </children>
       </HBox>
       <CheckBox fx:id="activeCheckBox" layoutX="65.0" layoutY="414.0" mnemonicParsing="false" text="Active Customer">

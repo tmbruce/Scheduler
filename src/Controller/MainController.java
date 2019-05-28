@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.CalendarTools;
@@ -13,9 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,20 +43,24 @@ public class MainController implements Initializable, ControllerInterface {
     private String currentUserName;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
+    public void initialize(URL url, ResourceBundle rb) {   
         monthOffset = 0;
         setCalendar(monthOffset);
+    }
 
-        
+    
+    @FXML
+    public void createAppointmentHandler(ActionEvent event) throws IOException{
+        SceneChanger sc = new SceneChanger();
+        CreateAppointmentController cac = new CreateAppointmentController();
+        sc.changeScenesNewWindow(event, "/Views/CreateAppointment.fxml", "CalendarOne - Create Appointment", user, cac);
     }
     
     @FXML
     public void customersButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
         CustomerController customerController = new CustomerController();
-        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);
-        
+        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);  
     }
     
     //This function moves the calendar ahead one month from the current month
@@ -183,12 +181,3 @@ public class MainController implements Initializable, ControllerInterface {
         }
     }
 }
-            
-        
-
-
-    
-    
-    
-
-

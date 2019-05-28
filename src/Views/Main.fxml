@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -66,6 +67,7 @@
                   </Button>
                </children>
             </VBox>
+            <Button layoutX="93.0" layoutY="299.0" mnemonicParsing="false" onAction="#createAppointmentHandler" text="Create Appointment" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="calendarAnchor" layoutX="332.0" layoutY="117.0" prefHeight="739.0" prefWidth="928.0">
@@ -129,12 +131,24 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <Label fx:id="monthLabel" layoutX="773.0" layoutY="53.0" text="May">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <Button layoutX="901.0" layoutY="58.0" mnemonicParsing="false" onAction="#nextMonth" text="&gt;" />
-      <Button layoutX="618.0" layoutY="58.0" mnemonicParsing="false" onAction="#previousMonth" text="&lt;" />
+      <HBox layoutX="696.0" layoutY="61.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#previousMonth" text="&lt;">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Button>
+            <Label fx:id="monthLabel" alignment="CENTER" prefHeight="35.0" prefWidth="150.0" text="May">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Button mnemonicParsing="false" onAction="#nextMonth" text="&gt;">
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
