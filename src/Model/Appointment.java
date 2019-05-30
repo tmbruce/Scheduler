@@ -1,6 +1,7 @@
 
 package Model;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import javafx.collections.FXCollections;
@@ -18,9 +19,9 @@ public class Appointment {
     private String url;
     private LocalDateTime start;
     private LocalDateTime end;
-    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
-    public Appointment(int customerId, int userId, String title, String description, String location, String contact, String type, String url, LocalDateTime start) {
+    public Appointment(int customerId, int userId, String title, String description, String location, String contact, String type, String url, LocalDateTime start, LocalDateTime end) {
         this.customerId = customerId;
         this.userId = userId;
         this.title = title;
@@ -30,8 +31,14 @@ public class Appointment {
         this.type = type;
         this.url = url;
         this.start = start;
+        this.end = end;
     }
-    public ObservableList getAppointments(){
+    
+    public static ObservableList getAppointments() throws SQLException{
+        DataSource datasource = new DataSource();
+        datasource.open();
+        appointmentList = datasource.getAppointments();
+        datasource.close();
         return appointmentList;
     }
     
@@ -128,19 +135,20 @@ public class Appointment {
     } 
     
     //Validation methods
-    public boolean validateAppointment(String title, String description, String location, String contact, String type, String url){
+    public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url){
         if((title != null) && (description != null) && (location != null) && (contact != null) && (type != null) && (url != null)){  
         }
         return true;
     }
     
-    public boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
+    public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
         boolean apptAvailable = true;
         LocalTime startOfDay = LocalTime.parse("07:00");
-        LocalTime endOfDay = LocalTime.parse("18.00");
+        LocalTime endOfDay = LocalTime.parse("18:00");
         for (int i = 0; i < appointmentList.size(); i++){
             LocalDateTime apptStart = appointmentList.get(i).getStart();
             LocalDateTime apptEnd = appointmentList.get(i).getEnd();
+
             if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
                 apptAvailable = false;
             }
@@ -160,6 +168,7 @@ public class Appointment {
                 apptAvailable = false;
             }
         }
+        System.out.println(apptAvailable);
         return apptAvailable;
     }
 }

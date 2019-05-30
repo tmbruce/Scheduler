@@ -8,10 +8,14 @@ package Controller;
 import Model.Customer;
 import Model.DataSource;
 import Model.User;
+import Model.Appointment;
+import Model.TimeShift;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +30,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalTimeStringConverter;
 
 
 /**
@@ -56,7 +61,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
     @FXML
     private DatePicker startTime;
     @FXML
-    private Spinner starHourSpinner, startMinuteSpinner;    
+    private Spinner startTimeSpinner;    
     @FXML
     private Spinner durationHours, durationMinutes;
     @FXML
@@ -83,20 +88,46 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         for (int i = 0; i<customerList.size(); i++){
             customerDropDown.getItems().add(customerList.get(i).getCustomerName());
         }
+        
+        dayNightCombo.getItems().addAll("AM","PM");
         SpinnerValueFactory<Integer> hoursFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,8,0);
-        this.durationHours.setValueFactory(hoursFactory);
-        SpinnerValueFactory<Integer> minutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,59,0);
-        this.durationMinutes.setValueFactory(minutesFactory);
-        SpinnerValueFactory<Integer> startHoursFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,8,0);
-        this.starHourSpinner.setValueFactory(startHoursFactory);
-        SpinnerValueFactory<Integer> startMinutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
-        this.startMinuteSpinner.setValueFactory(startMinutesFactory);
-        dayNightCombo.getItems().addAll("AM", "PM");
+        durationHours.setValueFactory(hoursFactory);
+        SpinnerValueFactory<Integer> minutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00,59,0);
+        durationMinutes.setValueFactory(minutesFactory);
+
+        String pattern = "hh:mm";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        SpinnerValueFactory value = new SpinnerValueFactory<LocalTime>() {
+        {
+        setConverter(new LocalTimeStringConverter(formatter, null));
+        }
+        @Override
+        public void decrement(int steps) {
+            if (getValue() == null)
+                setValue(LocalTime.now());
+            else {
+                LocalTime time = (LocalTime) getValue();
+                setValue(time.minusMinutes(steps));
+            }
+        }
+
+        @Override
+        public void increment(int steps) {
+            if (this.getValue() == null)
+                setValue(LocalTime.now());
+            else {
+                LocalTime time = (LocalTime) getValue();
+                setValue(time.plusMinutes(steps));
+            }
+        }
+    };
+        startTimeSpinner.setValueFactory(value);
+
         
     }
        
     @FXML
-    public void saveButtonHandler(ActionEvent event){
+    public void saveButtonHandler(ActionEvent event)throws SQLException {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
@@ -105,19 +136,36 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String url = URLfield.getText();
         String cust = customerDropDown.getSelectionModel().getSelectedItem();
         LocalDate appointmentDate = startTime.getValue();
-        String startHour = starHourSpinner.getValue().toString();
-        String startMinute = startMinuteSpinner.getValue().toString();
+        String startTimeValue = startTimeSpinner.getValue().toString();
         String amPm = dayNightCombo.getValue().toString();
         String durationHour = durationHours.getValue().toString();
         String durationMinute = durationMinutes.getValue().toString();
-        
-        LocalTime apptStartTime = LocalTime.parse(startHour + ":" + startMinute);
-        if(amPm.equals("PM")){
-            apptStartTime.plusHours(12);
+        LocalTime apptStartTime = LocalTime.parse(startTimeValue);
+        if(amPm.equalsIgnoreCase("AM")){
+            apptStartTime = apptStartTime.minusHours(12);
         }
+        int custId = 0;
+        for (int i = 0; i < customerList.size(); i++){
+            if (customerList.get(i).getCustomerName().equals(cust)){
+                custId = customerList.get(i).getCustomerID();
+            }
+        }
+
         LocalTime apptEndTime = apptStartTime;
-        apptEndTime.plusHours(Integer.parseInt(durationHour));
-        apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
+        apptEndTime = apptEndTime.plusHours(Integer.parseInt(durationHour));
+        apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
+        LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
+        LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
+        if((Appointment.validateAppointment(title, description, location, contact, type, url)) &&
+                Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
+            System.out.println("APPOINTMENT ACCEPTED");
+//            DataSource datasource = new DataSource();
+//            datasource.open();
+//            datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
+//            datasource.close();
+        }
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
 
         
         

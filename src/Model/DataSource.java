@@ -8,12 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,6 +48,7 @@ public class DataSource {
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_CONTACT = "contact";
     private static final String COLUMN_URL = "url";
     private static final String COLUMN_START = "start";
     private static final String COLUMN_END = "end";
@@ -221,7 +221,6 @@ public class DataSource {
             statement.close();
             }
         catch(SQLException e){
-            e.printStackTrace();
         }
     }
     public String getUserNameFromEmail(String email){
@@ -252,6 +251,41 @@ public class DataSource {
         }
        return newUserName; 
     }
+    
+    public ObservableList getAppointments() throws SQLException{
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        String format  = "yyyy-MM-dd HH:mm:ss.S";
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
+        
+        try{
+            statement = conn.prepareStatement("SELECT " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
+                                              COLUMN_LOCATION + ", " + COLUMN_TYPE + ", " + COLUMN_CONTACT + ", " + COLUMN_URL  + ", " + COLUMN_START + ", " + COLUMN_END + " FROM " + 
+                                              TALBE_APPOINTMENT); 
+            System.out.println(statement.toString());
+            result = statement.executeQuery();
+            while (result.next()){
+                Appointment appointment = new Appointment(Integer.parseInt(result.getString(COLUMN_CUSTOMER_ID)),
+                                                          Integer.parseInt(result.getString(COLUMN_USER_ID)),
+                                                          result.getString(COLUMN_TITLE),
+                                                          result.getString(COLUMN_DESCRIPTION),
+                                                          result.getString(COLUMN_LOCATION),
+                                                          result.getString(COLUMN_CONTACT),
+                                                          result.getString(COLUMN_TYPE),
+                                                          result.getString(COLUMN_URL),
+                                                          LocalDateTime.parse(result.getString(COLUMN_START), df),
+                                                          LocalDateTime.parse(result.getString(COLUMN_END), df));
+                appointmentList.add(appointment);
+            }
+        }
+        catch(SQLException e){
+        }
+
+        return appointmentList;
+        
+    }
+    
     public ObservableList getCustomers() throws SQLException{
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         PreparedStatement statement = null;
@@ -265,7 +299,6 @@ public class DataSource {
                                               " INNER JOIN " + TABLE_ADDRESS + " ON " + TABLE_CUSTOMER + "." + COLUMN_ADDRESS_ID + " = " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ID
                                               + ") INNER JOIN " + TABLE_CITY + " ON " + TABLE_ADDRESS + "." + COLUMN_CITY_ID + " = " + TABLE_CITY + "." + COLUMN_CITY_ID + ") " +
                                               " INNER JOIN " + TABLE_COUNTRY + " ON " + TABLE_CITY + "." + COLUMN_COUNTRY_ID + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_ID + ")");
-            System.out.println(statement.toString());
             result = statement.executeQuery();
             
             while (result.next()){
@@ -289,6 +322,35 @@ public class DataSource {
         }
         return customerList;
     }
+    public void insertAppointment(int customerId, String title, String description, String location, String contact, String url, LocalDateTime start, LocalDateTime end,
+                                  String type, User user) throws SQLException {
+        PreparedStatement statement = null;
+        try{   
+            statement = conn.prepareStatement("INSERT INTO " + TALBE_APPOINTMENT + " (" + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " + COLUMN_LOCATION + ", " +  
+                    COLUMN_CONTACT + ", " + COLUMN_URL + ", " + COLUMN_START + ", " + COLUMN_END + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE +
+                                  ", " + COLUMN_LAST_UPDATED_BY + ", " + COLUMN_TYPE + ", " + COLUMN_USER_ID + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                                          + "(SELECT userId FROM user WHERE userName = ?))");
+            statement.setInt(1, customerId);
+            statement.setString(2, title);
+            statement.setString(3, description);
+            statement.setString(4, location);
+            statement.setString(5, contact);
+            statement.setString(6, url);
+            statement.setString(7, start.toString());
+            statement.setString(8, end.toString());
+            statement.setString(9, getTimeStamp());
+            statement.setString(10, user.getUserName());
+            statement.setString(11, getTimeStamp());
+            statement.setString(12, user.getUserName());
+            statement.setString(13, type);
+            statement.setString(14, user.getUserName());
+            System.out.println(statement.toString());
+            statement.executeUpdate();
+            statement.close();
+        }
+        catch(SQLException e){
+        } 
+    }
     
     public void insertCustomer(String customerName, String email, String customerPhone, String streetAddress, String postCode, String city, String country, User user) throws SQLException{
         //Using transaction state
@@ -310,6 +372,7 @@ public class DataSource {
             statement.setString(8, getTimeStamp());
             statement.setString(9, user.getUserName());
             statement.executeUpdate();
+            statement.close();
             
             statement2 = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_ADDRESS_ID + ", " +
                                COLUMN_ACTIVE + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY + ", " +
@@ -322,6 +385,7 @@ public class DataSource {
             statement2.setString(6, user.getUserName());
             statement2.setString(7, email);
             statement2.executeUpdate();
+            statement2.close();
             
             conn.commit();
             conn.setAutoCommit(true);
@@ -338,12 +402,13 @@ public class DataSource {
         statement.setString(1, Integer.toString(customer.getCustomerID()));
         System.out.println(statement.toString());
         statement.executeUpdate();
+        statement.close();
         
         statement2 = conn.prepareStatement("DELETE FROM " + TABLE_ADDRESS + " WHERE " + COLUMN_ADDRESS_ID + " = ?");
         statement2.setString(1, Integer.toString(customer.getAddressID()));
         System.out.println(statement2.toString());
         statement2.executeUpdate();
-        
+        statement2.close();
         conn.commit();
         conn.setAutoCommit(true);
     }
@@ -369,6 +434,7 @@ public class DataSource {
             statement.setString(8, Integer.toString(customer.getAddressID()));
             System.out.println(statement.toString());
             statement.executeUpdate();
+            statement.close();
             
             statement2 = conn.prepareStatement("UPDATE " + TABLE_CUSTOMER + " SET " + COLUMN_CUSTOMER_NAME + " = ?, " +  COLUMN_ADDRESS_ID + " = (SELECT addressId FROM address WHERE address = ?), "
                                                + COLUMN_ACTIVE + " = ?, " + COLUMN_LAST_UPDATE + " = ?, " + COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_EMAIL + " = ? WHERE " +
@@ -383,7 +449,7 @@ public class DataSource {
             statement2.setString(7, customer.getCustomerName());
             System.out.println(statement2.toString());
             statement2.executeUpdate();
-            
+            statement2.close();
             conn.commit();
             conn.setAutoCommit(true);
         }
@@ -400,7 +466,9 @@ public class DataSource {
             result = statement.executeQuery();
             while(result.next()){
                 countryList.add(result.getString(1));
-            }  
+                
+            }
+            statement.close();
         } 
         catch (SQLException ex) {
         }
@@ -420,6 +488,7 @@ public class DataSource {
             while(result.next()){
                 cityList.add(result.getString(1));
             }
+            statement.close();
         } 
         catch (SQLException ex) {
             }
@@ -438,6 +507,7 @@ public class DataSource {
                 while(result.next()){
                     countryList.add(new ArrayList<>(Arrays.asList(result.getString(COLUMN_COUNTRY), result.getString(COLUMN_CITY))));                    
                 }
+                statement.close();
             } 
             catch (SQLException ex) {
             }

@@ -1,15 +1,18 @@
 
 package Controller;
 
+import Model.Appointment;
 import Model.CalendarTools;
 import Model.DataSource;
 import Model.SceneChanger;
 import Model.User;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,10 +44,18 @@ public class MainController implements Initializable, ControllerInterface {
     private int monthOffset;
     private User user;
     private String currentUserName;
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {   
         monthOffset = 0;
+        try{
+            appointmentList = Appointment.getAppointments();
+        }
+        catch(SQLException e){
+            }
+        System.out.println(appointmentList);
         setCalendar(monthOffset);
     }
 
@@ -85,6 +96,7 @@ public class MainController implements Initializable, ControllerInterface {
     public int getCurrentOffset(){
         return monthOffset;
     }
+    
     
     /*
     This function clears the calendar all the elements the GridPane above the
@@ -141,6 +153,7 @@ public class MainController implements Initializable, ControllerInterface {
                 dayLabel.setText(dayList.get(dayIndex).get(0).toString());
                 if(dayList.get(dayIndex).get(1).equals(0)){
                     dayLabel.getStyleClass().add("inactiveDay");
+                    dayLabel.setId("inactiveDay");
                 }
                 else{
                     dayLabel.getStyleClass().add("activeDay");
@@ -152,7 +165,7 @@ public class MainController implements Initializable, ControllerInterface {
                 anchor.setTopAnchor(dayBox, 0.0);
                 anchor.getChildren().add(dayBox);
                 if(dayList.get(dayIndex).get(0).equals(CalendarTools.getDate()) &&
-                   monthOffset == 0){
+                   (monthOffset == 0) && dayLabel.getId() != "inactiveDay"){
                     anchor.getStyleClass().add("today");
                 }
                 else if (dayList.get(dayIndex).get(1).equals(0)){

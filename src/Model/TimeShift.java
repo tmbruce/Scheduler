@@ -9,7 +9,7 @@ import java.time.ZoneId;
 
 public class TimeShift {
     
-    public LocalDateTime dateTimeBuilder(LocalDate date, LocalTime time){
+    public static LocalDateTime dateTimeBuilder(LocalDate date, LocalTime time){
         return LocalDateTime.of(date, time);
     }
     
