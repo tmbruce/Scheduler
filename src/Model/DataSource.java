@@ -260,7 +260,7 @@ public class DataSource {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(format);
         
         try{
-            statement = conn.prepareStatement("SELECT " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
+            statement = conn.prepareStatement("SELECT " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
                                               COLUMN_LOCATION + ", " + COLUMN_TYPE + ", " + COLUMN_CONTACT + ", " + COLUMN_URL  + ", " + COLUMN_START + ", " + COLUMN_END + " FROM " + 
                                               TALBE_APPOINTMENT); 
             System.out.println(statement.toString());
@@ -276,6 +276,7 @@ public class DataSource {
                                                           result.getString(COLUMN_URL),
                                                           LocalDateTime.parse(result.getString(COLUMN_START), df),
                                                           LocalDateTime.parse(result.getString(COLUMN_END), df));
+                appointment.setAppointmentId(Integer.parseInt(result.getString(COLUMN_APPOINTMENT_ID)));
                 appointmentList.add(appointment);
             }
         }

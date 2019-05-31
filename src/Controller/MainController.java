@@ -189,6 +189,7 @@ public class MainController implements Initializable, ControllerInterface {
                     for(int c = 0; c < apptToCalendar.get(i).size() + 1; c++){
                          Button apptButton = new Button();
                          apptButton.setText(apptToCalendar.get(dayIndex).get(c).getTitle());
+                         apptButton.setId(String.valueOf(apptToCalendar.get(dayIndex).get(c).getAppointmentId()));
                          apptButton.getStyleClass().add("appointment");
                          
                          /*
@@ -197,7 +198,7 @@ public class MainController implements Initializable, ControllerInterface {
                          when it's clicked, full information about the appointment can be accessed.
                          */
                          apptButton.setOnAction((event)-> {
-                             System.out.println("APPOINTMENT BUTTON CLICKED");
+                             System.out.println("APPOINTMENT BUTTON CLICKED " + apptButton.getId());
                          });
                          dayBox.getChildren().add(apptButton);
                      }
