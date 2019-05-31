@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SettingsController">
+   <children>
+      <AnchorPane prefHeight="900.0" prefWidth="300.0" styleClass="navPane" stylesheets="@../CSS/main.css">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="75.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/calendar.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="203.0" styleClass="calendarOne" stylesheets="@../CSS/main.css" text="CalendarOne." textAlignment="CENTER" />
+            <Label layoutX="94.0" layoutY="242.0" styleClass="eot" text="Everywhere. On time." />
+            <VBox layoutY="302.0">
+               <children>
+                  <Button fx:id="calendarButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="70.0" prefWidth="300.0" styleClass="navButton" stylesheets="@../CSS/main.css" text="Calendar">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/calendarWhite.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Button fx:id="settingsButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onDragDetected="#settingsButtonHandler" prefHeight="70.0" prefWidth="300.0" styleClass="navButton" stylesheets="@../CSS/main.css" text="Settings">
+                     <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="85.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/settingsWhite.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="customersButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="300.0" styleClass="navButton" stylesheets="@../CSS/main.css" text="Customers">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/customerWhite.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="reportsButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="300.0" styleClass="navButton" stylesheets="@../CSS/main.css" text="Reports">
+                     <graphic>
+                        <ImageView fitHeight="34.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/statisticsWhite.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

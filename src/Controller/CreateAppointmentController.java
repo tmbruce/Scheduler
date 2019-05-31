@@ -26,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -53,7 +54,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
     @FXML
     private TextField contactField;
     @FXML
-    private TextField typeField;
+    private ChoiceBox<String> typeChoiceBox;
     @FXML
     private TextField URLfield;
     @FXML
@@ -66,6 +67,8 @@ public class CreateAppointmentController implements Initializable, ControllerInt
     private Spinner durationHours, durationMinutes;
     @FXML
     private ComboBox dayNightCombo;
+    @FXML
+    private Label errorMessageLabel, errorMessageLabel2;
     private Customer customer;
     private User user;
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -77,6 +80,8 @@ public class CreateAppointmentController implements Initializable, ControllerInt
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        errorMessageLabel.setVisible(false);
+        errorMessageLabel2.setVisible(false);
         try{
             DataSource datasource = new DataSource();
             datasource.open();
@@ -88,7 +93,8 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         for (int i = 0; i<customerList.size(); i++){
             customerDropDown.getItems().add(customerList.get(i).getCustomerName());
         }
-        
+
+        typeChoiceBox.getItems().addAll("Sales", "Innovation", "Status Update", "Strategy", "Customer Outreach");
         dayNightCombo.getItems().addAll("AM","PM");
         SpinnerValueFactory<Integer> hoursFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,8,0);
         durationHours.setValueFactory(hoursFactory);
@@ -132,7 +138,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String description = descriptionField.getText();
         String location = locationField.getText();
         String contact = contactField.getText();
-        String type = typeField.getText();
+        String type = typeChoiceBox.getSelectionModel().getSelectedItem();
         String url = URLfield.getText();
         String cust = customerDropDown.getSelectionModel().getSelectedItem();
         LocalDate appointmentDate = startTime.getValue();
@@ -141,8 +147,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String durationHour = durationHours.getValue().toString();
         String durationMinute = durationMinutes.getValue().toString();
         LocalTime apptStartTime = LocalTime.parse(startTimeValue);
-        if(amPm.equalsIgnoreCase("AM")){
-            apptStartTime = apptStartTime.minusHours(12);
+        System.out.println(apptStartTime);
+        if(amPm.equalsIgnoreCase("PM")){
+            apptStartTime = apptStartTime.plusHours(12);
         }
         int custId = 0;
         for (int i = 0; i < customerList.size(); i++){
@@ -156,19 +163,24 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
-        if((Appointment.validateAppointment(title, description, location, contact, type, url)) &&
+        if((Appointment.validateAppointment(title, description, location, contact, type, url, amPm)) &&
                 Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
-            System.out.println("APPOINTMENT ACCEPTED");
-//            DataSource datasource = new DataSource();
-//            datasource.open();
-//            datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
-//            datasource.close();
-        }
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        stage.close();
 
-        
-        
+            DataSource datasource = new DataSource();
+            datasource.open();
+            datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
+            datasource.close();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            stage.close();
+        }
+        else {
+            errorMessageLabel.setText("This appointment is either outside business hours");
+            errorMessageLabel2.setText("or conflicts with an existing appointment.");
+            errorMessageLabel.setStyle("-fx-text-fill: red;");
+            errorMessageLabel2.setStyle("-fx-text-fill: red;");
+            errorMessageLabel.setVisible(true);
+            errorMessageLabel2.setVisible(true);
+        }
     }
     
     @FXML

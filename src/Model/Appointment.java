@@ -133,10 +133,11 @@ public class Appointment {
     public void setEnd(LocalDateTime end) {
         this.end = end;
     } 
-    
+        
     //Validation methods
-    public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url){
-        if((title != null) && (description != null) && (location != null) && (contact != null) && (type != null) && (url != null)){  
+    public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url, String amPm){
+        if((title != null) && (description != null) && (location != null) && 
+           (contact != null) && (type != null) && (url != null) && (amPm != null)){  
         }
         return true;
     }
@@ -151,21 +152,28 @@ public class Appointment {
 
             if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
                 apptAvailable = false;
+                System.out.println("FALSE 1");
             }
             if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd))){
                 apptAvailable = false;
+                System.out.println("FALSE 2");
             }
+            System.out.println(start.getHour() + " " + endOfDay.getHour());
             if ((start.getHour() >= endOfDay.getHour()) || start.getHour() <= startOfDay.getHour()){
                 apptAvailable = false;
+                System.out.println("FALSE 3");
             }
             if((end.getHour() >= endOfDay.getHour() || end.getHour() <= startOfDay.getHour())){
                 apptAvailable = false;
+                System.out.println("FALSE 4");
             }
             if ((start.getDayOfWeek().toString().equals("SATURDAY")) || (start.getDayOfWeek().toString().equals("SUNDAY"))){
                 apptAvailable = false;
+                System.out.println("FALSE 5");
             }
             if ((end.getDayOfWeek().toString().equals("SATURDAY")) || (end.getDayOfWeek().toString().equals("SUNDAY"))){
                 apptAvailable = false;
+                System.out.println("FALSE 6");
             }
         }
         System.out.println(apptAvailable);

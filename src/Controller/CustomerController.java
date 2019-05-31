@@ -73,6 +73,7 @@ public class CustomerController implements Initializable, ControllerInterface{
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        customersButton.requestFocus(); 
         activeCustomerCheckBox.setDisable(true);
         customerIDcolumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));

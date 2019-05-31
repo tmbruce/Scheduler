@@ -11,6 +11,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +48,7 @@ public class MainController implements Initializable, ControllerInterface {
     private User user;
     private String currentUserName;
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    ArrayList<ArrayList<Appointment>> apptToCalendar = new ArrayList<>();
     
     
     @Override
@@ -55,7 +59,6 @@ public class MainController implements Initializable, ControllerInterface {
         }
         catch(SQLException e){
             }
-        System.out.println(appointmentList);
         setCalendar(monthOffset);
     }
 
@@ -65,6 +68,7 @@ public class MainController implements Initializable, ControllerInterface {
         SceneChanger sc = new SceneChanger();
         CreateAppointmentController cac = new CreateAppointmentController();
         sc.changeScenesNewWindow(event, "/Views/CreateAppointment.fxml", "CalendarOne - Create Appointment", user, cac);
+        calendarButton.requestFocus();
     }
     
     @FXML
@@ -72,6 +76,7 @@ public class MainController implements Initializable, ControllerInterface {
         SceneChanger sc = new SceneChanger();
         CustomerController customerController = new CustomerController();
         sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);  
+        customersButton.requestFocus();
     }
     
     //This function moves the calendar ahead one month from the current month
@@ -122,19 +127,18 @@ public class MainController implements Initializable, ControllerInterface {
         int numberDaysCurrent = CalendarTools.getDaysInMonth(monthOffset);
         int firstCalendarDay = numberDaysPrevious - (monthStartDay - 2);
         ArrayList<ArrayList<Integer>> dayList = new ArrayList<>();
-        //dayList.add(new ArrayList<>());
         int arrayIndex = 0;
 
         //Get the days of the preceeding month calendar
         for(int i = firstCalendarDay; i < (firstCalendarDay + (monthStartDay - 1)); i++){
             dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 0)));
-            arrayIndex++;   
+            arrayIndex++;
         }
         
         //Get the days of the current month
         for (int i = 1; i <= numberDaysCurrent; i++){
             dayList.add(arrayIndex, new ArrayList<>(Arrays.asList(i, 1)));
-            arrayIndex++;  
+            arrayIndex++;
         }
         
         //Get the days of the next month to fill out the remaining days on the calendar
@@ -144,6 +148,31 @@ public class MainController implements Initializable, ControllerInterface {
             arrayIndex++;
         }
         
+        //2d ArrayList of size equal to the number of days on the calendar
+//        dayList.forEach((_item) -> {
+//            apptToCalendar.add(new ArrayList<>());
+//        });
+        
+        for (int i = 1; i < dayList.size(); i++){
+            apptToCalendar.add(new ArrayList<>());
+        }
+        
+        //Iterate through the array of appointments, add appointments to set on current calendar with offset of 0
+        for (int i = 0; i < appointmentList.size(); i++){
+            //Iterate through days of previous month
+            if (appointmentList.get(i).getStart().getMonth().toString().equalsIgnoreCase(CalendarTools.getMonth(monthOffset + (-1)))){
+                int indexPosition = firstCalendarDay - appointmentList.get(i).getStart().getDayOfMonth();
+                apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+            }
+            //Iterate thorugh days of current month
+            if (appointmentList.get(i).getStart().getMonth().toString().equalsIgnoreCase(CalendarTools.getMonth(monthOffset))){
+                int indexPosition = ((monthStartDay - 2) + appointmentList.get(i).getStart().getDayOfMonth());
+                apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+            }
+        }
+        System.out.println(apptToCalendar);
+        
+
         //Set all days on the calendar along with styling to indicate if the day is
         //a day in the current month, a day in a previous or upcoming month, or the current day
         int dayIndex = 0;
@@ -161,6 +190,15 @@ public class MainController implements Initializable, ControllerInterface {
 
                 VBox dayBox = new VBox();
                 dayBox.getChildren().add(dayLabel);
+                
+                if(apptToCalendar.get(i).get(0).getStart().getDayOfMonth() == dayIndex){
+                    System.out.println("ENTERED FUNCTION TO ADD APPOINTMENT");
+                    for(int c = 0; c < apptToCalendar.get(i).size(); c++){
+                         Label apptLabel = new Label();
+                         apptLabel.setText(apptToCalendar.get(i).get(c).getTitle());
+                         dayBox.getChildren().add(apptLabel);
+                     }
+                }
                 AnchorPane anchor = new AnchorPane();
                 anchor.setTopAnchor(dayBox, 0.0);
                 anchor.getChildren().add(dayBox);

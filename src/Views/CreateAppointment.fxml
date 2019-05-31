@@ -76,7 +76,7 @@
                   <TextField fx:id="descriptionField" promptText="Description" />
                   <TextField fx:id="locationField" promptText="Location" />
                   <TextField fx:id="contactField" promptText="Contact" />
-                  <TextField fx:id="typeField" promptText="Type" />
+                  <ChoiceBox fx:id="typeChoiceBox" prefHeight="25.0" prefWidth="255.0" />
                   <TextField fx:id="URLfield" promptText="URL" />
                   <ChoiceBox fx:id="customerDropDown" prefHeight="25.0" prefWidth="239.0" />
                   <DatePicker fx:id="startTime" prefHeight="25.0" prefWidth="149.0" />
@@ -108,5 +108,19 @@
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
          </children>
       </HBox>
+      <VBox layoutX="29.0" layoutY="619.0">
+         <children>
+            <Label fx:id="errorMessageLabel" alignment="CENTER" prefHeight="17.0" prefWidth="323.0" text="This appointment is either outside business hours">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorMessageLabel2" alignment="CENTER" prefHeight="17.0" prefWidth="323.0" text="or conflicts with an existing appointment.">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
