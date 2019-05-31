@@ -9,10 +9,11 @@ import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -111,6 +112,7 @@ public class MainController implements Initializable, ControllerInterface {
         nodeList.remove(8, nodeList.size());
     }
     
+    
     /*
     This function initializes the days on the calendar by creating an array
     equal to the number of day spaces in the calendar. It then calculates the
@@ -197,8 +199,22 @@ public class MainController implements Initializable, ControllerInterface {
                          Its purpose is to add an event handler to the appointment as displayed on the calendar, so that
                          when it's clicked, full information about the appointment can be accessed.
                          */
+                         System.out.println(apptToCalendar);
+
                          apptButton.setOnAction((event)-> {
-                             System.out.println("APPOINTMENT BUTTON CLICKED " + apptButton.getId());
+                             for (int a = 0; a < appointmentList.size(); a++){
+                                 if (appointmentList.get(a).getAppointmentId() == Integer.parseInt(apptButton.getId())){
+                                     Appointment appointment = appointmentList.get(a);
+                                     SceneChanger sc = new SceneChanger();
+                                     EditAppointmentController eac = new EditAppointmentController();
+                                     try {
+                                         sc.changeScenesNewWindow(event, "/Views/EditAppointment.fxml", "CalendarOne - Edit Appointment", user, appointment, eac);
+                                     } 
+                                     catch (IOException ex) {
+                                        }
+                                     
+                                 }
+                             }
                          });
                          dayBox.getChildren().add(apptButton);
                      }

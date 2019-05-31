@@ -43,7 +43,7 @@ public class DataSource {
     private static final String COLUMN_CREATED_BY = "createdBy";
     
     //Appointment table
-    private static final String TALBE_APPOINTMENT = "appointment";
+    private static final String TABLE_APPOINTMENT = "appointment";
     private static final String COLUMN_APPOINTMENT_ID = "appointmentId";
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_DESCRIPTION = "description";
@@ -262,7 +262,7 @@ public class DataSource {
         try{
             statement = conn.prepareStatement("SELECT " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
                                               COLUMN_LOCATION + ", " + COLUMN_TYPE + ", " + COLUMN_CONTACT + ", " + COLUMN_URL  + ", " + COLUMN_START + ", " + COLUMN_END + " FROM " + 
-                                              TALBE_APPOINTMENT); 
+                                              TABLE_APPOINTMENT); 
             System.out.println(statement.toString());
             result = statement.executeQuery();
             while (result.next()){
@@ -323,34 +323,56 @@ public class DataSource {
         }
         return customerList;
     }
+    public void updateAppointment(int customerId, String title, String description, String location, String contact, String url, LocalDateTime start, LocalDateTime end,
+                                  String type, User user, Appointment appointment) throws SQLException{
+        PreparedStatement statement = null;
+        
+        statement = conn.prepareStatement("UPDATE " + TABLE_APPOINTMENT + " SET " + COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_TITLE + " = ?, " + COLUMN_DESCRIPTION + " = ?, " + COLUMN_LOCATION + 
+                                          " =  ?, " + COLUMN_CONTACT + " = ?, " + COLUMN_URL + " = ?, " + COLUMN_START + " = ?, " + COLUMN_END + " = ?, " + COLUMN_LAST_UPDATE + " = ?, " +
+                                          COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_TYPE + " = ?, " + COLUMN_USER_ID + " = (SELECT userId FROM user WHERE userName = ?) "+ " WHERE appointmentId = ?");
+        statement.setInt(1, customerId);
+        statement.setString(2, title);
+        statement.setString(3, description);
+        statement.setString(4, location);
+        statement.setString(5, contact);
+        statement.setString(6, url);
+        statement.setString(7, start.toString());
+        statement.setString(8, end.toString());
+        statement.setString(9, getTimeStamp());
+        statement.setString(10, user.getUserName());
+        statement.setString(11, type);
+        statement.setString(12, user.getUserName());
+        statement.setInt(13, appointment.getAppointmentId());
+        System.out.println(statement.toString());
+        statement.executeUpdate();
+        statement.close();   
+    }
+    
     public void insertAppointment(int customerId, String title, String description, String location, String contact, String url, LocalDateTime start, LocalDateTime end,
                                   String type, User user) throws SQLException {
         PreparedStatement statement = null;
-        try{   
-            statement = conn.prepareStatement("INSERT INTO " + TALBE_APPOINTMENT + " (" + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " + COLUMN_LOCATION + ", " +  
-                    COLUMN_CONTACT + ", " + COLUMN_URL + ", " + COLUMN_START + ", " + COLUMN_END + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE +
-                                  ", " + COLUMN_LAST_UPDATED_BY + ", " + COLUMN_TYPE + ", " + COLUMN_USER_ID + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-                                          + "(SELECT userId FROM user WHERE userName = ?))");
-            statement.setInt(1, customerId);
-            statement.setString(2, title);
-            statement.setString(3, description);
-            statement.setString(4, location);
-            statement.setString(5, contact);
-            statement.setString(6, url);
-            statement.setString(7, start.toString());
-            statement.setString(8, end.toString());
-            statement.setString(9, getTimeStamp());
-            statement.setString(10, user.getUserName());
-            statement.setString(11, getTimeStamp());
-            statement.setString(12, user.getUserName());
-            statement.setString(13, type);
-            statement.setString(14, user.getUserName());
-            System.out.println(statement.toString());
-            statement.executeUpdate();
-            statement.close();
-        }
-        catch(SQLException e){
-        } 
+  
+        statement = conn.prepareStatement("INSERT INTO " + TABLE_APPOINTMENT + " (" + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " + COLUMN_LOCATION + ", " +  
+                COLUMN_CONTACT + ", " + COLUMN_URL + ", " + COLUMN_START + ", " + COLUMN_END + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE +
+                              ", " + COLUMN_LAST_UPDATED_BY + ", " + COLUMN_TYPE + ", " + COLUMN_USER_ID + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                                      + "(SELECT userId FROM user WHERE userName = ?))");
+        statement.setInt(1, customerId);
+        statement.setString(2, title);
+        statement.setString(3, description);
+        statement.setString(4, location);
+        statement.setString(5, contact);
+        statement.setString(6, url);
+        statement.setString(7, start.toString());
+        statement.setString(8, end.toString());
+        statement.setString(9, getTimeStamp());
+        statement.setString(10, user.getUserName());
+        statement.setString(11, getTimeStamp());
+        statement.setString(12, user.getUserName());
+        statement.setString(13, type);
+        statement.setString(14, user.getUserName());
+        System.out.println(statement.toString());
+        statement.executeUpdate();
+        statement.close();
     }
     
     public void insertCustomer(String customerName, String email, String customerPhone, String streetAddress, String postCode, String city, String country, User user) throws SQLException{
@@ -358,41 +380,39 @@ public class DataSource {
         conn.setAutoCommit(false);
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
-        try{
-            statement = conn.prepareStatement("INSERT INTO " + TABLE_ADDRESS + " (" + COLUMN_ADDRESS + ", " + COLUMN_ADDRESS2 + ", " + 
-                                              COLUMN_CITY_ID + ", " + COLUMN_POST_CODE + ", " + COLUMN_PHONE + ", " + COLUMN_CREATE_DATE + ", " +
-                                              COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY +
-                                              ") VALUES (?, ?, (SELECT cityId FROM city WHERE city = ?), ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, streetAddress);
-            statement.setString(2, city);
-            statement.setString(3, city);
-            statement.setString(4, postCode);
-            statement.setString(5, customerPhone);
-            statement.setString(6, getTimeStamp());
-            statement.setString(7, user.getUserName());
-            statement.setString(8, getTimeStamp());
-            statement.setString(9, user.getUserName());
-            statement.executeUpdate();
-            statement.close();
-            
-            statement2 = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_ADDRESS_ID + ", " +
-                               COLUMN_ACTIVE + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY + ", " +
-                               COLUMN_EMAIL + ") VALUES (?, (SELECT LAST_INSERT_ID()), ?, ?, ?, ?, ?, ?)");
-            statement2.setString(1, customerName);
-            statement2.setInt(2, 1);
-            statement2.setString(3, getTimeStamp());
-            statement2.setString(4, user.getUserName());
-            statement2.setString(5, getTimeStamp());
-            statement2.setString(6, user.getUserName());
-            statement2.setString(7, email);
-            statement2.executeUpdate();
-            statement2.close();
-            
-            conn.commit();
-            conn.setAutoCommit(true);
-        }
-        catch(SQLException e){
-        }
+
+        statement = conn.prepareStatement("INSERT INTO " + TABLE_ADDRESS + " (" + COLUMN_ADDRESS + ", " + COLUMN_ADDRESS2 + ", " + 
+                                          COLUMN_CITY_ID + ", " + COLUMN_POST_CODE + ", " + COLUMN_PHONE + ", " + COLUMN_CREATE_DATE + ", " +
+                                          COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY +
+                                          ") VALUES (?, ?, (SELECT cityId FROM city WHERE city = ?), ?, ?, ?, ?, ?, ?)");
+        statement.setString(1, streetAddress);
+        statement.setString(2, city);
+        statement.setString(3, city);
+        statement.setString(4, postCode);
+        statement.setString(5, customerPhone);
+        statement.setString(6, getTimeStamp());
+        statement.setString(7, user.getUserName());
+        statement.setString(8, getTimeStamp());
+        statement.setString(9, user.getUserName());
+        statement.executeUpdate();
+        statement.close();
+
+        statement2 = conn.prepareStatement("INSERT INTO " + TABLE_CUSTOMER + " (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_ADDRESS_ID + ", " +
+                           COLUMN_ACTIVE + ", " + COLUMN_CREATE_DATE + ", " + COLUMN_CREATED_BY + ", " + COLUMN_LAST_UPDATE + ", " + COLUMN_LAST_UPDATED_BY + ", " +
+                           COLUMN_EMAIL + ") VALUES (?, (SELECT LAST_INSERT_ID()), ?, ?, ?, ?, ?, ?)");
+        statement2.setString(1, customerName);
+        statement2.setInt(2, 1);
+        statement2.setString(3, getTimeStamp());
+        statement2.setString(4, user.getUserName());
+        statement2.setString(5, getTimeStamp());
+        statement2.setString(6, user.getUserName());
+        statement2.setString(7, email);
+        statement2.executeUpdate();
+        statement2.close();
+
+        conn.commit();
+        conn.setAutoCommit(true);
+
     }
     public void deleteCustomer(Customer customer, User user) throws SQLException{
         conn.setAutoCommit(false);

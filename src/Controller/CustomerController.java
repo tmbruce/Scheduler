@@ -67,7 +67,7 @@ public class CustomerController implements Initializable, ControllerInterface{
     private User user;
     private Customer customer;
     private Customer detailCustomer;
-    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
     @FXML
     public static Button refreshButton;
 
@@ -91,8 +91,7 @@ public class CustomerController implements Initializable, ControllerInterface{
             customerTable.getItems().addAll(customerList);
         }
         catch(SQLException e){
-            
-        }   
+        }
     }
         
         @FXML
@@ -110,8 +109,7 @@ public class CustomerController implements Initializable, ControllerInterface{
              }
              else {
                  activeCustomerCheckBox.setSelected(false);
-             }
-             
+             } 
         } 
         
         @FXML
@@ -131,14 +129,14 @@ public class CustomerController implements Initializable, ControllerInterface{
         @FXML
         private void editButtonHandler(ActionEvent event) throws IOException{
             SceneChanger sc = new SceneChanger();
-            Customer customer = this.customerTable.getSelectionModel().getSelectedItem();
+            customer = this.customerTable.getSelectionModel().getSelectedItem();
             EditCustomerController ecc = new EditCustomerController();
             sc.changeScenesNewWindow(event, "/Views/EditCustomer.fxml", "CalendarOne - Edit Customer", user, customer, ecc);
         }
         
         @FXML
         private void deleteButtonHandler(ActionEvent event) throws IOException{
-            Customer customer = this.customerTable.getSelectionModel().getSelectedItem();
+            customer = this.customerTable.getSelectionModel().getSelectedItem();
             SceneChanger sc = new SceneChanger();
             PopUpController popUp = new PopUpController();
             sc.changeScenesNewWindow(event, "/Views/PopUp.fxml", "CalendarOne - Alert", user, customer, popUp);
@@ -158,6 +156,8 @@ public class CustomerController implements Initializable, ControllerInterface{
         catch(SQLException e){
             }
         }
+        
+
 
     @Override
     public void preloadData(User user) {

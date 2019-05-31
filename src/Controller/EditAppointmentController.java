@@ -5,11 +5,12 @@
  */
 package Controller;
 
+import static Controller.CustomerController.customerList;
+import Model.Appointment;
 import Model.Customer;
 import Model.DataSource;
-import Model.User;
-import Model.Appointment;
 import Model.TimeShift;
+import Model.User;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -33,18 +34,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
-
 /**
  * FXML Controller class
  *
- * @author travi
+ * @author tbruce
  */
-public class CreateAppointmentController implements Initializable, ControllerInterface {
+public class EditAppointmentController implements Initializable, ControllerInterfaceApp {
 
-    @FXML
-    private Button cancelButton;
-    @FXML
-    private Button saveButton;
     @FXML
     private TextField titleField;
     @FXML
@@ -62,46 +58,55 @@ public class CreateAppointmentController implements Initializable, ControllerInt
     @FXML
     private DatePicker startTime;
     @FXML
-    private Spinner startTimeSpinner;    
+    private Spinner startTimeSpinner;
     @FXML
-    private Spinner durationHours, durationMinutes;
+    private ComboBox<String> dayNightCombo;
     @FXML
-    private ComboBox dayNightCombo;
+    private Spinner<Integer> durationHours;
     @FXML
-    private Label errorMessageLabel, errorMessageLabel2;
-    private Customer customer;
+    private Spinner<Integer> durationMinutes;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private Label errorMessageLabel;
+    @FXML
+    private Label errorMessageLabel2;
     private User user;
+    private Appointment appointment;
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        errorMessageLabel.setVisible(false);
-        errorMessageLabel2.setVisible(false);
         try{
             DataSource datasource = new DataSource();
             datasource.open();
             customerList = datasource.getCustomers();
+            System.out.println(customerList);
             datasource.close();
-        }
+           }
         catch(SQLException e){
         }
-        for (int i = 0; i<customerList.size(); i++){
-            customerDropDown.getItems().add(customerList.get(i).getCustomerName());
-        }
-
+        errorMessageLabel.setVisible(false);
+        errorMessageLabel2.setVisible(false);
         typeChoiceBox.getItems().addAll("Sales", "Innovation", "Status Update", "Strategy", "Customer Outreach");
         dayNightCombo.getItems().addAll("AM","PM");
+        
+        for (int i = 0; i < customerList.size(); i++){
+            customerDropDown.getItems().add(customerList.get(i).getCustomerName());
+        }
+        
         SpinnerValueFactory<Integer> hoursFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,8,0);
         durationHours.setValueFactory(hoursFactory);
         SpinnerValueFactory<Integer> minutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00,59,0);
         durationMinutes.setValueFactory(minutesFactory);
 
-        String pattern = "hh:mm";
+        
+        String pattern = "kk:mm";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         SpinnerValueFactory value = new SpinnerValueFactory<LocalTime>() {
         {
@@ -110,30 +115,28 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         @Override
         public void decrement(int steps) {
             if (getValue() == null)
-                setValue(LocalTime.now());
+                setValue(appointment.getStart().toLocalTime());
             else {
                 LocalTime time = (LocalTime) getValue();
                 setValue(time.minusMinutes(steps));
             }
         }
-
         @Override
         public void increment(int steps) {
             if (this.getValue() == null)
-                setValue(LocalTime.now());
+                setValue(appointment.getStart().toLocalTime());
             else {
                 LocalTime time = (LocalTime) getValue();
                 setValue(time.plusMinutes(steps));
-            }
-        }
+            } 
+        } 
     };
-        startTimeSpinner.setValueFactory(value);
+        startTimeSpinner.setValueFactory(value);  
 
-        
-    }
-       
+}
+
     @FXML
-    public void saveButtonHandler(ActionEvent event)throws SQLException {
+    private void saveButtonHandler(ActionEvent event) throws SQLException {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
@@ -143,7 +146,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String cust = customerDropDown.getSelectionModel().getSelectedItem();
         LocalDate appointmentDate = startTime.getValue();
         String startTimeValue = startTimeSpinner.getValue().toString();
-        String amPm = dayNightCombo.getValue().toString();
+        String amPm = dayNightCombo.getValue();
         String durationHour = durationHours.getValue().toString();
         String durationMinute = durationMinutes.getValue().toString();
         LocalTime apptStartTime = LocalTime.parse(startTimeValue);
@@ -167,7 +170,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
 
             DataSource datasource = new DataSource();
             datasource.open();
-            datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
+            datasource.updateAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user, appointment);
             datasource.close();
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
@@ -181,15 +184,38 @@ public class CreateAppointmentController implements Initializable, ControllerInt
             errorMessageLabel2.setVisible(true);
         }
     }
-    
+
     @FXML
-    public void cancelButtonHandler(ActionEvent event){
+    private void cancelButtonHandler(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
     @Override
-    public void preloadData(User user) {
+    public void preloadData(User user, Appointment appointment) {
         this.user = user;
+        this.appointment = appointment;
+        titleField.setText(appointment.getTitle());
+        descriptionField.setText(appointment.getDescription());
+        locationField.setText(appointment.getLocation());
+        contactField.setText(appointment.getContact());
+        URLfield.setText(appointment.getUrl());
+        for (int i = 0; i < customerList.size(); i++){
+            if (customerList.get(i).getCustomerID() == appointment.getCustomerId()){
+                customerDropDown.getSelectionModel().select(customerList.indexOf(customerList.get(i)));
+            }
+        }
+        typeChoiceBox.getSelectionModel().select(appointment.getType());
+        startTime.setValue(appointment.getStart().toLocalDate());
+        if(appointment.getStart().getHour() < 12){
+            dayNightCombo.getSelectionModel().select("AM");
+        }
+        else{
+            dayNightCombo.getSelectionModel().select("PM");
+        }
+        startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
+        durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour());
+        durationMinutes.getValueFactory().setValue(appointment.getEnd().getMinute()- appointment.getStart().getMinute());
     }
+    
 }
