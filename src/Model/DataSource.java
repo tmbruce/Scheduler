@@ -263,7 +263,6 @@ public class DataSource {
             statement = conn.prepareStatement("SELECT " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
                                               COLUMN_LOCATION + ", " + COLUMN_TYPE + ", " + COLUMN_CONTACT + ", " + COLUMN_URL  + ", " + COLUMN_START + ", " + COLUMN_END + " FROM " + 
                                               TABLE_APPOINTMENT); 
-            System.out.println(statement.toString());
             result = statement.executeQuery();
             while (result.next()){
                 Appointment appointment = new Appointment(Integer.parseInt(result.getString(COLUMN_CUSTOMER_ID)),
@@ -371,6 +370,14 @@ public class DataSource {
         statement.setString(13, type);
         statement.setString(14, user.getUserName());
         System.out.println(statement.toString());
+        statement.executeUpdate();
+        statement.close();
+    }
+    
+    public void deleteAppointment(Appointment appointment, User user) throws SQLException{
+        PreparedStatement statement = null;
+        statement = conn.prepareStatement("DELETE FROM " + TABLE_APPOINTMENT + " WHERE " + COLUMN_APPOINTMENT_ID + " = ?");
+        statement.setInt(1, appointment.getAppointmentId());
         statement.executeUpdate();
         statement.close();
     }

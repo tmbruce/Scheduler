@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -101,7 +99,6 @@ public class MainController implements Initializable, ControllerInterface {
         return monthOffset;
     }
     
-    
     /*
     This function clears the calendar all the elements the GridPane above the
     8th index. The first 7 nodes in the index are labels for the calendar days.
@@ -111,7 +108,6 @@ public class MainController implements Initializable, ControllerInterface {
         ObservableList<Node> nodeList = calendarGrid.getChildren();
         nodeList.remove(8, nodeList.size());
     }
-    
     
     /*
     This function initializes the days on the calendar by creating an array
@@ -158,12 +154,21 @@ public class MainController implements Initializable, ControllerInterface {
             //Iterate through days of previous month
             if (appointmentList.get(i).getStart().getMonth().toString().equalsIgnoreCase(CalendarTools.getMonth(monthOffset + (-1)))){
                 int indexPosition = appointmentList.get(i).getStart().getDayOfMonth() - firstCalendarDay;
-                apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+                if (indexPosition > 0) {
+                    apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+                }
             }
             //Iterate thorugh days of current month
             if (appointmentList.get(i).getStart().getMonth().toString().equalsIgnoreCase(CalendarTools.getMonth(monthOffset))){
                 int indexPosition = ((monthStartDay - 2) + appointmentList.get(i).getStart().getDayOfMonth());
                 apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+            }
+            //Iterage through the days of the following month
+            if (appointmentList.get(i).getStart().getMonth().toString().equalsIgnoreCase(CalendarTools.getMonth(monthOffset + (+1)))){
+                int indexPosition = ((monthStartDay - 2) + numberDaysCurrent + appointmentList.get(i).getStart().getDayOfMonth());
+                if (indexPosition < 42){
+                    apptToCalendar.get(indexPosition).add(appointmentList.get(i));
+                } 
             }
         }
 
@@ -199,7 +204,6 @@ public class MainController implements Initializable, ControllerInterface {
                          Its purpose is to add an event handler to the appointment as displayed on the calendar, so that
                          when it's clicked, full information about the appointment can be accessed.
                          */
-                         System.out.println(apptToCalendar);
 
                          apptButton.setOnAction((event)-> {
                              for (int a = 0; a < appointmentList.size(); a++){

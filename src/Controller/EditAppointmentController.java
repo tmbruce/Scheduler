@@ -5,12 +5,13 @@
  */
 package Controller;
 
-import static Controller.CustomerController.customerList;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataSource;
+import Model.SceneChanger;
 import Model.TimeShift;
 import Model.User;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -66,6 +67,8 @@ public class EditAppointmentController implements Initializable, ControllerInter
     @FXML
     private Spinner<Integer> durationMinutes;
     @FXML
+    private Button deleteButton;
+    @FXML
     private Button saveButton;
     @FXML
     private Button cancelButton;
@@ -86,7 +89,6 @@ public class EditAppointmentController implements Initializable, ControllerInter
             DataSource datasource = new DataSource();
             datasource.open();
             customerList = datasource.getCustomers();
-            System.out.println(customerList);
             datasource.close();
            }
         catch(SQLException e){
@@ -188,6 +190,15 @@ public class EditAppointmentController implements Initializable, ControllerInter
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
+    
+    @FXML
+    private void deleteHandler(ActionEvent event) throws IOException{
+        SceneChanger sc = new SceneChanger();
+        PopUpControllerAppt popUp = new PopUpControllerAppt();
+        sc.changeScenesNewWindow(event, "/Views/PopUpAppt.fxml", "CalendarOne - Alert", user, appointment, popUp);
+        Stage stage = (Stage) deleteButton.getScene().getWindow();
         stage.close();
     }
 

@@ -115,7 +115,8 @@ public class CustomerController implements Initializable, ControllerInterface{
         @FXML
         private void calendarButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
-        sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne");
+        MainController mc = new MainController();
+        sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mc);
         }
         
         @FXML

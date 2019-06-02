@@ -127,9 +127,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
             }
         }
     };
-        startTimeSpinner.setValueFactory(value);
-
-        
+        startTimeSpinner.setValueFactory(value); 
     }
        
     @FXML
@@ -147,9 +145,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String durationHour = durationHours.getValue().toString();
         String durationMinute = durationMinutes.getValue().toString();
         LocalTime apptStartTime = LocalTime.parse(startTimeValue);
-        if(amPm.equalsIgnoreCase("PM")){
-            apptStartTime = apptStartTime.plusHours(12);
-        }
+//        if(amPm.equalsIgnoreCase("PM")){
+//            apptStartTime = apptStartTime.plusHours(12);
+//        }
         int custId = 0;
         for (int i = 0; i < customerList.size(); i++){
             if (customerList.get(i).getCustomerName().equals(cust)){
