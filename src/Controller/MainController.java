@@ -9,6 +9,8 @@ import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -18,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -53,13 +56,25 @@ public class MainController implements Initializable, ControllerInterface {
         monthOffset = 0;
         try{
             appointmentList = Appointment.getAppointments();
+            for (int i = 0; i < appointmentList.size(); i++){
+                 if (appointmentList.get(i).getStart().isBefore(LocalDateTime.now().plusMinutes(15))){
+                     DataSource datasource = new DataSource();
+                     datasource.open();
+                     String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
+                     datasource.close();
+                     LocalTime timeRemaining = appointmentList.get(i).getStart().toLocalTime().minusMinutes(LocalTime.now().getMinute());
+                     
+                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                     alert.setHeaderText("Attention!");
+                     alert.setContentText("You have a meeting scheduled with " + customerName + " in " + timeRemaining + " minutes.");
+                 }
+            }  
         }
         catch(SQLException e){
             }
         setCalendar(monthOffset);
     }
 
-    
     @FXML
     public void createAppointmentHandler(ActionEvent event) throws IOException{
         SceneChanger sc = new SceneChanger();

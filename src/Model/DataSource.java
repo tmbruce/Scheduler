@@ -283,14 +283,25 @@ public class DataSource {
         }
 
         return appointmentList;
-        
+    }
+    public String getCustomerFromID(int userId) throws SQLException{
+        String customerName = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        statement = conn.prepareStatement("SELECT " + COLUMN_CUSTOMER_NAME + " FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_ID + " = ?");
+        statement.setInt(1, userId);
+        result = statement.executeQuery();
+        while (result.next()){
+            customerName = result.getString(COLUMN_CUSTOMER_NAME);
+        }
+        return customerName;
     }
     
     public ObservableList getCustomers() throws SQLException{
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
         PreparedStatement statement = null;
         ResultSet result = null;
-        try{
+
             statement = conn.prepareStatement("SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ID + ", " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_NAME + ", " +
                                               TABLE_ADDRESS + "." + COLUMN_ADDRESS + ", " + TABLE_ADDRESS + "." + COLUMN_ADDRESS2 + ", " +
                                               TABLE_ADDRESS + "." + COLUMN_POST_CODE + ", " + TABLE_CITY + "." + COLUMN_CITY + ", " + TABLE_COUNTRY + "." + COLUMN_COUNTRY + ", " +
@@ -316,10 +327,6 @@ public class DataSource {
                 customerList.add(customer);
             }
 
-        }
-        catch(SQLException e){
-            
-        }
         return customerList;
     }
     public void updateAppointment(int customerId, String title, String description, String location, String contact, String url, LocalDateTime start, LocalDateTime end,
