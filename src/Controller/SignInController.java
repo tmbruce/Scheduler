@@ -368,9 +368,5 @@ public class SignInController implements Initializable {
         registerPassword2Field.setPromptText("retaper le mot de passe");        //re-enter password
         registerButton.setText("registre");                                     //register
         alreadyRegistered.setText("Déjà enregistré? - Se connecter ici");      //Already registered? - Sign in here.
-    }
-    
-    
-
-    
+    }  
 }

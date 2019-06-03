@@ -20,7 +20,4 @@ public class TimeShift {
     public LocalDateTime UTCtoLocal(LocalDateTime localDateTime){
         return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
-    
-    
-    
 }

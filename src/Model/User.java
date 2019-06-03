@@ -78,8 +78,4 @@ public class User {
     public static boolean validateEmailAddress(String emailAddress){
         return (emailAddress.contains("@")) && (emailAddress.contains("."));
     }
-    
-    
-    
-    
 }

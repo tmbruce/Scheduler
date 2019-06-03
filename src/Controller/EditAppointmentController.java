@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.Appointment;
@@ -134,11 +130,10 @@ public class EditAppointmentController implements Initializable, ControllerInter
         } 
     };
         startTimeSpinner.setValueFactory(value);  
-
 }
 
     @FXML
-    private void saveButtonHandler(ActionEvent event) throws SQLException {
+    public void saveButtonHandler(ActionEvent event) throws SQLException {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
@@ -188,13 +183,13 @@ public class EditAppointmentController implements Initializable, ControllerInter
     }
 
     @FXML
-    private void cancelButtonHandler(ActionEvent event) {
+    public void cancelButtonHandler(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
     
     @FXML
-    private void deleteHandler(ActionEvent event) throws IOException{
+    public void deleteHandler(ActionEvent event) throws IOException{
         SceneChanger sc = new SceneChanger();
         PopUpControllerAppt popUp = new PopUpControllerAppt();
         sc.changeScenesNewWindow(event, "/Views/PopUpAppt.fxml", "CalendarOne - Alert", user, appointment, popUp);
@@ -223,8 +218,14 @@ public class EditAppointmentController implements Initializable, ControllerInter
         }
         else{
             dayNightCombo.getSelectionModel().select("PM");
+            startTime.setValue(appointment.getStart().minusHours(12).toLocalDate());
         }
-        startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
+        if(appointment.getStart().getHour() > 11){
+            startTimeSpinner.getValueFactory().setValue(appointment.getStart().minusHours(12).toLocalTime());
+        }
+        else{
+            startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
+        }
         durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour());
         durationMinutes.getValueFactory().setValue(appointment.getEnd().getMinute()- appointment.getStart().getMinute());
     }

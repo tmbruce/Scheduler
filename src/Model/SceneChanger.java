@@ -92,6 +92,4 @@ public class SceneChanger {
         stage.setScene(scene);
         stage.show();
     }
-        
-    
 }

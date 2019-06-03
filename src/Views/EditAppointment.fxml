@@ -70,7 +70,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox prefHeight="450.0" prefWidth="303.0" spacing="25.0">
+            <VBox prefHeight="450.0" prefWidth="303.0" spacing="20.0">
                <children>
                   <TextField fx:id="titleField" prefHeight="25.0" prefWidth="267.0" promptText="Title" />
                   <TextField fx:id="descriptionField" promptText="Description" />
@@ -97,7 +97,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label layoutX="149.0" layoutY="47.0" text="Create New Appointment">
+      <Label layoutX="183.0" layoutY="46.0" text="Edit Appointment">
          <font>
             <Font size="18.0" />
          </font>
@@ -109,7 +109,7 @@
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
          </children>
       </HBox>
-      <VBox layoutX="14.0" layoutY="615.0" prefHeight="36.0" prefWidth="370.0">
+      <VBox layoutX="71.0" layoutY="591.0" prefHeight="36.0" prefWidth="370.0">
          <children>
             <Label fx:id="errorMessageLabel" alignment="CENTER" prefHeight="18.0" prefWidth="370.0" text="This appointment is either outside business hours">
                <font>

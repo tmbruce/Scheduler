@@ -172,8 +172,6 @@ public class MainController implements Initializable, ControllerInterface {
             }
         }
 
-        
-
         //Set all days on the calendar along with styling to indicate if the day is
         //a day in the current month, a day in a previous or upcoming month, or the current day
         int dayIndex = 0;
@@ -191,9 +189,11 @@ public class MainController implements Initializable, ControllerInterface {
 
                 VBox dayBox = new VBox();
                 dayBox.getChildren().add(dayLabel);
+
                 
                 if(!apptToCalendar.get(dayIndex).isEmpty()){
-                    for(int c = 0; c < apptToCalendar.get(i).size() + 1; c++){
+                    for(int c = 0; c < apptToCalendar.get(dayIndex).size(); c++){
+                        System.out.println(apptToCalendar.get(c).size());
                          Button apptButton = new Button();
                          apptButton.setText(apptToCalendar.get(dayIndex).get(c).getTitle());
                          apptButton.setId(String.valueOf(apptToCalendar.get(dayIndex).get(c).getAppointmentId()));
@@ -204,7 +204,6 @@ public class MainController implements Initializable, ControllerInterface {
                          Its purpose is to add an event handler to the appointment as displayed on the calendar, so that
                          when it's clicked, full information about the appointment can be accessed.
                          */
-
                          apptButton.setOnAction((event)-> {
                              for (int a = 0; a < appointmentList.size(); a++){
                                  if (appointmentList.get(a).getAppointmentId() == Integer.parseInt(apptButton.getId())){
