@@ -50,6 +50,6 @@ I.   Provide the ability to generate each  of the following reports:
 •   the schedule for each consultant
 •   one additional report of your choice
 
-J.   Provide the ability to track user activity by recording timestamps for user log-ins in a .txt file. Each new record should be appended to the log file, if the file already exists.
-K.   Demonstrate professional communication in the content and presentation of your submission.
+DONE J.   Provide the ability to track user activity by recording timestamps for user log-ins in a .txt file. Each new record should be appended to the log file, if the file already exists.
+DONE ?K.   Demonstrate professional communication in the content and presentation of your submission.
 
