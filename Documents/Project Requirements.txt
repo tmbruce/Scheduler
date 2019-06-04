@@ -4,11 +4,11 @@ For this assessment, you will create your own Java application with requirements
 The skills you will showcase in this assessment are also directly relevant to technical interview questions for future employment. This application should become a portfolio piece 
 for you to show to future employers.
 
-Several attachments and links have been included to help you complete this task. Refer to the ìMySQL Virtual Access Instructionsî attachment for help accessing the database for 
-your application. Note that this database is for functional purposes only and does not include any pre-existing data. The attached ìDatabase ERDî shows the entity relationship 
+Several attachments and links have been included to help you complete this task. Refer to the ‚ÄúMySQL Virtual Access Instructions‚Äù attachment for help accessing the database for 
+your application. Note that this database is for functional purposes only and does not include any pre-existing data. The attached ‚ÄúDatabase ERD‚Äù shows the entity relationship 
 diagram (ERD) for this database, which you can reference as you create your application.
 
-The preferred integrated development environment (IDE) for this assignment is NetBeans. Use the web link ìNetBeans Installation Instructionsî to install this application. If you 
+The preferred integrated development environment (IDE) for this assignment is NetBeans. Use the web link ‚ÄúNetBeans Installation Instructions‚Äù to install this application. If you 
 choose to use another IDE, you must export your project into NetBeans format for submission.
 
 When you have completed this task, you must submit a zip file with all the necessary code files to compile, support, and run your application.
@@ -28,28 +28,28 @@ Your submission must be your original work. No more than a combined total of 30%
 closely paraphrased from sources, even if cited correctly. An originality report is provided when you submit your task that can be used as a guide.
 You must use the rubric to direct the creation of your submission because it provides detailed criteria that will be used to evaluate your work. Each requirement below may be evaluated 
 by more than one rubric aspect. The rubric aspect titles may contain hyperlinks to relevant portions of the course.
-You are not allowed to use frameworks or external libraries. The database does not contain data, so it needs to be populated. You must use ìtestî as the username and password to log-in.
+You are not allowed to use frameworks or external libraries. The database does not contain data, so it needs to be populated. You must use ‚Äútest‚Äù as the username and password to log-in.
 
-A.   Create a log-in form that can determine the userís location and translate log-in and error control messages (e.g., ìThe username and password did not match.î) into two languages.
-B.   Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.
-C.   Provide the ability to add, update, and delete appointments, capturing the type of appointment and a link to the specific customer record in the database.
+DONE A.   Create a log-in form that can determine the user‚Äôs location and translate log-in and error control messages (e.g., ‚ÄúThe username and password did not match.‚Äù) into two languages.
+DONE B.   Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.
+DONE C.   Provide the ability to add, update, and delete appointments, capturing the type of appointment and a link to the specific customer record in the database.
 D.   Provide the ability to view the calendar by month and by week.
-E.   Provide the ability to automatically adjust appointment times based on user time zones and daylight saving time.
-F.   Write exception controls to prevent each of the following. You may use the same mechanism of exception control more than once, but you must incorporate at least  two different mechanisms of exception control.
+DONE E.   Provide the ability to automatically adjust appointment times based on user time zones and daylight saving time.
+DONE F.   Write exception controls to prevent each of the following. You may use the same mechanism of exception control more than once, but you must incorporate at least  two different mechanisms of exception control.
 
-ï   scheduling an appointment outside business hours
-ï   scheduling overlapping appointments
-ï   entering nonexistent or invalid customer data
-ï   entering an incorrect username and password
+‚Ä¢   scheduling an appointment outside business hours
+‚Ä¢   scheduling overlapping appointments
+‚Ä¢   entering nonexistent or invalid customer data
+‚Ä¢   entering an incorrect username and password
 
 G.   Write two or more lambda expressions to make your program more efficient, justifying the use of each lambda expression with an in-line comment.
-H.   Write code to provide an alert if there is an appointment within 15 minutes of the userís log-in.
+DONE H.   Write code to provide an alert if there is an appointment within 15 minutes of the user‚Äôs log-in.
 I.   Provide the ability to generate each  of the following reports:
 
-ï   number of appointment types by month
-ï   the schedule for each consultant
-ï   one additional report of your choice
+‚Ä¢   number of appointment types by month
+‚Ä¢   the schedule for each consultant
+‚Ä¢   one additional report of your choice
 
-J.   Provide the ability to track user activity by recording timestamps for user log-ins in a .txt file. Each new record should be appended to the log file, if the file already exists.
-K.   Demonstrate professional communication in the content and presentation of your submission.
+DONE J.   Provide the ability to track user activity by recording timestamps for user log-ins in a .txt file. Each new record should be appended to the log file, if the file already exists.
+DONE ?K.   Demonstrate professional communication in the content and presentation of your submission.
 
