@@ -57,13 +57,14 @@ public class MainController implements Initializable, ControllerInterface {
         try{
             appointmentList = Appointment.getAppointments();
             for (int i = 0; i < appointmentList.size(); i++){
-                 if (appointmentList.get(i).getStart().isBefore(LocalDateTime.now().plusMinutes(15))){
+                 if ((appointmentList.get(i).getStart().isBefore(LocalDateTime.now().plusMinutes(15))) &&
+                (appointmentList.get(i).getStart().isAfter(LocalDateTime.now()))){
                      DataSource datasource = new DataSource();
                      datasource.open();
                      String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
                      datasource.close();
                      LocalTime timeRemaining = appointmentList.get(i).getStart().toLocalTime().minusMinutes(LocalTime.now().getMinute());
-                     
+                     System.out.println(timeRemaining);
                      Alert alert = new Alert(Alert.AlertType.INFORMATION);
                      alert.setHeaderText("Attention!");
                      alert.setContentText("You have a meeting scheduled with " + customerName + " in " + timeRemaining + " minutes.");

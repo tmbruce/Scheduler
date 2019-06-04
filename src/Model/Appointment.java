@@ -145,7 +145,7 @@ public class Appointment {
     public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
         boolean apptAvailable = true;
         LocalTime startOfDay = LocalTime.parse("07:00");
-        LocalTime endOfDay = LocalTime.parse("18:00");
+        LocalTime endOfDay = LocalTime.parse("23:00");                          // CHANGE BACK TO NORMAL WORK DAY END TIME IN 24 HOUR FORMAT
         for (int i = 0; i < appointmentList.size(); i++){
             LocalDateTime apptStart = appointmentList.get(i).getStart();
             LocalDateTime apptEnd = appointmentList.get(i).getEnd();
