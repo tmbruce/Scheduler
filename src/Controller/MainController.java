@@ -63,11 +63,26 @@ public class MainController implements Initializable, ControllerInterface {
                      datasource.open();
                      String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
                      datasource.close();
-                     LocalTime timeRemaining = appointmentList.get(i).getStart().toLocalTime().minusMinutes(LocalTime.now().getMinute());
-                     System.out.println(timeRemaining);
+                     
+                     
+
+                     int apptMinutes = appointmentList.get(i).getStart().getMinute();
+                     int nowMinutes = LocalTime.now().getMinute();
+                     int timeRemaining = -1;
+                     if(apptMinutes < nowMinutes){
+                         apptMinutes += 60;
+                         timeRemaining = apptMinutes - nowMinutes;
+                     } else {
+                         timeRemaining = apptMinutes - nowMinutes;
+                     }
+                     
+                     
+                     
                      Alert alert = new Alert(Alert.AlertType.INFORMATION);
                      alert.setHeaderText("Attention!");
-                     alert.setContentText("You have a meeting scheduled with " + customerName + " in " + timeRemaining + " minutes.");
+                     alert.setContentText("You have a meeting scheduled with " + customerName + " in about " + timeRemaining + " minutes.\n\nMeeting location: " + 
+                             appointmentList.get(i).getLocation() + "\nMeeting type: " + appointmentList.get(i).getType() + "\nMeeting subject: " + appointmentList.get(i).getTitle());
+                     alert.showAndWait();
                  }
             }  
         }

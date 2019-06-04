@@ -9,8 +9,12 @@ import Model.DataSource;
 import Model.PassEncrypt;
 import Model.SceneChanger;
 import Model.User;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -272,6 +276,12 @@ public class SignInController implements Initializable {
                 success = loginWithEmail.loginWithEmail(userName, encryptedPass);
                 loginWithEmail.close();
                 if(success == true){
+                    //Logs user information to text file
+                    String file = "accessLog.txt";
+                    PrintWriter pw = new PrintWriter(new FileWriter(file, true));
+                    pw.append("\nUser " + userName + " accessed the system at " + LocalDateTime.now(ZoneId.of("UTC")));
+                    pw.close();
+                    //Creates user object to pass through as active user
                     User user = new User(userName);
                     SceneChanger sc = new SceneChanger();
                     MainController mainController  = new MainController();
@@ -302,6 +312,12 @@ public class SignInController implements Initializable {
                 success = loginWithUserName.loginWithUserName(userName, encryptedPass);
                 loginWithUserName.close();
                 if(success == true){
+                    //Logs user information to text file
+                    String file = "accessLog.txt";
+                    PrintWriter pw = new PrintWriter(new FileWriter(file, true));
+                    pw.append("\nUser " + userName + " accessed the system at " + LocalDateTime.now(ZoneId.of("UTC")));
+                    pw.close();
+                    //Creates user to pass through as active user
                     User user = new User(userName);
                     SceneChanger sc = new SceneChanger();
                     MainController mainController  = new MainController();
