@@ -15,6 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import Model.User;
 import java.io.IOException;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -30,6 +35,30 @@ public class ReportsController implements Initializable, ControllerInterface {
     @FXML
     private Button reportsButton;
     private User user;
+    @FXML
+    private AnchorPane calendarAnchor;
+    @FXML
+    private ChoiceBox<?> typeChoiceBox;
+    @FXML
+    private ChoiceBox<?> monthChoiceBox;
+    @FXML
+    private Label numberOfApptsLabel;
+    @FXML
+    private TableView<?> scheduleTableView;
+    @FXML
+    private TableColumn<?, ?> dateColumn;
+    @FXML
+    private TableColumn<?, ?> timeColumn;
+    @FXML
+    private TableColumn<?, ?> customerColumn;
+    @FXML
+    private TableColumn<?, ?> typeColumn;
+    @FXML
+    private TableColumn<?, ?> locationColumn;
+    @FXML
+    private TableColumn<?, ?> contactColumn;
+    @FXML
+    private ChoiceBox<?> userChoiceBox;
 
     /**
      * Initializes the controller class.
