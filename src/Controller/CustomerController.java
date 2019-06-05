@@ -57,8 +57,6 @@ public class CustomerController implements Initializable, ControllerInterface{
     @FXML 
     private Button calendarButton;
     @FXML
-    private Button settingsButton;
-    @FXML
     private Button customersButton;
     @FXML
     private Button reportsButton;
@@ -125,6 +123,13 @@ public class CustomerController implements Initializable, ControllerInterface{
         CreateCustomerController ccc = new CreateCustomerController();
         sc.changeScenesNewWindow(event, "/Views/CreateCustomer.fxml", "CalendarOne - Create Customer", user, ccc);
         
+        }
+        
+        @FXML
+        private void reportsButtonHandler(ActionEvent event) throws IOException{
+            SceneChanger sc = new SceneChanger();
+            ReportsController rc = new ReportsController();
+            sc.changeScenes(event, "/Views/Reports.fxml", "CalendarOne - Reports", user, rc);
         }
         
         @FXML

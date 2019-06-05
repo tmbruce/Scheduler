@@ -36,15 +36,23 @@ public class ReportsController implements Initializable, ControllerInterface {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       reportsButton.requestFocus();
     }    
 
     @FXML
-    private void customersButtonHandler(ActionEvent event) throws IOException {
+    public void customersButtonHandler(ActionEvent event) throws IOException {
+        SceneChanger sc = new SceneChanger();
+        CustomerController customerController = new CustomerController();
+        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);  
+        customersButton.requestFocus();
+    }    
+
+    @FXML
+    private void calendarButtonHandler(ActionEvent event) throws IOException {
         SceneChanger sc = new SceneChanger();
         MainController mc = new MainController();
         sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mc);
-    }    
+    }
 
     @Override
     public void preloadData(User user) {

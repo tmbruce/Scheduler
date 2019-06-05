@@ -36,8 +36,6 @@ public class MainController implements Initializable, ControllerInterface {
     @FXML
     private GridPane calendarGrid;
     @FXML
-    private Button settingsButton;
-    @FXML
     private Button reportsButton;
     @FXML
     private AnchorPane calendarAnchor;
@@ -105,6 +103,13 @@ public class MainController implements Initializable, ControllerInterface {
         CustomerController customerController = new CustomerController();
         sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Customers", user, customerController);  
         customersButton.requestFocus();
+    }
+    
+    @FXML
+    public void reportsButtonHandler(ActionEvent event) throws IOException{
+        SceneChanger sc = new SceneChanger();
+        ReportsController rc = new ReportsController();
+        sc.changeScenes(event, "/Views/Reports.fxml", "CalendarOne - Reports", user, rc);
     }
     
     //This function moves the calendar ahead one month from the current month

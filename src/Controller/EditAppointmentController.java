@@ -229,5 +229,4 @@ public class EditAppointmentController implements Initializable, ControllerInter
         durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour());
         durationMinutes.getValueFactory().setValue(appointment.getEnd().getMinute()- appointment.getStart().getMinute());
     }
-    
 }
