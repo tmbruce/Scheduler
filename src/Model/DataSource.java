@@ -492,6 +492,25 @@ public class DataSource {
         }
     }
     
+    public ObservableList getUsers() throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        ObservableList<User> userList = FXCollections.observableArrayList();
+        
+        statement = conn.prepareStatement("SELECT " + COLUMN_USER_NAME + ", " + COLUMN_USER_ID + " FROM " + TABLE_USER);
+        result = statement.executeQuery();
+        
+        while(result.next()){
+            User user = new User(result.getString(COLUMN_USER_NAME),
+                                 result.getInt(COLUMN_USER_ID));
+            userList.add(user);
+            
+            
+        }
+        statement.close();
+        return userList;
+    }
+    
     public ArrayList selectCountries(){
         PreparedStatement statement = null;
         ResultSet result = null;

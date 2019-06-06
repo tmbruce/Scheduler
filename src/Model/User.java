@@ -20,9 +20,24 @@ public class User {
     private String email;
     private Locale userCountry;
     private Instant userTime;
+    private int userId;
+
+    public User(String userName, int userId){
+        this.userName = userName;
+        this.userId = userId;
+        
+    }
     
     public User(String userName){
-        this.userName = new String(userName);        
+        this.userName = userName;
+    }
+    
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     
     public int getActive() {

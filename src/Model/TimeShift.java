@@ -13,11 +13,11 @@ public class TimeShift {
         return LocalDateTime.of(date, time);
     }
     
-    public LocalDateTime localToUTC(LocalDateTime localDateTime){
+    public static LocalDateTime localToUTC(LocalDateTime localDateTime){
         return localDateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime();
     }
     
-    public LocalDateTime UTCtoLocal(LocalDateTime localDateTime){
+    public static LocalDateTime UTCtoLocal(LocalDateTime localDateTime){
         return localDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
 }

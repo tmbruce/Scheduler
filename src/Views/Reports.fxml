@@ -97,6 +97,8 @@
             </TableView>
             <Label layoutX="156.0" layoutY="307.0" text="Showing schedule for: " />
             <ChoiceBox fx:id="userChoiceBox" layoutX="308.0" layoutY="302.0" prefWidth="150.0" />
+            <Button layoutX="743.0" layoutY="303.0" mnemonicParsing="false" onAction="#getSchedule" text="Go!" />
+            <Button layoutX="735.0" layoutY="37.0" mnemonicParsing="false" onAction="#getNumberofAppts" text="Go!" />
          </children></AnchorPane>
    </children>
 </AnchorPane>

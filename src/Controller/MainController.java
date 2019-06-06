@@ -110,6 +110,7 @@ public class MainController implements Initializable, ControllerInterface {
         SceneChanger sc = new SceneChanger();
         ReportsController rc = new ReportsController();
         sc.changeScenes(event, "/Views/Reports.fxml", "CalendarOne - Reports", user, rc);
+        reportsButton.requestFocus();
     }
     
     //This function moves the calendar ahead one month from the current month
