@@ -54,25 +54,26 @@ public class ReportsController implements Initializable, ControllerInterface {
     @FXML
     private Label numberOfApptsLabel;
     @FXML
-    private TableView<String> scheduleTableView;
+    private TableView<Appointment> scheduleTableView;
     @FXML
-    private TableColumn<String, String> dateColumn;
+    private TableColumn<Appointment, String> dateColumn;
     @FXML
-    private TableColumn<String, String> timeColumn;
+    private TableColumn<Appointment, String> timeColumn;
     @FXML
-    private TableColumn<String, String> customerColumn;
+    private TableColumn<Appointment, String> customerColumn;
     @FXML
-    private TableColumn<String, String> typeColumn;
+    private TableColumn<Appointment, String> typeColumn;
     @FXML
-    private TableColumn<String, String> locationColumn;
+    private TableColumn<Appointment, String> locationColumn;
     @FXML
-    private TableColumn<String, String> contactColumn;
+    private TableColumn<Appointment, String> contactColumn;
     @FXML
     private ChoiceBox<String> userChoiceBox;
     private User user;
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     private ObservableList<User> userList = FXCollections.observableArrayList();
+    private ObservableList<Appointment> userAppts = FXCollections.observableArrayList();
     private final ArrayList<String> months = new ArrayList<>();
     
 
@@ -103,48 +104,7 @@ public class ReportsController implements Initializable, ControllerInterface {
     }   
     
     //Anonymous class for use in setting table
-    public class tableAppointment{
-        private String date;
-        private String time;
-        private String customer;
-        private String type;
-        private String location;
-        private String contact;
-        
-        public tableAppointment(String date, String time, String customer, String type, String location, String contact){
-            this.date = date;
-            this.time = time;
-            this.customer = customer;
-            this.type = type;
-            this.location = location;
-            this.contact = contact;
-        }
-        
-        public String getDate() {
-            return date;
-        }
 
-        public String getTime() {
-            return time;
-        }
-
-        public String getCustomer() {
-            return customer;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public String getContact() {
-            return contact;
-        }
-        
-    }
 
     @FXML
     public void customersButtonHandler(ActionEvent event) throws IOException {
@@ -183,7 +143,7 @@ public class ReportsController implements Initializable, ControllerInterface {
 
     @FXML
     private void getSchedule(ActionEvent event) {
-        ArrayList<ArrayList<String>> userAppts = new ArrayList<>();
+        String customerName = null;
         String userName = userChoiceBox.getSelectionModel().getSelectedItem();
         int userID = 0;
         for (int i = 0; i < userList.size(); i++){
@@ -193,9 +153,29 @@ public class ReportsController implements Initializable, ControllerInterface {
         }
         for (int i = 0; i < appointmentList.size(); i++){
             if(appointmentList.get(i).getUserId() == userID){
-                userAppts.add(new ArrayList<String>()
-                );
+                for (int j = 0; j < customerList.size(); j++){
+                    if(appointmentList.get(i).getCustomerId() == customerList.get(j).getCustomerID()){
+                        customerName = customerList.get(j).getCustomerName();
+                    }
+                }
+                userAppts.add(new Appointment(TimeShift.UTCtoLocal(appointmentList.get(i).getStart()).toLocalDate().toString(),
+                                              TimeShift.UTCtoLocal(appointmentList.get(i).getStart()).toLocalTime().toString(),
+                                              customerName,
+                                              appointmentList.get(i).getType(),
+                                              appointmentList.get(i).getLocation(),
+                                              appointmentList.get(i).getContact()));                             
             }
         }
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        
+        scheduleTableView.getItems().clear();
+        scheduleTableView.getItems().addAll(userAppts);
+        
+        
     }
 }

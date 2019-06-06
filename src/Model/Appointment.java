@@ -19,6 +19,9 @@ public class Appointment {
     private String url;
     private LocalDateTime start;
     private LocalDateTime end;
+    private String date;
+    private String time;
+    private String customerName;
     private static ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     public Appointment(int customerId, int userId, String title, String description, String location, String contact, String type, String url, LocalDateTime start, LocalDateTime end) {
@@ -34,12 +37,37 @@ public class Appointment {
         this.end = end;
     }
     
-    public static ObservableList getAppointments() throws SQLException{
-        DataSource datasource = new DataSource();
-        datasource.open();
-        appointmentList = datasource.getAppointments();
-        datasource.close();
-        return appointmentList;
+    public Appointment(String date, String time, String customerName, String type, String location, String contact){
+        this.date = date;
+        this.time = time;
+        this.customerName = customerName;
+        this.type = type;
+        this.location = location;
+        this.contact = contact;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
     
     public void setAppointment(Appointment appointment){
@@ -133,6 +161,14 @@ public class Appointment {
     public void setEnd(LocalDateTime end) {
         this.end = end;
     } 
+    
+    public static ObservableList getAppointments() throws SQLException{
+        DataSource datasource = new DataSource();
+        datasource.open();
+        appointmentList = datasource.getAppointments();
+        datasource.close();
+        return appointmentList;
+    }
         
     //Validation methods
     public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url, String amPm){
