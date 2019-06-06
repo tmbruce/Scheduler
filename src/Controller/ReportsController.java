@@ -19,10 +19,7 @@ import javafx.scene.control.Button;
 import Model.User;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.List;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -73,7 +70,7 @@ public class ReportsController implements Initializable, ControllerInterface {
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     private ObservableList<User> userList = FXCollections.observableArrayList();
-    private ObservableList<Appointment> userAppts = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> userAppts = FXCollections.observableArrayList();
     private final ArrayList<String> months = new ArrayList<>();
     
 
@@ -99,12 +96,8 @@ public class ReportsController implements Initializable, ControllerInterface {
         
         userList.forEach(_user ->{
             userChoiceBox.getItems().add(_user.getUserName());
-        });
-        
+        });  
     }   
-    
-    //Anonymous class for use in setting table
-
 
     @FXML
     public void customersButtonHandler(ActionEvent event) throws IOException {
@@ -158,8 +151,8 @@ public class ReportsController implements Initializable, ControllerInterface {
                         customerName = customerList.get(j).getCustomerName();
                     }
                 }
-                userAppts.add(new Appointment(TimeShift.UTCtoLocal(appointmentList.get(i).getStart()).toLocalDate().toString(),
-                                              TimeShift.UTCtoLocal(appointmentList.get(i).getStart()).toLocalTime().toString(),
+                userAppts.add(new Appointment(appointmentList.get(i).getStart().toLocalDate().toString(),
+                                              appointmentList.get(i).getStart().toLocalTime().toString(),
                                               customerName,
                                               appointmentList.get(i).getType(),
                                               appointmentList.get(i).getLocation(),

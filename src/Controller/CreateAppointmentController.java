@@ -159,7 +159,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         apptEndTime = apptEndTime.plusHours(Integer.parseInt(durationHour));
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
+        ldtStart = TimeShift.localToUTC(ldtStart);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
+        ltdEnd = TimeShift.localToUTC(ltdEnd);
         if((Appointment.validateAppointment(title, description, location, contact, type, url, amPm)) &&
                 Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
 

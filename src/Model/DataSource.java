@@ -273,8 +273,8 @@ public class DataSource {
                                                           result.getString(COLUMN_CONTACT),
                                                           result.getString(COLUMN_TYPE),
                                                           result.getString(COLUMN_URL),
-                                                          LocalDateTime.parse(result.getString(COLUMN_START), df),
-                                                          LocalDateTime.parse(result.getString(COLUMN_END), df));
+                                                          TimeShift.UTCtoLocal(LocalDateTime.parse(result.getString(COLUMN_START), df)),
+                                                          TimeShift.UTCtoLocal(LocalDateTime.parse(result.getString(COLUMN_END), df)));
                 appointment.setAppointmentId(Integer.parseInt(result.getString(COLUMN_APPOINTMENT_ID)));
                 appointmentList.add(appointment);
             }
@@ -342,8 +342,8 @@ public class DataSource {
         statement.setString(4, location);
         statement.setString(5, contact);
         statement.setString(6, url);
-        statement.setString(7, start.toString());
-        statement.setString(8, end.toString());
+        statement.setString(7, TimeShift.localToUTC(start).toString());
+        statement.setString(8, TimeShift.localToUTC(end).toString());
         statement.setString(9, getTimeStamp());
         statement.setString(10, user.getUserName());
         statement.setString(11, type);
@@ -368,8 +368,8 @@ public class DataSource {
         statement.setString(4, location);
         statement.setString(5, contact);
         statement.setString(6, url);
-        statement.setString(7, start.toString());
-        statement.setString(8, end.toString());
+        statement.setString(7, TimeShift.localToUTC(start).toString());
+        statement.setString(8, TimeShift.localToUTC(end).toString());
         statement.setString(9, getTimeStamp());
         statement.setString(10, user.getUserName());
         statement.setString(11, getTimeStamp());

@@ -87,11 +87,11 @@
             </VBox>
             <TableView fx:id="scheduleTableView" layoutX="143.0" layoutY="337.0" prefHeight="200.0" prefWidth="642.0">
               <columns>
-                <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
-                  <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
-                  <TableColumn fx:id="customerColumn" prefWidth="116.0" text="Customer" />
-                  <TableColumn fx:id="typeColumn" prefWidth="105.0" text="Type" />
-                  <TableColumn fx:id="locationColumn" prefWidth="166.9921875" text="Location" />
+                <TableColumn fx:id="dateColumn" prefWidth="83.39483642578125" text="Date" />
+                  <TableColumn fx:id="timeColumn" prefWidth="75.60516357421875" text="Time" />
+                  <TableColumn fx:id="customerColumn" prefWidth="134.38409423828125" text="Customer" />
+                  <TableColumn fx:id="typeColumn" prefWidth="107.61590576171875" text="Type" />
+                  <TableColumn fx:id="locationColumn" prefWidth="138.21728515625" text="Location" />
                   <TableColumn fx:id="contactColumn" prefWidth="103.0078125" text="Contact" />
               </columns>
             </TableView>
