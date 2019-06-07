@@ -16,7 +16,7 @@
    <children>
       <HBox layoutX="66.0" layoutY="107.0" prefHeight="450.0" prefWidth="370.0" spacing="25.0">
          <children>
-            <VBox prefHeight="450.0" prefWidth="157.0" spacing="30.0">
+            <VBox prefHeight="450.0" prefWidth="157.0" spacing="35.0">
                <children>
                   <Label text="Title">
                      <font>
@@ -88,8 +88,8 @@
                   </HBox>
                   <HBox>
                      <children>
-                        <Spinner fx:id="durationHours" />
-                        <Spinner fx:id="durationMinutes" />
+                        <Spinner fx:id="durationHours" editable="true" />
+                        <Spinner fx:id="durationMinutes" editable="true" />
                      </children>
                   </HBox>
                   <HBox spacing="25.0" />
@@ -108,14 +108,14 @@
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonHandler" text="Cancel" />
          </children>
       </HBox>
-      <VBox layoutX="29.0" layoutY="607.0">
+      <VBox layoutX="41.0" layoutY="615.0" prefHeight="36.0" prefWidth="395.0">
          <children>
-            <Label fx:id="errorMessageLabel" alignment="CENTER" prefHeight="17.0" prefWidth="323.0" text="This appointment is either outside business hours">
+            <Label fx:id="errorMessageLabel" alignment="CENTER" prefHeight="18.0" prefWidth="397.0" text="This appointment is either outside business hours">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label fx:id="errorMessageLabel2" alignment="CENTER" prefHeight="17.0" prefWidth="323.0" text="or conflicts with an existing appointment.">
+            <Label fx:id="errorMessageLabel2" alignment="CENTER" prefHeight="18.0" prefWidth="397.0" text="or conflicts with an existing appointment.">
                <font>
                   <Font size="14.0" />
                </font>

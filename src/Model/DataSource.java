@@ -27,7 +27,7 @@ public class DataSource {
     //Shared columns
     private static final String COLUMN_CREATE_DATE = "createDate";
     private static final String COLUMN_LAST_UPDATE = "lastUpdate";
-    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdateBy";
+    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdatedBy";
     private static final String COLUMN_CUSTOMER_ID = "customerId";
     private static final String COLUMN_COUNTRY_ID = "countryId";
     private static final String COLUMN_ADDRESS_ID = "addressID";
@@ -217,6 +217,7 @@ public class DataSource {
             statement.setString(6, getTimeStamp());
             statement.setString(7, userName);
             statement.setString(8, email);
+            System.out.println(statement.toString());
             statement.executeUpdate();
             statement.close();
             }
@@ -497,12 +498,13 @@ public class DataSource {
         ResultSet result = null;
         ObservableList<User> userList = FXCollections.observableArrayList();
         
-        statement = conn.prepareStatement("SELECT " + COLUMN_USER_NAME + ", " + COLUMN_USER_ID + " FROM " + TABLE_USER);
+        statement = conn.prepareStatement("SELECT " + COLUMN_USER_NAME + ", " + COLUMN_USER_ID + ", " + COLUMN_ACTIVE + " FROM " + TABLE_USER);
         result = statement.executeQuery();
         
         while(result.next()){
             User user = new User(result.getString(COLUMN_USER_NAME),
-                                 result.getInt(COLUMN_USER_ID));
+                                 result.getInt(COLUMN_USER_ID),
+                                 result.getInt(COLUMN_ACTIVE));
             userList.add(user);
             
             

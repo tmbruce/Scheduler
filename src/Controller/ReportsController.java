@@ -9,7 +9,6 @@ import Model.Appointment;
 import Model.Customer;
 import Model.DataSource;
 import Model.SceneChanger;
-import Model.TimeShift;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -72,6 +71,14 @@ public class ReportsController implements Initializable, ControllerInterface {
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private final ObservableList<Appointment> userAppts = FXCollections.observableArrayList();
     private final ArrayList<String> months = new ArrayList<>();
+    @FXML
+    private Label numberUsersCustomers;
+    @FXML
+    private Button numberActiveInactive;
+    @FXML
+    private ChoiceBox<String> activeInactiveChoiceBox;
+    @FXML
+    private ChoiceBox<String> userCustomerChoiceBox;
     
 
     /**
@@ -79,9 +86,13 @@ public class ReportsController implements Initializable, ControllerInterface {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+       numberUsersCustomers.setVisible(false);
        numberOfApptsLabel.setVisible(false);
+       activeInactiveChoiceBox.getItems().addAll("Active", "Inactive");
+       userCustomerChoiceBox.getItems().addAll("Customers", "Users");
        monthChoiceBox.getItems().addAll("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
        typeChoiceBox.getItems().addAll("Sales", "Innovation", "Status Update", "Strategy", "Customer Outreach");
+       
        reportsButton.requestFocus();
        DataSource datasource = new DataSource();
        datasource.open();
@@ -165,10 +176,52 @@ public class ReportsController implements Initializable, ControllerInterface {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        
         scheduleTableView.getItems().clear();
         scheduleTableView.getItems().addAll(userAppts);
-        
-        
     }
+
+    @FXML
+    private void activeInactiveHandler(ActionEvent event) {
+        int displayNum = 0;
+        if(activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Active")){
+            if(userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
+                for (int i = 0; i < customerList.size(); i++){
+                    if(customerList.get(i).getActive() == 1){
+                        displayNum++;
+                    }     
+                }
+                numberUsersCustomers.setText(String.valueOf(displayNum));
+                numberUsersCustomers.setVisible(true);
+            }
+            else {
+                for (int i = 0; i < userList.size(); i++){
+                    if(userList.get(i).getActive() == 1){
+                        displayNum++;
+                    }
+                }
+                numberUsersCustomers.setText(String.valueOf(displayNum));
+                numberUsersCustomers.setVisible(true);
+            }
+        }
+        if (activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Inactive")){
+            if (userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
+            for (int i = 0; i < customerList.size(); i++){
+                if (customerList.get(i).getActive() != 1){
+                    displayNum++;
+                    }
+                }
+            numberUsersCustomers.setText(String.valueOf(displayNum));
+            numberUsersCustomers.setVisible(true);
+            }
+            else {
+                for (int i = 0; i < userList.size(); i++){
+                    if (userList.get(i).getActive() != 1){
+                        displayNum++;
+                    }
+                }
+                numberUsersCustomers.setText(String.valueOf(displayNum));
+                numberUsersCustomers.setVisible(true);
+            }
+        }
+    }    
 }

@@ -44,6 +44,8 @@ public class CreateCustomerController implements Initializable, ControllerInterf
     private ComboBox<String> customerCountryCombo;
     @FXML
     private Button saveButton;
+    @FXML
+    private Button cancelButton;
     private ArrayList<String> countryList;
     private ArrayList<String> cityList;
     private User user;
@@ -98,6 +100,8 @@ public class CreateCustomerController implements Initializable, ControllerInterf
 
     @FXML
     private void cancelButtonHandler(ActionEvent event) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     @Override

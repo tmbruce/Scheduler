@@ -22,9 +22,10 @@ public class User {
     private Instant userTime;
     private int userId;
 
-    public User(String userName, int userId){
+    public User(String userName, int userId, int active){
         this.userName = userName;
         this.userId = userId;
+        this.active = active;
         
     }
     

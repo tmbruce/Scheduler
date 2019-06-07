@@ -145,9 +145,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String durationHour = durationHours.getValue().toString();
         String durationMinute = durationMinutes.getValue().toString();
         LocalTime apptStartTime = LocalTime.parse(startTimeValue);
-//        if(amPm.equalsIgnoreCase("PM")){
-//            apptStartTime = apptStartTime.plusHours(12);
-//        }
+        if(amPm.equalsIgnoreCase("PM")){
+            apptStartTime = apptStartTime.plusHours(12);
+        }
         int custId = 0;
         for (int i = 0; i < customerList.size(); i++){
             if (customerList.get(i).getCustomerName().equals(cust)){
@@ -159,9 +159,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         apptEndTime = apptEndTime.plusHours(Integer.parseInt(durationHour));
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
-        ldtStart = TimeShift.localToUTC(ldtStart);
+        //ldtStart = TimeShift.localToUTC(ldtStart);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
-        ltdEnd = TimeShift.localToUTC(ltdEnd);
+        //ltdEnd = TimeShift.localToUTC(ltdEnd);
         if((Appointment.validateAppointment(title, description, location, contact, type, url, amPm)) &&
                 Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
 

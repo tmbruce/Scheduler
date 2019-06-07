@@ -82,14 +82,14 @@
                   <DatePicker fx:id="startTime" prefHeight="25.0" prefWidth="149.0" />
                   <HBox>
                      <children>
-                        <Spinner fx:id="startTimeSpinner" editable="true" prefHeight="25.0" prefWidth="111.0" />
+                        <Spinner fx:id="startTimeSpinner" prefHeight="25.0" prefWidth="111.0" />
                         <ComboBox fx:id="dayNightCombo" editable="true" prefHeight="25.0" prefWidth="75.0" promptText="AM" />
                      </children>
                   </HBox>
                   <HBox>
                      <children>
-                        <Spinner fx:id="durationHours" />
-                        <Spinner fx:id="durationMinutes" />
+                        <Spinner fx:id="durationHours" editable="true" />
+                        <Spinner fx:id="durationMinutes" editable="true" />
                      </children>
                   </HBox>
                   <HBox spacing="25.0" />

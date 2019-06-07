@@ -102,14 +102,13 @@ public class EditAppointmentController implements Initializable, ControllerInter
         durationHours.setValueFactory(hoursFactory);
         SpinnerValueFactory<Integer> minutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00,59,0);
         durationMinutes.setValueFactory(minutesFactory);
-
-        
         String pattern = "kk:mm";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         SpinnerValueFactory value = new SpinnerValueFactory<LocalTime>() {
         {
         setConverter(new LocalTimeStringConverter(formatter, null));
         }
+        
         @Override
         public void decrement(int steps) {
             if (getValue() == null)
@@ -218,10 +217,9 @@ public class EditAppointmentController implements Initializable, ControllerInter
         }
         else{
             dayNightCombo.getSelectionModel().select("PM");
-            startTime.setValue(appointment.getStart().minusHours(12).toLocalDate());
         }
-        if(appointment.getStart().getHour() > 11){
-            startTimeSpinner.getValueFactory().setValue(appointment.getStart().minusHours(12).toLocalTime());
+        if(appointment.getStart().getHour() > 12){
+            startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime().minusHours(12));
         }
         else{
             startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
