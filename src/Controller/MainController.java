@@ -230,7 +230,6 @@ public class MainController implements Initializable, ControllerInterface {
                 
                 if(!apptToCalendar.get(dayIndex).isEmpty()){
                     for(int c = 0; c < apptToCalendar.get(dayIndex).size(); c++){
-                        System.out.println(apptToCalendar.get(c).size());
                          Button apptButton = new Button();
                          apptButton.setText(apptToCalendar.get(dayIndex).get(c).getTitle());
                          apptButton.setId(String.valueOf(apptToCalendar.get(dayIndex).get(c).getAppointmentId()));

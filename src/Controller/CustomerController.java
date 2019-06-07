@@ -153,7 +153,6 @@ public class CustomerController implements Initializable, ControllerInterface{
                 DataSource datasource = new DataSource();
                 datasource.open();
                 customerList = datasource.getCustomers();
-                System.out.println(customerList);
                 datasource.close();
                 customerTable.getItems().clear();
                 customerTable.getItems().addAll(customerList);

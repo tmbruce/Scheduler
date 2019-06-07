@@ -217,7 +217,6 @@ public class DataSource {
             statement.setString(6, getTimeStamp());
             statement.setString(7, userName);
             statement.setString(8, email);
-            System.out.println(statement.toString());
             statement.executeUpdate();
             statement.close();
             }
@@ -350,7 +349,6 @@ public class DataSource {
         statement.setString(11, type);
         statement.setString(12, user.getUserName());
         statement.setInt(13, appointment.getAppointmentId());
-        System.out.println(statement.toString());
         statement.executeUpdate();
         statement.close();   
     }
@@ -377,7 +375,6 @@ public class DataSource {
         statement.setString(12, user.getUserName());
         statement.setString(13, type);
         statement.setString(14, user.getUserName());
-        System.out.println(statement.toString());
         statement.executeUpdate();
         statement.close();
     }
@@ -436,13 +433,11 @@ public class DataSource {
         
         statement = conn.prepareStatement("DELETE FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_ID + " = ?");
         statement.setString(1, Integer.toString(customer.getCustomerID()));
-        System.out.println(statement.toString());
         statement.executeUpdate();
         statement.close();
         
         statement2 = conn.prepareStatement("DELETE FROM " + TABLE_ADDRESS + " WHERE " + COLUMN_ADDRESS_ID + " = ?");
         statement2.setString(1, Integer.toString(customer.getAddressID()));
-        System.out.println(statement2.toString());
         statement2.executeUpdate();
         statement2.close();
         conn.commit();
@@ -468,14 +463,12 @@ public class DataSource {
             statement.setString(6, getTimeStamp());
             statement.setString(7, user.getUserName());
             statement.setString(8, Integer.toString(customer.getAddressID()));
-            System.out.println(statement.toString());
             statement.executeUpdate();
             statement.close();
             
             statement2 = conn.prepareStatement("UPDATE " + TABLE_CUSTOMER + " SET " + COLUMN_CUSTOMER_NAME + " = ?, " +  COLUMN_ADDRESS_ID + " = (SELECT addressId FROM address WHERE address = ?), "
                                                + COLUMN_ACTIVE + " = ?, " + COLUMN_LAST_UPDATE + " = ?, " + COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_EMAIL + " = ? WHERE " +
                                                COLUMN_CUSTOMER_NAME + " = ?");
-            System.out.println(customer.getCustomerName());
             statement2.setString(1, customerName);
             statement2.setString(2, streetAddress);
             statement2.setInt(3, active);
@@ -483,7 +476,6 @@ public class DataSource {
             statement2.setString(5, user.getUserName());
             statement2.setString(6, email);
             statement2.setString(7, customer.getCustomerName());
-            System.out.println(statement2.toString());
             statement2.executeUpdate();
             statement2.close();
             conn.commit();

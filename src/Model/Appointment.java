@@ -181,39 +181,30 @@ public class Appointment {
     public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
         boolean apptAvailable = true;
         LocalTime startOfDay = LocalTime.parse("07:00");
-        LocalTime endOfDay = LocalTime.parse("17:00");                          // CHANGE BACK TO NORMAL WORK DAY END TIME IN 24 HOUR FORMAT
+        LocalTime endOfDay = LocalTime.parse("17:00");
         for (int i = 0; i < appointmentList.size(); i++){
-            System.out.println(start.toString());
             LocalDateTime apptStart = appointmentList.get(i).getStart();
             LocalDateTime apptEnd = appointmentList.get(i).getEnd();
 
             if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
                 apptAvailable = false;
-                System.out.println("FALSE 1");
             }
             if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd))){
                 apptAvailable = false;
-                System.out.println("FALSE 2");
             }
-            System.out.println(start.getHour() + " " + endOfDay.getHour());
             if ((start.getHour() >= endOfDay.getHour()) || start.getHour() <= startOfDay.getHour()){
                 apptAvailable = false;
-                System.out.println("FALSE 3");
             }
             if((end.getHour() >= endOfDay.getHour() || end.getHour() <= startOfDay.getHour())){
                 apptAvailable = false;
-                System.out.println("FALSE 4");
             }
             if ((start.getDayOfWeek().toString().equals("SATURDAY")) || (start.getDayOfWeek().toString().equals("SUNDAY"))){
                 apptAvailable = false;
-                System.out.println("FALSE 5");
             }
             if ((end.getDayOfWeek().toString().equals("SATURDAY")) || (end.getDayOfWeek().toString().equals("SUNDAY"))){
                 apptAvailable = false;
-                System.out.println("FALSE 6");
             }
         }
-        System.out.println(apptAvailable);
         return apptAvailable;
     }
 }
