@@ -77,7 +77,8 @@ public class SignInController implements Initializable {
     private boolean signInClicked;
     
     //NOTE TO EVALUATOR - TO CHANGE LANGUAGE TO FRENCH OR SPANISH, COMMENT OUT line language = getLanguage in the initialize method
-    //and uncomment either "es" or "fr". This will change the display language as well as error messages.
+    //Also comment out line 82, (public String language)
+    //and uncomment either "es" or "fr". (line 83 and 84). This will change the display language as well as error messages.
     public String language;
     //public String language = "es";
     //public String language = "fr";    

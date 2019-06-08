@@ -66,3 +66,47 @@ User Travis Bruce accessed the system at 2019-06-07T07:50:21.035
 User Travis Bruce accessed the system at 2019-06-07T07:51:35.607
 User Travis Bruce accessed the system at 2019-06-07T07:55:38.284
 User Test accessed the system at 2019-06-07T08:07:35.643
+User Test accessed the system at 2019-06-08T08:27:00.973
+User Test accessed the system at 2019-06-08T08:34:05.441
+User Test accessed the system at 2019-06-08T08:37:16.317
+User Test accessed the system at 2019-06-08T09:01:27.271
+User Test accessed the system at 2019-06-08T09:09:23.309
+User Test accessed the system at 2019-06-08T09:11:12.673
+User Test accessed the system at 2019-06-08T09:15:25.668
+User Test accessed the system at 2019-06-08T09:30:52.975
+User Test accessed the system at 2019-06-08T15:11:05.779
+User Test accessed the system at 2019-06-08T15:22:13.068
+User Test  accessed the system at 2019-06-08T15:23:38.301
+User Test accessed the system at 2019-06-08T15:24:18.850
+User Travis Bruce accessed the system at 2019-06-08T15:25:01.688
+User Test accessed the system at 2019-06-08T15:26:57.484
+User Test accessed the system at 2019-06-08T15:28:27.040
+User Test accessed the system at 2019-06-08T15:32:24.075
+User Test accessed the system at 2019-06-08T15:35:46.337
+User Test accessed the system at 2019-06-08T15:37:53.354
+User Test accessed the system at 2019-06-08T15:44:03.791
+User Test accessed the system at 2019-06-08T15:45:28.956
+User Test accessed the system at 2019-06-08T15:46:50.677
+User Test accessed the system at 2019-06-08T15:49:02.744
+User Test accessed the system at 2019-06-08T15:50:03.598
+User Test accessed the system at 2019-06-08T15:51:08.725
+User Test accessed the system at 2019-06-08T15:52:13.895
+User Test accessed the system at 2019-06-08T15:56:18.725
+User Test accessed the system at 2019-06-08T16:54:57.614
+User Test accessed the system at 2019-06-08T16:57:24.598
+User Test accessed the system at 2019-06-08T17:05:41.964
+User Test accessed the system at 2019-06-08T17:11:05.306
+User Test accessed the system at 2019-06-08T17:13:13.770
+User Test accessed the system at 2019-06-08T17:18:36.152
+User Test accessed the system at 2019-06-08T17:20:54.040
+User Test accessed the system at 2019-06-08T17:23:13.126
+User Test accessed the system at 2019-06-08T17:24:18.260
+User Test accessed the system at 2019-06-08T17:25:18.693
+User Test accessed the system at 2019-06-08T17:27:05.920
+User Test accessed the system at 2019-06-08T17:28:55.022
+User Test accessed the system at 2019-06-08T17:29:31.932
+User Test accessed the system at 2019-06-08T17:31:12.296
+User Test accessed the system at 2019-06-08T17:38:07.559
+User Test accessed the system at 2019-06-08T17:48:11.149
+User Test accessed the system at 2019-06-08T17:51:20.623
+User Test accessed the system at 2019-06-08T17:54:28.380

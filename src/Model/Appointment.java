@@ -172,13 +172,48 @@ public class Appointment {
         
     //Validation methods
     public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url, String amPm){
-        if((title != null) && (description != null) && (location != null) && 
-           (contact != null) && (type != null) && (url != null) && (amPm != null)){  
+        if((!title.trim().isEmpty()) && (!description.trim().isEmpty()) && (!location.trim().isEmpty()) && 
+           (!contact.trim().isEmpty()) && (!type.trim().isEmpty()) && (!url.trim().isEmpty()) && (!amPm.trim().isEmpty())){ 
+            return true;
         }
-        return true;
+        return false;
     }
     
-    public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
+    public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end, int appointmentID){
+        boolean apptAvailable = true;
+        LocalTime startOfDay = LocalTime.parse("07:00");
+        LocalTime endOfDay = LocalTime.parse("17:00");
+        for (int i = 0; i < appointmentList.size(); i++){
+            LocalDateTime apptStart = appointmentList.get(i).getStart();
+            LocalDateTime apptEnd = appointmentList.get(i).getEnd();
+
+            if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
+                if(appointmentList.get(i).getAppointmentId() != appointmentID){
+                    apptAvailable = false;
+                }
+            }
+            if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd))){
+                if(appointmentList.get(i).getAppointmentId() != appointmentID){
+                    apptAvailable = false;
+                }
+            }
+            if ((start.getHour() >= endOfDay.getHour()) || start.getHour() <= startOfDay.getHour()){
+                apptAvailable = false;
+            }
+            if((end.getHour() >= endOfDay.getHour() || end.getHour() <= startOfDay.getHour())){
+                apptAvailable = false;
+            }
+            if ((start.getDayOfWeek().toString().equals("SATURDAY")) || (start.getDayOfWeek().toString().equals("SUNDAY"))){
+                apptAvailable = false;
+            }
+            if ((end.getDayOfWeek().toString().equals("SATURDAY")) || (end.getDayOfWeek().toString().equals("SUNDAY"))){
+                apptAvailable = false;
+            }
+        }
+        return apptAvailable;
+    }
+    
+        public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end){
         boolean apptAvailable = true;
         LocalTime startOfDay = LocalTime.parse("07:00");
         LocalTime endOfDay = LocalTime.parse("17:00");

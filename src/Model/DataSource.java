@@ -27,7 +27,7 @@ public class DataSource {
     //Shared columns
     private static final String COLUMN_CREATE_DATE = "createDate";
     private static final String COLUMN_LAST_UPDATE = "lastUpdate";
-    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdatedBy";
+    private static final String COLUMN_LAST_UPDATED_BY = "lastUpdateBy";
     private static final String COLUMN_CUSTOMER_ID = "customerId";
     private static final String COLUMN_COUNTRY_ID = "countryId";
     private static final String COLUMN_ADDRESS_ID = "addressID";

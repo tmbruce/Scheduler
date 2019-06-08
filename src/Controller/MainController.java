@@ -30,6 +30,8 @@ import javafx.scene.layout.AnchorPane;
 public class MainController implements Initializable, ControllerInterface {
     
     @FXML
+    public static Button refreshButton;
+    @FXML
     private Button calendarButton, customersButton;
     @FXML
     private Label monthLabel;
@@ -95,6 +97,7 @@ public class MainController implements Initializable, ControllerInterface {
         CreateAppointmentController cac = new CreateAppointmentController();
         sc.changeScenesNewWindow(event, "/Views/CreateAppointment.fxml", "CalendarOne - Create Appointment", user, cac);
         calendarButton.requestFocus();
+        
     }
     
     @FXML
@@ -144,6 +147,12 @@ public class MainController implements Initializable, ControllerInterface {
     public void clearCalendar(){
         ObservableList<Node> nodeList = calendarGrid.getChildren();
         nodeList.remove(8, nodeList.size());
+    }
+    
+    @FXML
+    public void refreshHandler(){
+        clearCalendar();
+        setCalendar(monthOffset);
     }
     
     /*

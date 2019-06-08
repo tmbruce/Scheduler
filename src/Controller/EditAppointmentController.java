@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -93,7 +94,6 @@ public class EditAppointmentController implements Initializable, ControllerInter
         errorMessageLabel2.setVisible(false);
         typeChoiceBox.getItems().addAll("Sales", "Innovation", "Status Update", "Strategy", "Customer Outreach");
         dayNightCombo.getItems().addAll("AM","PM");
-        
         for (int i = 0; i < customerList.size(); i++){
             customerDropDown.getItems().add(customerList.get(i).getCustomerName());
         }
@@ -132,7 +132,7 @@ public class EditAppointmentController implements Initializable, ControllerInter
 }
 
     @FXML
-    public void saveButtonHandler(ActionEvent event) throws SQLException {
+    public void saveButtonHandler(ActionEvent event) throws SQLException, IOException {
         String title = titleField.getText();
         String description = descriptionField.getText();
         String location = locationField.getText();
@@ -141,6 +141,14 @@ public class EditAppointmentController implements Initializable, ControllerInter
         String url = URLfield.getText();
         String cust = customerDropDown.getSelectionModel().getSelectedItem();
         LocalDate appointmentDate = startTime.getValue();
+        
+        if ((appointmentDate == null) || (startTimeSpinner.getValue() == null)){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error!");
+            alert.setContentText("Please complete all fields on form");
+            alert.showAndWait();
+        }
+        else{
         String startTimeValue = startTimeSpinner.getValue().toString();
         String amPm = dayNightCombo.getValue();
         String durationHour = durationHours.getValue().toString();
@@ -161,23 +169,35 @@ public class EditAppointmentController implements Initializable, ControllerInter
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
-        if((Appointment.validateAppointment(title, description, location, contact, type, url, amPm)) &&
-                Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
-
+        boolean apptText = Appointment.validateAppointment(title, description, location, contact, type, url, amPm);
+        boolean apptTime = Appointment.validateAppointmentTime(ldtStart, ltdEnd, appointment.getAppointmentId());   
+        if((apptText == true) && (apptTime = true)){
             DataSource datasource = new DataSource();
             datasource.open();
             datasource.updateAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user, appointment);
             datasource.close();
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
+            SceneChanger sc = new SceneChanger();
+            MainController mc = new MainController();
+            sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mc);
         }
         else {
-            errorMessageLabel.setText("This appointment is either outside business hours");
-            errorMessageLabel2.setText("or conflicts with an existing appointment.");
-            errorMessageLabel.setStyle("-fx-text-fill: red;");
-            errorMessageLabel2.setStyle("-fx-text-fill: red;");
-            errorMessageLabel.setVisible(true);
-            errorMessageLabel2.setVisible(true);
+            if(apptTime == false){
+                errorMessageLabel.setText("This appointment is either outside business hours");
+                errorMessageLabel2.setText("or conflicts with an existing appointment.");
+                errorMessageLabel.setStyle("-fx-text-fill: red;");
+                errorMessageLabel2.setStyle("-fx-text-fill: red;");
+                errorMessageLabel.setVisible(true);
+                errorMessageLabel2.setVisible(true);
+                }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error!");
+                alert.setContentText("Please complete all fields on form");
+                alert.showAndWait();
+                }
+            }
         }
     }
 

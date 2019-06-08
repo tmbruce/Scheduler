@@ -12,6 +12,7 @@ import Model.Appointment;
 import Model.TimeShift;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,6 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -96,6 +98,12 @@ public class CreateAppointmentController implements Initializable, ControllerInt
 
         typeChoiceBox.getItems().addAll("Sales", "Innovation", "Status Update", "Strategy", "Customer Outreach");
         dayNightCombo.getItems().addAll("AM","PM");
+        if(LocalTime.now().getHour() > 11){
+            dayNightCombo.getSelectionModel().select("PM");
+        }
+        else{
+            dayNightCombo.getSelectionModel().select("AM");
+        }
         SpinnerValueFactory<Integer> hoursFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,8,0);
         durationHours.setValueFactory(hoursFactory);
         SpinnerValueFactory<Integer> minutesFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(00,59,0);
@@ -140,6 +148,14 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         String url = URLfield.getText();
         String cust = customerDropDown.getSelectionModel().getSelectedItem();
         LocalDate appointmentDate = startTime.getValue();
+        
+        if ((appointmentDate == null) || (startTimeSpinner.getValue() == null)){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error!");
+            alert.setContentText("Please complete all fields on form");
+            alert.showAndWait();
+        }
+        else{
         String startTimeValue = startTimeSpinner.getValue().toString();
         String amPm = dayNightCombo.getValue().toString();
         String durationHour = durationHours.getValue().toString();
@@ -159,26 +175,36 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         apptEndTime = apptEndTime.plusHours(Integer.parseInt(durationHour));
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
-        //ldtStart = TimeShift.localToUTC(ldtStart);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
-        //ltdEnd = TimeShift.localToUTC(ltdEnd);
-        if((Appointment.validateAppointment(title, description, location, contact, type, url, amPm)) &&
-                Appointment.validateAppointmentTime(ldtStart, ltdEnd)){
-
+        boolean apptText = Appointment.validateAppointment(title, description, location, contact, type, url, amPm);
+        boolean apptTime = Appointment.validateAppointmentTime(ldtStart, ltdEnd);
+        System.out.println(apptText + " TEXT FIELDS BLANK");
+            System.out.println(apptTime + " TIME SLOT TAKEN");
+        if((apptText == true) && (apptTime == true)){
             DataSource datasource = new DataSource();
             datasource.open();
             datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
             datasource.close();
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
+            
         }
         else {
-            errorMessageLabel.setText("This appointment is either outside business hours");
-            errorMessageLabel2.setText("or conflicts with an existing appointment.");
-            errorMessageLabel.setStyle("-fx-text-fill: red;");
-            errorMessageLabel2.setStyle("-fx-text-fill: red;");
-            errorMessageLabel.setVisible(true);
-            errorMessageLabel2.setVisible(true);
+            if (apptTime == false){
+                errorMessageLabel.setText("This appointment is either outside business hours");
+                errorMessageLabel2.setText("or conflicts with an existing appointment.");
+                errorMessageLabel.setStyle("-fx-text-fill: red;");
+                errorMessageLabel2.setStyle("-fx-text-fill: red;");
+                errorMessageLabel.setVisible(true);
+                errorMessageLabel2.setVisible(true);
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error!");
+                alert.setContentText("Please complete all fields on form");
+                alert.showAndWait();
+                }
+            }
         }
     }
     

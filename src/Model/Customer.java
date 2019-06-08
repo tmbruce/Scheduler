@@ -117,4 +117,14 @@ public class Customer {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    //Validation method for customer details
+    public static boolean validateCustomer(String name, String email, String phone, String address, String postCode, String city, String country){
+        boolean formComplete = false;
+        if((!name.trim().isEmpty()) && (!email.trim().isEmpty()) && (!phone.trim().isEmpty()) && (!address.trim().isEmpty()) && 
+                (!postCode.trim().isEmpty()) && (!city.trim().isEmpty()) && (!country.trim().isEmpty())){
+            formComplete = true;
+        }
+        return formComplete;
+    }
 }

@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Model.Customer;
 import Model.DataSource;
 import Model.User;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -85,17 +87,22 @@ public class CreateCustomerController implements Initializable, ControllerInterf
         String customerPostCode = customerPostCodeField.getText();
         String customerCity = customerCityStateCombo.getValue();
         String customerCountry = customerCountryCombo.getValue();
-
-        DataSource datasource = new DataSource();
-        datasource.open();
-        datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);
-        datasource.close();
-//        CustomerController cc = new CustomerController();
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        stage.close();
-//        CreateCustomerController ccc = new CreateCustomerController();
-//        SceneChanger sc = new SceneChanger();
-//        sc.changeScenes(event, "/Views/Customers.fxml", "CalendarOne - Manage Customers", user, ccc);
+        
+        boolean customerOk = Customer.validateCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry);
+        if(customerOk == true){
+            DataSource datasource = new DataSource();
+            datasource.open();
+            datasource.insertCustomer(customerName, customerEmail, customerPhone, customerAddress, customerPostCode, customerCity, customerCountry, user);
+            datasource.close();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            stage.close();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error!");
+            alert.setContentText("Please complete the form");
+            alert.showAndWait();
+        }
     }
 
     @FXML
