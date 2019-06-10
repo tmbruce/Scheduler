@@ -110,3 +110,35 @@ User Test accessed the system at 2019-06-08T17:38:07.559
 User Test accessed the system at 2019-06-08T17:48:11.149
 User Test accessed the system at 2019-06-08T17:51:20.623
 User Test accessed the system at 2019-06-08T17:54:28.380
+User Travis Bruce accessed the system at 2019-06-09T16:41:33.182
+User Test accessed the system at 2019-06-09T16:46:26.763
+User Test accessed the system at 2019-06-09T16:59:11.328
+User Test accessed the system at 2019-06-09T17:01:01.455
+User Travis Bruce accessed the system at 2019-06-09T17:29:28.468
+User Test accessed the system at 2019-06-09T17:49:26.435
+User Test accessed the system at 2019-06-09T17:58:57.530
+User Test accessed the system at 2019-06-09T18:00:00.602
+User Test accessed the system at 2019-06-09T18:01:51.270
+User Test accessed the system at 2019-06-09T18:03:36.192
+User Test accessed the system at 2019-06-09T18:05:26.524
+User Test accessed the system at 2019-06-09T18:07:01.005
+User Test accessed the system at 2019-06-09T18:29:21.751
+User Test accessed the system at 2019-06-09T18:39:10.586
+User Test accessed the system at 2019-06-10T05:20:14.990
+User Test accessed the system at 2019-06-10T05:21:25.717
+User Test accessed the system at 2019-06-10T05:22:36.313
+User Test accessed the system at 2019-06-10T05:23:31.472
+User Test accessed the system at 2019-06-10T05:29:06.242
+User Test accessed the system at 2019-06-10T05:45:26.895
+User Test accessed the system at 2019-06-10T06:11:44.045
+User Test accessed the system at 2019-06-10T06:27:34.648
+User Travis Bruce accessed the system at 2019-06-10T06:29:55.344
+User Test accessed the system at 2019-06-10T06:40:53.959
+User Test accessed the system at 2019-06-10T06:48:19.592
+User Test accessed the system at 2019-06-10T06:49:48.991
+User Test accessed the system at 2019-06-10T06:51:17.365
+User Test accessed the system at 2019-06-10T06:52:14.576
+User Test accessed the system at 2019-06-10T06:56:44.170
+User Test accessed the system at 2019-06-10T06:59:56.665
+User Test accessed the system at 2019-06-10T07:15:12.866
+User Test accessed the system at 2019-06-10T07:17:57.630

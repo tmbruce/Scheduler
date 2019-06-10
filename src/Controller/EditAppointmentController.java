@@ -8,6 +8,7 @@ import Model.SceneChanger;
 import Model.TimeShift;
 import Model.User;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -170,17 +171,14 @@ public class EditAppointmentController implements Initializable, ControllerInter
         LocalDateTime ldtStart = TimeShift.dateTimeBuilder(appointmentDate, apptStartTime);
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
         boolean apptText = Appointment.validateAppointment(title, description, location, contact, type, url, amPm);
-        boolean apptTime = Appointment.validateAppointmentTime(ldtStart, ltdEnd, appointment.getAppointmentId());   
-        if((apptText == true) && (apptTime = true)){
+        boolean apptTime = Appointment.validateAppointmentTime(ldtStart, ltdEnd, appointment.getAppointmentId());
+        if((apptTime == true) && (apptText == true)){
             DataSource datasource = new DataSource();
             datasource.open();
             datasource.updateAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user, appointment);
             datasource.close();
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
-            SceneChanger sc = new SceneChanger();
-            MainController mc = new MainController();
-            sc.changeScenes(event, "/Views/Main.fxml", "CalendarOne", user, mc);
         }
         else {
             if(apptTime == false){
@@ -244,7 +242,19 @@ public class EditAppointmentController implements Initializable, ControllerInter
         else{
             startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
         }
-        durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour());
-        durationMinutes.getValueFactory().setValue(appointment.getEnd().getMinute()- appointment.getStart().getMinute());
+        if((appointment.getEnd().getHour() - appointment.getStart().getHour() <= 1) &&
+                (appointment.getEnd().getMinute() - appointment.getStart().getMinute() < 0)){
+            durationHours.getValueFactory().setValue((0));
+            durationMinutes.getValueFactory().setValue(abs(appointment.getEnd().getMinute() - appointment.getStart().getMinute()));
+        }
+        else{
+            if((appointment.getEnd().getHour() - appointment.getStart().getHour()) >= 2 &&
+                    (appointment.getEnd().getMinute() - appointment.getStart().getMinute() < 0)){
+                durationHours.getValueFactory().setValue((appointment.getEnd().getHour() - appointment.getStart().getHour()) - 1);
+                durationMinutes.getValueFactory().setValue(abs(appointment.getEnd().getMinute() - appointment.getStart().getMinute()));
+            }
+        }
+
+
     }
 }

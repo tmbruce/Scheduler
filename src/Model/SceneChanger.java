@@ -11,8 +11,10 @@ import javafx.stage.Stage;
 import Controller.ControllerInterface;
 import Controller.ControllerInterfaceApp;
 import Controller.ControllerInterfaceUser;
+import Controller.MainController;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
+import javafx.stage.WindowEvent;
 
 public class SceneChanger {
     
@@ -89,6 +91,9 @@ public class SceneChanger {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.getIcons().add(new Image("/Images/calendar.png"));
         stage.setScene(scene);
+        stage.setOnCloseRequest((WindowEvent action) -> {
+            MainController.refreshButton.fire();
+        });
         stage.show();
     }
 }

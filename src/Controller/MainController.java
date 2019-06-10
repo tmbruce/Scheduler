@@ -63,9 +63,6 @@ public class MainController implements Initializable, ControllerInterface {
                      datasource.open();
                      String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
                      datasource.close();
-                     
-                     
-
                      int apptMinutes = appointmentList.get(i).getStart().getMinute();
                      int nowMinutes = LocalTime.now().getMinute();
                      int timeRemaining = -1;
@@ -75,8 +72,6 @@ public class MainController implements Initializable, ControllerInterface {
                      } else {
                          timeRemaining = apptMinutes - nowMinutes;
                      }
-                     
-                     
                      
                      Alert alert = new Alert(Alert.AlertType.INFORMATION);
                      alert.setHeaderText("Attention!");
@@ -89,6 +84,8 @@ public class MainController implements Initializable, ControllerInterface {
         catch(SQLException e){
             }
         setCalendar(monthOffset);
+        for (int i = 0; i < appointmentList.size(); i++){
+        }
     }
 
     @FXML
@@ -151,7 +148,35 @@ public class MainController implements Initializable, ControllerInterface {
     
     @FXML
     public void refreshHandler(){
-        clearCalendar();
+        try{
+            appointmentList = Appointment.getAppointments();
+            for (int i = 0; i < appointmentList.size(); i++){
+                 if ((appointmentList.get(i).getStart().isBefore(LocalDateTime.now().plusMinutes(15))) &&
+                (appointmentList.get(i).getStart().isAfter(LocalDateTime.now()))){
+                     DataSource datasource = new DataSource();
+                     datasource.open();
+                     String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
+                     datasource.close();
+                     int apptMinutes = appointmentList.get(i).getStart().getMinute();
+                     int nowMinutes = LocalTime.now().getMinute();
+                     int timeRemaining = -1;
+                     if(apptMinutes < nowMinutes){
+                         apptMinutes += 60;
+                         timeRemaining = apptMinutes - nowMinutes;
+                     } else {
+                         timeRemaining = apptMinutes - nowMinutes;
+                     }
+                     
+                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                     alert.setHeaderText("Attention!");
+                     alert.setContentText("You have a meeting scheduled with " + customerName + " in about " + timeRemaining + " minutes.\n\nMeeting location: " + 
+                             appointmentList.get(i).getLocation() + "\nMeeting type: " + appointmentList.get(i).getType() + "\nMeeting subject: " + appointmentList.get(i).getTitle());
+                     alert.showAndWait();
+                 }
+            }  
+        }
+        catch(SQLException e){
+            }
         setCalendar(monthOffset);
     }
     
@@ -244,6 +269,7 @@ public class MainController implements Initializable, ControllerInterface {
                          apptButton.setId(String.valueOf(apptToCalendar.get(dayIndex).get(c).getAppointmentId()));
                          apptButton.getStyleClass().add("appointment");
                          
+                         
                          /*
                          ATTENTION EVALUATOR! This is one of the lambda functions as required by the project outline.
                          Its purpose is to add an event handler to the appointment as displayed on the calendar, so that
@@ -257,6 +283,7 @@ public class MainController implements Initializable, ControllerInterface {
                                      EditAppointmentController eac = new EditAppointmentController();
                                      try {
                                          sc.changeScenesNewWindow(event, "/Views/EditAppointment.fxml", "CalendarOne - Edit Appointment", user, appointment, eac);
+                                         
                                      } 
                                      catch (IOException ex) {
                                         }

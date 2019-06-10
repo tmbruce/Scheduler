@@ -156,11 +156,11 @@ public class CreateAppointmentController implements Initializable, ControllerInt
             alert.showAndWait();
         }
         else{
-        String startTimeValue = startTimeSpinner.getValue().toString();
-        String amPm = dayNightCombo.getValue().toString();
-        String durationHour = durationHours.getValue().toString();
-        String durationMinute = durationMinutes.getValue().toString();
-        LocalTime apptStartTime = LocalTime.parse(startTimeValue);
+            String startTimeValue = startTimeSpinner.getValue().toString();
+            String amPm = dayNightCombo.getValue().toString();
+            String durationHour = durationHours.getValue().toString();
+            String durationMinute = durationMinutes.getValue().toString();
+            LocalTime apptStartTime = LocalTime.parse(startTimeValue);
         if(amPm.equalsIgnoreCase("PM")){
             apptStartTime = apptStartTime.plusHours(12);
         }
@@ -178,8 +178,6 @@ public class CreateAppointmentController implements Initializable, ControllerInt
         LocalDateTime ltdEnd = TimeShift.dateTimeBuilder(appointmentDate, apptEndTime);
         boolean apptText = Appointment.validateAppointment(title, description, location, contact, type, url, amPm);
         boolean apptTime = Appointment.validateAppointmentTime(ldtStart, ltdEnd);
-        System.out.println(apptText + " TEXT FIELDS BLANK");
-            System.out.println(apptTime + " TIME SLOT TAKEN");
         if((apptText == true) && (apptTime == true)){
             DataSource datasource = new DataSource();
             datasource.open();

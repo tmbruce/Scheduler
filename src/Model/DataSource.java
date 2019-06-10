@@ -262,7 +262,7 @@ public class DataSource {
         try{
             statement = conn.prepareStatement("SELECT " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_USER_ID + ", " + COLUMN_APPOINTMENT_ID + ", " + COLUMN_CUSTOMER_ID + ", " + COLUMN_TITLE + ", " + COLUMN_DESCRIPTION + ", " +
                                               COLUMN_LOCATION + ", " + COLUMN_TYPE + ", " + COLUMN_CONTACT + ", " + COLUMN_URL  + ", " + COLUMN_START + ", " + COLUMN_END + " FROM " + 
-                                              TABLE_APPOINTMENT); 
+                                              TABLE_APPOINTMENT + " ORDER BY " + COLUMN_START); 
             result = statement.executeQuery();
             while (result.next()){
                 Appointment appointment = new Appointment(Integer.parseInt(result.getString(COLUMN_CUSTOMER_ID)),
@@ -333,9 +333,10 @@ public class DataSource {
                                   String type, User user, Appointment appointment) throws SQLException{
         PreparedStatement statement = null;
         
+        //FIXME - need to remove referential integrity issue, remove (SELECT userId FROM user WHEERE userName = ... Creates SQL exception when user edits an appointment they didn't create
         statement = conn.prepareStatement("UPDATE " + TABLE_APPOINTMENT + " SET " + COLUMN_CUSTOMER_ID + " = ?, " + COLUMN_TITLE + " = ?, " + COLUMN_DESCRIPTION + " = ?, " + COLUMN_LOCATION + 
                                           " =  ?, " + COLUMN_CONTACT + " = ?, " + COLUMN_URL + " = ?, " + COLUMN_START + " = ?, " + COLUMN_END + " = ?, " + COLUMN_LAST_UPDATE + " = ?, " +
-                                          COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_TYPE + " = ?, " + COLUMN_USER_ID + " = (SELECT userId FROM user WHERE userName = ?) "+ " WHERE appointmentId = ?");
+                                          COLUMN_LAST_UPDATED_BY + " = ?, " + COLUMN_TYPE + " = ? WHERE appointmentId = ?");
         statement.setInt(1, customerId);
         statement.setString(2, title);
         statement.setString(3, description);
@@ -347,8 +348,7 @@ public class DataSource {
         statement.setString(9, getTimeStamp());
         statement.setString(10, user.getUserName());
         statement.setString(11, type);
-        statement.setString(12, user.getUserName());
-        statement.setInt(13, appointment.getAppointmentId());
+        statement.setInt(12, appointment.getAppointmentId());
         statement.executeUpdate();
         statement.close();   
     }
