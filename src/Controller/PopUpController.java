@@ -44,8 +44,7 @@ public class PopUpController implements Initializable, ControllerInterfaceUser {
     public void initialize(URL url, ResourceBundle rb) {
         headerLabel.setText("Alert!");
         messageLabel.setText("Customers deleted from the database cannot be recovered.");
-        messageLabel2.setText("Continue?");
-        
+        messageLabel2.setText("Continue?"); 
     }    
 
     @FXML

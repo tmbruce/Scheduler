@@ -430,6 +430,7 @@ public class DataSource {
         conn.setAutoCommit(false);
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
+        PreparedStatement statement3 = null;
         
         statement = conn.prepareStatement("DELETE FROM " + TABLE_CUSTOMER + " WHERE " + COLUMN_CUSTOMER_ID + " = ?");
         statement.setString(1, Integer.toString(customer.getCustomerID()));
@@ -440,6 +441,12 @@ public class DataSource {
         statement2.setString(1, Integer.toString(customer.getAddressID()));
         statement2.executeUpdate();
         statement2.close();
+        
+        statement3 = conn.prepareStatement("DELETE FROM " + TABLE_APPOINTMENT + " WHERE " + COLUMN_CUSTOMER_ID + " =  ?");
+        statement3.setInt(1, customer.getCustomerID());
+        statement3.executeUpdate();
+        statement3.close();
+        
         conn.commit();
         conn.setAutoCommit(true);
     }
