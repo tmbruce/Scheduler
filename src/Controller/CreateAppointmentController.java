@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.Customer;
@@ -12,7 +8,6 @@ import Model.Appointment;
 import Model.TimeShift;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,12 +30,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
-
-/**
- * FXML Controller class
- *
- * @author travi
- */
 public class CreateAppointmentController implements Initializable, ControllerInterface {
 
     @FXML
@@ -161,6 +150,9 @@ public class CreateAppointmentController implements Initializable, ControllerInt
             String durationHour = durationHours.getValue().toString();
             String durationMinute = durationMinutes.getValue().toString();
             LocalTime apptStartTime = LocalTime.parse(startTimeValue);
+            if(LocalTime.now().getHour() > 11){
+                apptStartTime = apptStartTime.minusHours(12);
+            }
         if(amPm.equalsIgnoreCase("PM")){
             apptStartTime = apptStartTime.plusHours(12);
         }
@@ -184,8 +176,7 @@ public class CreateAppointmentController implements Initializable, ControllerInt
             datasource.insertAppointment(custId, title, description, location, contact, url, ldtStart, ltdEnd, type, user);
             datasource.close();
             Stage stage = (Stage) saveButton.getScene().getWindow();
-            stage.close();
-            
+            stage.close();  
         }
         else {
             if (apptTime == false){

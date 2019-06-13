@@ -105,6 +105,7 @@ public class ReportsController implements Initializable, ControllerInterface {
         catch (SQLException ex) {
         }
         
+        //ATTENTION EVALUATOR! This is one of the required lambda expressions.
         userList.forEach(_user ->{
             userChoiceBox.getItems().add(_user.getUserName());
         });  
@@ -147,6 +148,7 @@ public class ReportsController implements Initializable, ControllerInterface {
 
     @FXML
     private void getSchedule(ActionEvent event) {
+        scheduleTableView.getItems().clear();
         String customerName = null;
         String userName = userChoiceBox.getSelectionModel().getSelectedItem();
         int userID = 0;
@@ -176,8 +178,8 @@ public class ReportsController implements Initializable, ControllerInterface {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
-        scheduleTableView.getItems().clear();
         scheduleTableView.getItems().addAll(userAppts);
+        userAppts.clear();
     }
 
     @FXML

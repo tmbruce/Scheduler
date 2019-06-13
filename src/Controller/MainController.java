@@ -150,33 +150,11 @@ public class MainController implements Initializable, ControllerInterface {
     public void refreshHandler(){
         try{
             appointmentList = Appointment.getAppointments();
-            for (int i = 0; i < appointmentList.size(); i++){
-                 if ((appointmentList.get(i).getStart().isBefore(LocalDateTime.now().plusMinutes(15))) &&
-                (appointmentList.get(i).getStart().isAfter(LocalDateTime.now()))){
-                     DataSource datasource = new DataSource();
-                     datasource.open();
-                     String customerName = datasource.getCustomerFromID(appointmentList.get(i).getCustomerId());
-                     datasource.close();
-                     int apptMinutes = appointmentList.get(i).getStart().getMinute();
-                     int nowMinutes = LocalTime.now().getMinute();
-                     int timeRemaining = -1;
-                     if(apptMinutes < nowMinutes){
-                         apptMinutes += 60;
-                         timeRemaining = apptMinutes - nowMinutes;
-                     } else {
-                         timeRemaining = apptMinutes - nowMinutes;
-                     }
-                     
-                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                     alert.setHeaderText("Attention!");
-                     alert.setContentText("You have a meeting scheduled with " + customerName + " in about " + timeRemaining + " minutes.\n\nMeeting location: " + 
-                             appointmentList.get(i).getLocation() + "\nMeeting type: " + appointmentList.get(i).getType() + "\nMeeting subject: " + appointmentList.get(i).getTitle());
-                     alert.showAndWait();
-                 }
-            }  
+             
         }
         catch(SQLException e){
             }
+        clearCalendar();
         setCalendar(monthOffset);
     }
     

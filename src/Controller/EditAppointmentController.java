@@ -33,11 +33,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
-/**
- * FXML Controller class
- *
- * @author tbruce
- */
 public class EditAppointmentController implements Initializable, ControllerInterfaceApp {
 
     @FXML
@@ -150,21 +145,20 @@ public class EditAppointmentController implements Initializable, ControllerInter
             alert.showAndWait();
         }
         else{
-        String startTimeValue = startTimeSpinner.getValue().toString();
-        String amPm = dayNightCombo.getValue();
-        String durationHour = durationHours.getValue().toString();
-        String durationMinute = durationMinutes.getValue().toString();
-        LocalTime apptStartTime = LocalTime.parse(startTimeValue);
-        if(amPm.equalsIgnoreCase("PM")){
-            apptStartTime = apptStartTime.plusHours(12);
-        }
-        int custId = 0;
-        for (int i = 0; i < customerList.size(); i++){
-            if (customerList.get(i).getCustomerName().equals(cust)){
-                custId = customerList.get(i).getCustomerID();
+            String startTimeValue = startTimeSpinner.getValue().toString();
+            String amPm = dayNightCombo.getValue();
+            String durationHour = durationHours.getValue().toString();
+            String durationMinute = durationMinutes.getValue().toString();
+            LocalTime apptStartTime = LocalTime.parse(startTimeValue);
+            if(amPm.equalsIgnoreCase("PM")){
+                apptStartTime = apptStartTime.plusHours(12);
             }
-        }
-
+            int custId = 0;
+            for (int i = 0; i < customerList.size(); i++){
+                if (customerList.get(i).getCustomerName().equals(cust)){
+                    custId = customerList.get(i).getCustomerID();
+                }
+            }
         LocalTime apptEndTime = apptStartTime;
         apptEndTime = apptEndTime.plusHours(Integer.parseInt(durationHour));
         apptEndTime = apptEndTime.plusMinutes(Integer.parseInt(durationMinute));
@@ -242,19 +236,13 @@ public class EditAppointmentController implements Initializable, ControllerInter
         else{
             startTimeSpinner.getValueFactory().setValue(appointment.getStart().toLocalTime());
         }
-        if((appointment.getEnd().getHour() - appointment.getStart().getHour() <= 1) &&
-                (appointment.getEnd().getMinute() - appointment.getStart().getMinute() < 0)){
-            durationHours.getValueFactory().setValue((0));
-            durationMinutes.getValueFactory().setValue(abs(appointment.getEnd().getMinute() - appointment.getStart().getMinute()));
+        if(appointment.getEnd().getMinute() - appointment.getStart().getMinute() == 0){
+            durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour());
+            durationMinutes.getValueFactory().setValue(0);
         }
         else{
-            if((appointment.getEnd().getHour() - appointment.getStart().getHour()) >= 2 &&
-                    (appointment.getEnd().getMinute() - appointment.getStart().getMinute() < 0)){
-                durationHours.getValueFactory().setValue((appointment.getEnd().getHour() - appointment.getStart().getHour()) - 1);
-                durationMinutes.getValueFactory().setValue(abs(appointment.getEnd().getMinute() - appointment.getStart().getMinute()));
-            }
+            durationHours.getValueFactory().setValue(appointment.getEnd().getHour() - appointment.getStart().getHour() - 1);
+            durationMinutes.getValueFactory().setValue(abs(appointment.getEnd().getMinute() - appointment.getStart().getMinute()));
         }
-
-
     }
 }

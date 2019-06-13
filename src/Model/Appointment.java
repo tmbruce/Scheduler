@@ -169,16 +169,20 @@ public class Appointment {
         datasource.close();
         return appointmentList;
     }
-        
-    //Validation methods
+    
+    //Validation Methods    
     public static boolean validateAppointment(String title, String description, String location, String contact, String type, String url, String amPm){
-        if((!title.trim().isEmpty()) && (!description.trim().isEmpty()) && (!location.trim().isEmpty()) && 
-           (!contact.trim().isEmpty()) && (!type.trim().isEmpty()) && (!url.trim().isEmpty()) && (!amPm.trim().isEmpty())){ 
-            return true;
+        try{
+            if((!title.trim().isEmpty()) && (!description.trim().isEmpty()) && (!location.trim().isEmpty()) && 
+           (!contact.trim().isEmpty()) && (!type.trim().isEmpty()) && (!url.trim().isEmpty()) && (!amPm.trim().isEmpty())){
+                return true;
+            }
+        }
+        catch(Exception e){
         }
         return false;
     }
-    
+ 
     public static boolean validateAppointmentTime(LocalDateTime start, LocalDateTime end, int appointmentID){
         boolean apptAvailable = true;
         LocalTime startOfDay = LocalTime.parse("07:00");
@@ -186,13 +190,12 @@ public class Appointment {
         for (int i = 0; i < appointmentList.size(); i++){
             LocalDateTime apptStart = appointmentList.get(i).getStart();
             LocalDateTime apptEnd = appointmentList.get(i).getEnd();
-
-            if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
+            if (((start.isAfter(apptStart) || start.equals(apptStart))) && (start.isBefore(apptEnd))){
                 if(appointmentList.get(i).getAppointmentId() != appointmentID){
                     apptAvailable = false;
                 }
             }
-            if ((end.isAfter(apptStart)) && (end.isBefore(apptEnd))){
+            if (((end.isAfter(apptStart) || end.equals(apptStart))) && (end.isBefore(apptEnd))){
                 if(appointmentList.get(i).getAppointmentId() != appointmentID){
                     apptAvailable = false;
                 }
@@ -220,7 +223,6 @@ public class Appointment {
         for (int i = 0; i < appointmentList.size(); i++){
             LocalDateTime apptStart = appointmentList.get(i).getStart();
             LocalDateTime apptEnd = appointmentList.get(i).getEnd();
-
             if ((start.isAfter(apptStart)) && (start.isBefore(apptEnd))){
                 apptAvailable = false;
             }
