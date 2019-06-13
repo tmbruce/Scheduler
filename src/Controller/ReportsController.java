@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -184,45 +185,53 @@ public class ReportsController implements Initializable, ControllerInterface {
 
     @FXML
     private void activeInactiveHandler(ActionEvent event) {
-        int displayNum = 0;
-        if(activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Active")){
-            if(userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
-                for (int i = 0; i < customerList.size(); i++){
-                    if(customerList.get(i).getActive() == 1){
-                        displayNum++;
-                    }     
-                }
-                numberUsersCustomers.setText(String.valueOf(displayNum));
-                numberUsersCustomers.setVisible(true);
-            }
-            else {
-                for (int i = 0; i < userList.size(); i++){
-                    if(userList.get(i).getActive() == 1){
-                        displayNum++;
-                    }
-                }
-                numberUsersCustomers.setText(String.valueOf(displayNum));
-                numberUsersCustomers.setVisible(true);
-            }
+        if((activeInactiveChoiceBox.getSelectionModel().getSelectedItem() == null) || (userCustomerChoiceBox.getSelectionModel().getSelectedItem() == null)){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error");
+            alert.setContentText("Please select active/inactive or customer/user");
+            alert.showAndWait();
         }
-        if (activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Inactive")){
-            if (userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
-            for (int i = 0; i < customerList.size(); i++){
-                if (customerList.get(i).getActive() != 1){
-                    displayNum++;
+        else{
+            int displayNum = 0;
+            if(activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Active")){
+                if(userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
+                    for (int i = 0; i < customerList.size(); i++){
+                        if(customerList.get(i).getActive() == 1){
+                            displayNum++;
+                        }     
                     }
+                    numberUsersCustomers.setText(String.valueOf(displayNum));
+                    numberUsersCustomers.setVisible(true);
                 }
-            numberUsersCustomers.setText(String.valueOf(displayNum));
-            numberUsersCustomers.setVisible(true);
+                else {
+                    for (int i = 0; i < userList.size(); i++){
+                        if(userList.get(i).getActive() == 1){
+                            displayNum++;
+                        }
+                    }
+                    numberUsersCustomers.setText(String.valueOf(displayNum));
+                    numberUsersCustomers.setVisible(true);
+                }
             }
-            else {
-                for (int i = 0; i < userList.size(); i++){
-                    if (userList.get(i).getActive() != 1){
+            if (activeInactiveChoiceBox.getSelectionModel().getSelectedItem().equals("Inactive")){
+                if (userCustomerChoiceBox.getSelectionModel().getSelectedItem().equals("Customers")){
+                for (int i = 0; i < customerList.size(); i++){
+                    if (customerList.get(i).getActive() != 1){
                         displayNum++;
+                        }
                     }
-                }
                 numberUsersCustomers.setText(String.valueOf(displayNum));
                 numberUsersCustomers.setVisible(true);
+                }
+                else {
+                    for (int i = 0; i < userList.size(); i++){
+                        if (userList.get(i).getActive() != 1){
+                            displayNum++;
+                        }
+                    }
+                    numberUsersCustomers.setText(String.valueOf(displayNum));
+                    numberUsersCustomers.setVisible(true);
+                }
             }
         }
     }    
